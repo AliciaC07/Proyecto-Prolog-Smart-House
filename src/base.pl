@@ -16,6 +16,8 @@ electrodomestico(5, computadora, 0.450, 1).
 electrodomestico(6, nevera, 662, 5).
 electrodomestico(7, nevera, 700, 5).
 electrodomestico(8, abanico, 0.9, 1).
+electrodomestico(9, lavadora, 255, 7).
+electrodomestico(10, lavaplatos, 246, 4).
 
 % La idea es describir si el electrodomestico esta encendido o no.
 % Con esto, se puede calcular el consumo de khw, que se tiene actual.
@@ -28,7 +30,14 @@ estado_electrodomestico(5, on).
 estado_electrodomestico(6, on).
 estado_electrodomestico(7, on).
 estado_electrodomestico(8, on).
+estado_electrodomestico(9, off).
 
+%Escificar los objetos para el consumo de agua
+%objeto_agua(identificador, nombre, consumo(litros de agua))
+objeto_agua(1, toilet, 6.05).
+objeto_agua(2, fregadero, 88.8).
+objeto_agua(3, lavadora, 47).
+objeto_agua(4, lavaplatos, 12).
 
 % La idea es describir el lugar con un identificador y el nombre
 % donde esta ubicado.
@@ -39,6 +48,7 @@ lugar(3, comedor, 30).
 lugar(4, cocina, 31.3).
 lugar(5, cocina, 32.5).
 lugar(6, baño, 30).
+lugar(7, cuarto_lavado, 31).
 
 % La idea es describir el objeto con un identificador, nombre
 % y el identificador del lugar donde esta ubicado.
