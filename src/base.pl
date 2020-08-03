@@ -1,4 +1,7 @@
 :-dynamic estado_objeto/2.
+:-dynamic persona/2.
+:-dynamic miembro_casa/1.
+:-dynamic ubicacion_persona/2.
 
 % La idea es describir un electrodomestico cualquiera de la casa
 % con su consumo en khw. Como se puede tener varios electrodomesticos,
@@ -50,8 +53,26 @@ estado_objeto(2, abierto).
 estado_objeto(3, abierto).
 estado_objeto(4, abierto).
 
+%Se tiene la persona de la familia
+%persona(nombre_persona, estado(despierto,fuera,durmiendo))
+persona(roberto, despierto).
+persona(nicole, despierto).
+persona(papotico, despierto).
 
-ubicacion_persona(1).
+%especifica si es un miembro de la casa o no
+%miembro_casa(persona)
+miembro_casa(roberto).
+miembro_casa(nicole).
+
+%Especifica si es un invitado y no un miembro de la casa
+%invitado(persona)
+invitado(papotico).
+
+%Ubicacion de la persona en la casa
+%ubicacion_persona(lugar, persona)
+ubicacion_persona(1, roberto).
+ubicacion_persona(3, nicole).
+ubicacion_persona(1, papotico).
 
 % Pregunta tipo monitoreo:
 % Calcular cuantos KW/H esta consumiendo la casa actualmente
