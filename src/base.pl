@@ -2,6 +2,7 @@
 :-dynamic persona/2.
 :-dynamic miembro_casa/1.
 :-dynamic ubicacion_persona/2.
+:-dynamic lugar/3.
 
 % La idea es describir un electrodomestico cualquiera de la casa
 % con su consumo en khw. Como se puede tener varios electrodomesticos,
@@ -37,6 +38,7 @@ lugar(2, comedor, 29).
 lugar(3, comedor, 30).
 lugar(4, cocina, 31.3).
 lugar(5, cocina, 32.5).
+lugar(6, baño, 30).
 
 % La idea es describir el objeto con un identificador, nombre
 % y el identificador del lugar donde esta ubicado.
