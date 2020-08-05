@@ -1,8 +1,19 @@
+:- dynamic lugar/3.
+:- dynamic planta/2.
+:- electrodomestico/2.
+:- dynamic objeto_agua/2.
+:- dynamic estado_electrodomestico/2.
+:- dynamic objeto/2.
+:- dynamic estado_objeto/2.
+:- dynamic persona/2.
+:- dynamic miembro_casa/1.
+:- dynamic invitado/1.
+
 % planta(nombre_planta, lista_lugares)
 planta(planta1, [sala1, comedor1, cocina1, bano1, cuarto_lavado1]).
 
 % Los distintos lugares y salas de las casas
-% lugar(nombre, temperatura/celsius).
+% lugar(nombre, temperatura/celsius, lista_objetos).
 lugar(sala1, 28, [television1, television2, bombillo1, bombillo2, computadora1, abanico1]).
 lugar(comedor1, 29, [bombillo3, abanico2]).
 lugar(cocina1, 30, [nevera1, estufa1, bombillo4, lavaplatos1]).
@@ -34,6 +45,13 @@ electrodomestico(lavadora1, 255).
 electrodomestico(lavadora2, 255).
 electrodomestico(lavaplatos1, 246).
 
+%Objetos de agua
+objeto_agua(toilet1, 6.05).
+objeto_agua(fregadero1, 88.8).
+objeto_agua(lavadora1, 47).
+objeto_agua(lavadora2, 47).
+objeto_agua(lavaplatos1, 12).
+
 % estado_electrodomestico(dispositivo, estado/encendido/apagado)
 estado_electrodomestico(nevera1, encendido).
 estado_electrodomestico(estufa1, encendido).
@@ -55,6 +73,49 @@ estado_electrodomestico(lavadora1, encendido).
 estado_electrodomestico(lavadora2, encendido).
 estado_electrodomestico(lavaplatos1, encendido).
 
+% La idea es describir el objeto con un identificador, nombre
+% y el identificador del lugar donde esta ubicado.
+% lugar(identificador, nombre, id_lugar).
+objeto(puerta1, sala1).
+objeto(puerta2, habitacion1).
+objeto(puerta3, cocina1).
+objeto(puerta4, bano1).
+objeto(puerta5, cuarto_lavado1).
+objeto(venatana1, habitacion1).
+objeto(ventana2, sala1).
+objeto(ventana3, cocina1).
+
+% La idea es describir si el objeto esta abierto o cerrado.
+% estado_objeto(identificador, estado/abierto/cerrado)
+estado_objeto(puerta1, abierto).
+estado_objeto(puerta2, abierto).
+estado_objeto(puerta3, abierto).
+estado_objeto(puerta4, cerrado).
+estado_objeto(puerta5, cerrado).
+estado_objeto(ventana1, cerrado).
+estado_objeto(ventana2, abierto).
+estado_objeto(ventana3, cerrado).
+
+%Especificacion de las personas que entran a la casa.
+%persona(nombre_persona, estado(despierto,fuera,durmiendo))
+persona(roberto, despierto).
+persona(nicole, despierto).
+persona(papotico, despierto).
+
+%especifica si es un miembro de la casa o no
+%miembro_casa(persona)
+miembro_casa(roberto).
+miembro_casa(nicole).
+
+%Especifica si es un invitado y no un miembro de la casa
+%invitado(persona)
+invitado(papotico).
+
+%Ubicacion de la persona en la casa
+%ubicacion_persona(lugar, persona)
+ubicacion_persona(sala1, roberto).
+ubicacion_persona(comedor1, nicole).
+ubicacion_persona(sala1, papotico).
 
 calcula_consumo([], 0).
 calcula_consumo([H|T], Total):-
