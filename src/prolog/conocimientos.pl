@@ -1,6 +1,6 @@
 :- dynamic lugar/3.
 :- dynamic planta/2.
-:- electrodomestico/2.
+:- dynamic electrodomestico/2.
 :- dynamic objeto_agua/2.
 :- dynamic estado_electrodomestico/2.
 :- dynamic objeto/2.
