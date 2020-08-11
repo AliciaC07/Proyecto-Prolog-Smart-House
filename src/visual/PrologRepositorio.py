@@ -15,6 +15,9 @@ class PrologRepositorio:
         preprocess_name = name.replace(' ', '_')
         return preprocess_name.lower()
 
+    # def InsertFamilia(self):
+
+
     def InsertPlanta(self, planta):
         fact = "planta("
         fact += self.transform_prolog_name(planta.nombre)
@@ -59,7 +62,7 @@ class PrologRepositorio:
 
     def ciclo_transform(self, items):
         fact1 = ""
-        fact1 += "[ "
+        fact1 += "["
         for aux in range(0, len(items)):
             fact1 += self.transform_prolog_name(items[aux])
             if aux == len(items) - 1:

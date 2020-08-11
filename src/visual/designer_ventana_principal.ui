@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1120</width>
-    <height>876</height>
+    <width>836</width>
+    <height>853</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,8 @@
    <widget class="QLabel" name="labelTituloVentana">
     <property name="geometry">
      <rect>
-      <x>370</x>
-      <y>20</y>
+      <x>270</x>
+      <y>10</y>
       <width>271</width>
       <height>21</height>
      </rect>
@@ -123,8 +123,8 @@
    <widget class="QLabel" name="labelLugares">
     <property name="geometry">
      <rect>
-      <x>370</x>
-      <y>225</y>
+      <x>410</x>
+      <y>235</y>
       <width>261</width>
       <height>21</height>
      </rect>
@@ -143,8 +143,8 @@
    <widget class="QPushButton" name="btnAgregarLugar">
     <property name="geometry">
      <rect>
-      <x>520</x>
-      <y>260</y>
+      <x>560</x>
+      <y>270</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -156,8 +156,8 @@
    <widget class="QTableWidget" name="lwLugares">
     <property name="geometry">
      <rect>
-      <x>370</x>
-      <y>290</y>
+      <x>410</x>
+      <y>300</y>
       <width>301</width>
       <height>192</height>
      </rect>
@@ -170,6 +170,9 @@
     </property>
     <property name="sizeAdjustPolicy">
      <enum>QAbstractScrollArea::AdjustToContents</enum>
+    </property>
+    <property name="selectionMode">
+     <enum>QAbstractItemView::SingleSelection</enum>
     </property>
     <attribute name="horizontalHeaderCascadingSectionResizes">
      <bool>false</bool>
@@ -200,8 +203,8 @@
    <widget class="QPushButton" name="btnRemoverLugar">
     <property name="geometry">
      <rect>
-      <x>600</x>
-      <y>260</y>
+      <x>640</x>
+      <y>270</y>
       <width>71</width>
       <height>23</height>
      </rect>
@@ -213,8 +216,8 @@
    <widget class="QPushButton" name="btnAgregarObjeto">
     <property name="geometry">
      <rect>
-      <x>1030</x>
-      <y>260</y>
+      <x>320</x>
+      <y>590</y>
       <width>71</width>
       <height>23</height>
      </rect>
@@ -226,8 +229,8 @@
    <widget class="QTableWidget" name="lwObjetos">
     <property name="geometry">
      <rect>
-      <x>720</x>
-      <y>290</y>
+      <x>10</x>
+      <y>620</y>
       <width>301</width>
       <height>191</height>
      </rect>
@@ -236,12 +239,6 @@
      <bool>true</bool>
     </attribute>
     <attribute name="verticalHeaderCascadingSectionResizes">
-     <bool>false</bool>
-    </attribute>
-    <attribute name="verticalHeaderShowSortIndicator" stdset="0">
-     <bool>false</bool>
-    </attribute>
-    <attribute name="verticalHeaderStretchLastSection">
      <bool>false</bool>
     </attribute>
     <column>
@@ -258,8 +255,8 @@
    <widget class="QPushButton" name="btnRemoverObjeto">
     <property name="geometry">
      <rect>
-      <x>1030</x>
-      <y>290</y>
+      <x>320</x>
+      <y>620</y>
       <width>71</width>
       <height>23</height>
      </rect>
@@ -271,8 +268,8 @@
    <widget class="QLabel" name="labelObjetos">
     <property name="geometry">
      <rect>
-      <x>720</x>
-      <y>225</y>
+      <x>10</x>
+      <y>555</y>
       <width>261</width>
       <height>21</height>
      </rect>
@@ -331,7 +328,7 @@
    <widget class="QLabel" name="labelFamilia">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>410</x>
       <y>550</y>
       <width>211</width>
       <height>21</height>
@@ -351,7 +348,7 @@
    <widget class="QPushButton" name="btnAgregarFamiliar">
     <property name="geometry">
      <rect>
-      <x>160</x>
+      <x>560</x>
       <y>590</y>
       <width>75</width>
       <height>23</height>
@@ -364,7 +361,7 @@
    <widget class="QListWidget" name="lwFamiliares">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>410</x>
       <y>620</y>
       <width>301</width>
       <height>192</height>
@@ -374,7 +371,7 @@
    <widget class="QPushButton" name="btnRemoverFamiliar">
     <property name="geometry">
      <rect>
-      <x>240</x>
+      <x>640</x>
       <y>590</y>
       <width>71</width>
       <height>23</height>
@@ -387,9 +384,9 @@
    <widget class="QPushButton" name="btnFinalizar">
     <property name="geometry">
      <rect>
-      <x>920</x>
-      <y>790</y>
-      <width>121</width>
+      <x>720</x>
+      <y>770</y>
+      <width>101</width>
       <height>41</height>
      </rect>
     </property>
@@ -407,7 +404,7 @@
    <widget class="QLineEdit" name="inputFamiliar">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>410</x>
       <y>590</y>
       <width>141</width>
       <height>20</height>
@@ -450,8 +447,8 @@
    <widget class="QComboBox" name="cbxTipo">
     <property name="geometry">
      <rect>
-      <x>840</x>
-      <y>260</y>
+      <x>130</x>
+      <y>590</y>
       <width>101</width>
       <height>22</height>
      </rect>
@@ -480,8 +477,8 @@
    <widget class="QLineEdit" name="inputUnidad">
     <property name="geometry">
      <rect>
-      <x>950</x>
-      <y>260</y>
+      <x>240</x>
+      <y>590</y>
       <width>71</width>
       <height>21</height>
      </rect>
@@ -493,8 +490,8 @@
    <widget class="QComboBox" name="cbxLugares">
     <property name="geometry">
      <rect>
-      <x>370</x>
-      <y>260</y>
+      <x>410</x>
+      <y>270</y>
       <width>141</width>
       <height>22</height>
      </rect>
@@ -529,12 +526,22 @@
       <string>Bano</string>
      </property>
     </item>
+    <item>
+     <property name="text">
+      <string>Cuarto lavado</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>garaje</string>
+     </property>
+    </item>
    </widget>
    <widget class="QComboBox" name="cbxObjetos">
     <property name="geometry">
      <rect>
-      <x>720</x>
-      <y>260</y>
+      <x>10</x>
+      <y>590</y>
       <width>111</width>
       <height>22</height>
      </rect>
@@ -591,7 +598,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1120</width>
+     <width>836</width>
      <height>21</height>
     </rect>
    </property>
