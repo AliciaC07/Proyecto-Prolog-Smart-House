@@ -9,6 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QTableWidgetItem, QTableWidget
 
 from src.modelo.Lugar import Lugar
 from src.modelo.Objetos import Objeto
@@ -49,10 +50,10 @@ class Ui_ventanaPrincipalDesigner(object):
         self.labelPlanta.setFont(font)
         self.labelPlanta.setObjectName("labelPlanta")
         self.btnAgregarPlanta = QtWidgets.QPushButton(self.centralwidget)
-        self.btnAgregarPlanta.setGeometry(QtCore.QRect(10, 260, 75, 23))
+        self.btnAgregarPlanta.setGeometry(QtCore.QRect(150, 260, 75, 23))
         self.btnAgregarPlanta.setObjectName("btnAgregarPlanta")
         self.btnRemoverPlanta = QtWidgets.QPushButton(self.centralwidget)
-        self.btnRemoverPlanta.setGeometry(QtCore.QRect(90, 260, 71, 23))
+        self.btnRemoverPlanta.setGeometry(QtCore.QRect(230, 260, 71, 23))
         self.btnRemoverPlanta.setObjectName("btnRemoverPlanta")
         self.lwPlantas = QtWidgets.QListWidget(self.centralwidget)
         self.lwPlantas.setGeometry(QtCore.QRect(10, 290, 301, 192))
@@ -68,18 +69,41 @@ class Ui_ventanaPrincipalDesigner(object):
         self.btnAgregarLugar = QtWidgets.QPushButton(self.centralwidget)
         self.btnAgregarLugar.setGeometry(QtCore.QRect(520, 260, 75, 23))
         self.btnAgregarLugar.setObjectName("btnAgregarLugar")
-        self.lwLugares = QtWidgets.QListWidget(self.centralwidget)
+        self.lwLugares = QtWidgets.QTableWidget(self.centralwidget)
         self.lwLugares.setGeometry(QtCore.QRect(370, 290, 301, 192))
+        self.lwLugares.setMaximumSize(QtCore.QSize(301, 16777215))
+        self.lwLugares.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.lwLugares.setObjectName("lwLugares")
+        self.lwLugares.setColumnCount(2)
+        self.lwLugares.setRowCount(0)
+        item = QtWidgets.QTableWidgetItem()
+        self.lwLugares.setHorizontalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.lwLugares.setHorizontalHeaderItem(1, item)
+        self.lwLugares.horizontalHeader().setCascadingSectionResizes(False)
+        self.lwLugares.horizontalHeader().setSortIndicatorShown(False)
+        self.lwLugares.horizontalHeader().setStretchLastSection(True)
+        self.lwLugares.verticalHeader().setCascadingSectionResizes(False)
+        self.lwLugares.verticalHeader().setStretchLastSection(False)
         self.btnRemoverLugar = QtWidgets.QPushButton(self.centralwidget)
         self.btnRemoverLugar.setGeometry(QtCore.QRect(600, 260, 71, 23))
         self.btnRemoverLugar.setObjectName("btnRemoverLugar")
         self.btnAgregarObjeto = QtWidgets.QPushButton(self.centralwidget)
         self.btnAgregarObjeto.setGeometry(QtCore.QRect(1030, 260, 71, 23))
         self.btnAgregarObjeto.setObjectName("btnAgregarObjeto")
-        self.lwObjetos = QtWidgets.QListWidget(self.centralwidget)
+        self.lwObjetos = QtWidgets.QTableWidget(self.centralwidget)
         self.lwObjetos.setGeometry(QtCore.QRect(720, 290, 301, 191))
         self.lwObjetos.setObjectName("lwObjetos")
+        self.lwObjetos.setColumnCount(2)
+        self.lwObjetos.setRowCount(0)
+        item = QtWidgets.QTableWidgetItem()
+        self.lwObjetos.setHorizontalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.lwObjetos.setHorizontalHeaderItem(1, item)
+        self.lwObjetos.horizontalHeader().setStretchLastSection(True)
+        self.lwObjetos.verticalHeader().setCascadingSectionResizes(False)
+        self.lwObjetos.verticalHeader().setSortIndicatorShown(False)
+        self.lwObjetos.verticalHeader().setStretchLastSection(False)
         self.btnRemoverObjeto = QtWidgets.QPushButton(self.centralwidget)
         self.btnRemoverObjeto.setGeometry(QtCore.QRect(1030, 290, 71, 23))
         self.btnRemoverObjeto.setObjectName("btnRemoverObjeto")
@@ -108,7 +132,7 @@ class Ui_ventanaPrincipalDesigner(object):
         self.labelGeneral.setFont(font)
         self.labelGeneral.setObjectName("labelGeneral")
         self.labelFamilia = QtWidgets.QLabel(self.centralwidget)
-        self.labelFamilia.setGeometry(QtCore.QRect(10, 510, 211, 21))
+        self.labelFamilia.setGeometry(QtCore.QRect(10, 550, 211, 21))
         font = QtGui.QFont()
         font.setPointSize(12)
         font.setBold(True)
@@ -116,13 +140,13 @@ class Ui_ventanaPrincipalDesigner(object):
         self.labelFamilia.setFont(font)
         self.labelFamilia.setObjectName("labelFamilia")
         self.btnAgregarFamiliar = QtWidgets.QPushButton(self.centralwidget)
-        self.btnAgregarFamiliar.setGeometry(QtCore.QRect(160, 550, 75, 23))
+        self.btnAgregarFamiliar.setGeometry(QtCore.QRect(160, 590, 75, 23))
         self.btnAgregarFamiliar.setObjectName("btnAgregarFamiliar")
         self.lwFamiliares = QtWidgets.QListWidget(self.centralwidget)
-        self.lwFamiliares.setGeometry(QtCore.QRect(10, 580, 301, 192))
+        self.lwFamiliares.setGeometry(QtCore.QRect(10, 620, 301, 192))
         self.lwFamiliares.setObjectName("lwFamiliares")
         self.btnRemoverFamiliar = QtWidgets.QPushButton(self.centralwidget)
-        self.btnRemoverFamiliar.setGeometry(QtCore.QRect(240, 550, 71, 23))
+        self.btnRemoverFamiliar.setGeometry(QtCore.QRect(240, 590, 71, 23))
         self.btnRemoverFamiliar.setObjectName("btnRemoverFamiliar")
         self.btnFinalizar = QtWidgets.QPushButton(self.centralwidget)
         self.btnFinalizar.setGeometry(QtCore.QRect(920, 790, 121, 41))
@@ -133,7 +157,7 @@ class Ui_ventanaPrincipalDesigner(object):
         self.btnFinalizar.setFont(font)
         self.btnFinalizar.setObjectName("btnFinalizar")
         self.inputFamiliar = QtWidgets.QLineEdit(self.centralwidget)
-        self.inputFamiliar.setGeometry(QtCore.QRect(10, 550, 141, 20))
+        self.inputFamiliar.setGeometry(QtCore.QRect(10, 590, 141, 20))
         self.inputFamiliar.setObjectName("inputFamiliar")
         self.labelUbicacion = QtWidgets.QLabel(self.centralwidget)
         self.labelUbicacion.setGeometry(QtCore.QRect(10, 130, 131, 21))
@@ -146,12 +170,6 @@ class Ui_ventanaPrincipalDesigner(object):
         self.inputUbicacion = QtWidgets.QLineEdit(self.centralwidget)
         self.inputUbicacion.setGeometry(QtCore.QRect(150, 130, 211, 21))
         self.inputUbicacion.setObjectName("inputUbicacion")
-        self.inputLugar = QtWidgets.QLineEdit(self.centralwidget)
-        self.inputLugar.setGeometry(QtCore.QRect(370, 260, 141, 21))
-        self.inputLugar.setObjectName("inputLugar")
-        self.inputObjeto = QtWidgets.QLineEdit(self.centralwidget)
-        self.inputObjeto.setGeometry(QtCore.QRect(720, 260, 111, 21))
-        self.inputObjeto.setObjectName("inputObjeto")
         self.cbxTipo = QtWidgets.QComboBox(self.centralwidget)
         self.cbxTipo.setGeometry(QtCore.QRect(840, 260, 101, 22))
         self.cbxTipo.setObjectName("cbxTipo")
@@ -162,6 +180,28 @@ class Ui_ventanaPrincipalDesigner(object):
         self.inputUnidad = QtWidgets.QLineEdit(self.centralwidget)
         self.inputUnidad.setGeometry(QtCore.QRect(950, 260, 71, 21))
         self.inputUnidad.setObjectName("inputUnidad")
+        self.cbxLugares = QtWidgets.QComboBox(self.centralwidget)
+        self.cbxLugares.setGeometry(QtCore.QRect(370, 260, 141, 22))
+        self.cbxLugares.setObjectName("cbxLugares")
+        self.cbxLugares.addItem("")
+        self.cbxLugares.addItem("")
+        self.cbxLugares.addItem("")
+        self.cbxLugares.addItem("")
+        self.cbxLugares.addItem("")
+        self.cbxLugares.addItem("")
+        self.cbxObjetos = QtWidgets.QComboBox(self.centralwidget)
+        self.cbxObjetos.setGeometry(QtCore.QRect(720, 260, 111, 22))
+        self.cbxObjetos.setObjectName("cbxObjetos")
+        self.cbxObjetos.addItem("")
+        self.cbxObjetos.addItem("")
+        self.cbxObjetos.addItem("")
+        self.cbxObjetos.addItem("")
+        self.cbxObjetos.addItem("")
+        self.cbxPlanta = QtWidgets.QComboBox(self.centralwidget)
+        self.cbxPlanta.setGeometry(QtCore.QRect(10, 260, 131, 22))
+        self.cbxPlanta.setObjectName("cbxPlanta")
+        self.cbxPlanta.addItem("")
+        self.cbxPlanta.addItem("")
         ventanaPrincipalDesigner.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(ventanaPrincipalDesigner)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1120, 21))
@@ -187,7 +227,7 @@ class Ui_ventanaPrincipalDesigner(object):
     contadorObjeto = 1
     plantas = []
     lugares = []
-
+    fam = []
 
     def retranslateUi(self, ventanaPrincipalDesigner):
         _translate = QtCore.QCoreApplication.translate
@@ -199,8 +239,16 @@ class Ui_ventanaPrincipalDesigner(object):
         self.btnRemoverPlanta.setText(_translate("ventanaPrincipalDesigner", "Remover"))
         self.labelLugares.setText(_translate("ventanaPrincipalDesigner", "Lugares"))
         self.btnAgregarLugar.setText(_translate("ventanaPrincipalDesigner", "Agregar"))
+        item = self.lwLugares.horizontalHeaderItem(0)
+        item.setText(_translate("ventanaPrincipalDesigner", "Lugar"))
+        item = self.lwLugares.horizontalHeaderItem(1)
+        item.setText(_translate("ventanaPrincipalDesigner", "Planta"))
         self.btnRemoverLugar.setText(_translate("ventanaPrincipalDesigner", "Remover"))
         self.btnAgregarObjeto.setText(_translate("ventanaPrincipalDesigner", "Agregar"))
+        item = self.lwObjetos.horizontalHeaderItem(0)
+        item.setText(_translate("ventanaPrincipalDesigner", "Objeto"))
+        item = self.lwObjetos.horizontalHeaderItem(1)
+        item.setText(_translate("ventanaPrincipalDesigner", "Lugar"))
         self.btnRemoverObjeto.setText(_translate("ventanaPrincipalDesigner", "Remover"))
         self.labelObjetos.setText(_translate("ventanaPrincipalDesigner", "Objetos"))
         self.labelCustomizacionHogar.setText(_translate("ventanaPrincipalDesigner", "Customización del Hogar"))
@@ -215,11 +263,26 @@ class Ui_ventanaPrincipalDesigner(object):
         self.cbxTipo.setItemText(1, _translate("ventanaPrincipalDesigner", "Electrodomestico"))
         self.cbxTipo.setItemText(2, _translate("ventanaPrincipalDesigner", "Agua"))
         self.cbxTipo.setItemText(3, _translate("ventanaPrincipalDesigner", "Contundente"))
-        self.inputUnidad.setPlaceholderText(_translate("ventanaPrincipalDesigner", "consumo"))
+        self.inputUnidad.setPlaceholderText(_translate("ventanaPrincipalDesigner", "Consumo"))
+        self.inputNombreCasa.setPlaceholderText(_translate("ventanaPrincipalDesigner", "Nombre de la Casa"))
+        self.inputUbicacion.setPlaceholderText(_translate("ventanaPrincipalDesigner", "Ubicacion"))
+        self.cbxLugares.setItemText(0, _translate("ventanaPrincipalDesigner", "<Seleccione>"))
+        self.cbxLugares.setItemText(1, _translate("ventanaPrincipalDesigner", "Sala"))
+        self.cbxLugares.setItemText(2, _translate("ventanaPrincipalDesigner", "Comedor"))
+        self.cbxLugares.setItemText(3, _translate("ventanaPrincipalDesigner", "Cocina"))
+        self.cbxLugares.setItemText(4, _translate("ventanaPrincipalDesigner", "Habitacion"))
+        self.cbxLugares.setItemText(5, _translate("ventanaPrincipalDesigner", "Bano"))
+        self.cbxObjetos.setItemText(0, _translate("ventanaPrincipalDesigner", "<Seleccione>"))
+        self.cbxObjetos.setItemText(1, _translate("ventanaPrincipalDesigner", "Nevera"))
+        self.cbxObjetos.setItemText(2, _translate("ventanaPrincipalDesigner", "Estufa"))
+        self.cbxObjetos.setItemText(3, _translate("ventanaPrincipalDesigner", "Abanico"))
+        self.cbxObjetos.setItemText(4, _translate("ventanaPrincipalDesigner", "Bombillo"))
+        self.cbxPlanta.setItemText(0, _translate("ventanaPrincipalDesigner", "<Seleccione>"))
+        self.cbxPlanta.setItemText(1, _translate("ventanaPrincipalDesigner", "Planta"))
 
     def SetPlantas(self):
-        planta = Planta("Planta"+str(self.contadorplanta))
-        self.lwPlantas.addItem("Planta"+str(self.contadorplanta))
+        planta = Planta("Planta" + str(self.contadorplanta))
+        self.lwPlantas.addItem("Planta" + str(self.contadorplanta))
         self.plantas.append(planta)
         self.contadorplanta += 1
 
@@ -233,37 +296,50 @@ class Ui_ventanaPrincipalDesigner(object):
                 if aux.nombre == item.text():
                     self.plantas.remove(aux)
 
-        self.contadorplanta = self.contadorplanta-1
+        self.contadorplanta = self.contadorplanta - 1
 
     def SetLugares(self):
-        lugar = Lugar(self.inputLugar.text()+str(self.contadorLugar))
-        self.lwLugares.addItem(self.inputLugar.text()+str(self.contadorLugar))
-        self.lugares.append(lugar)
         listItems = self.lwPlantas.selectedItems()
-        if not listItems: return
-        for item in listItems:
-            itemplanta = item.text()
-            for aux in self.plantas:
-                if aux.nombre == item.text():
-                    aux.lugares.append(lugar)
-        self.contadorLugar += 1
+        if listItems.__len__() < 1:
+            error = QtWidgets.QErrorMessage()
+            error.setWindowModality(QtCore.Qt.WindowModal)
+            error.showMessage("Asegurese de que se seleccione una planta")
+            error.setWindowTitle("Error")
+            error.exec_()
+        else:
+            lugar = Lugar(self.cbxLugares.currentText() + str(self.contadorLugar))
+            rowPosition = self.lwLugares.rowCount()
+            self.lwLugares.insertRow(rowPosition)  # insert new row
+            self.lwLugares.setItem(rowPosition, 0, QTableWidgetItem(lugar.nombre))
+            itemplanta = ""
+            if not listItems: return
+            for item in listItems:
+                itemplanta = item.text()
+                for aux in self.plantas:
+                    if aux.nombre == item.text():
+                        aux.lugares.append(lugar)
+            self.lwLugares.setItem(rowPosition, 1, QTableWidgetItem(itemplanta))
+            self.contadorLugar += 1
 
     def RemoveLugares(self):
         listItems = self.lwLugares.selectedItems()
         listItemsPlanta = self.lwPlantas.selectedItems()
+        itemplanta = ""
         if not listItems: return
         for itemp in listItemsPlanta:
             itemplanta = itemp.text()
-        for item in listItems:
-            self.lwLugares.takeItem(self.lwLugares.row(item))
-            itemlugar = item.text()
-            for aux in self.plantas:
-                if aux.nombre == itemplanta:
-                    for aux1 in aux.lugares:
-                        if aux1.nombre == itemlugar:
-                            aux.lugares.remove(aux1)
+            for item in listItems:
+                self.lwLugares.takeItem(self.lwLugares.row(item), self.lwLugares.column(item))
+                rowposi = self.lwLugares.rowCount()-1
+                self.lwLugares.removeRow(rowposi)
+                itemlugar = item.text()
+                for aux in self.plantas:
+                    if aux.nombre == itemplanta:
+                        for aux1 in aux.lugares:
+                            if aux1.nombre == itemlugar:
+                                aux.lugares.remove(aux1)
 
-        self.contadorLugar = self.contadorLugar - 1
+            self.contadorLugar = self.contadorLugar - 1
 
     def GetAllPlantas(self, plantaselected, lugarselected):
 
@@ -273,45 +349,75 @@ class Ui_ventanaPrincipalDesigner(object):
                     if aux1.nombre == lugarselected:
                         return aux1
 
-
-
     def SetObjetos(self):
-        objeto = Objeto(self.inputObjeto.text()+str(self.contadorObjeto),self.cbxTipo.currentText(),self.inputUnidad.text())
-        self.lwObjetos.addItem(self.inputObjeto.text()+str(self.contadorObjeto))
         listItemsPlanta = self.lwPlantas.selectedItems()
         listItems = self.lwLugares.selectedItems()
-        if not listItemsPlanta: return
-        for itemp in listItemsPlanta:
-            itemplanta = itemp.text()
-            for item in listItems:
-                self.lwLugares.row(item)
-                itemlugar = item.text()
-                lugars = self.GetAllPlantas(itemplanta,itemlugar)
-                lugars.objetos.append(objeto)
+        if listItems.__len__() < 1 and listItemsPlanta.__len__() < 1:
+            error = QtWidgets.QErrorMessage()
+            error.setWindowModality(QtCore.Qt.WindowModal)
+            error.showMessage("Asegurese de que se seleccione un lugar y su planta antes de borrar el objeto")
+            error.setWindowTitle("Error")
+            error.exec_()
+        else:
+            objeto = Objeto(self.cbxObjetos.currentText() + str(self.contadorObjeto), self.cbxTipo.currentText(),
+                            self.inputUnidad.text())
+            rowPosition = self.lwObjetos.rowCount()
+            self.lwObjetos.insertRow(rowPosition)  # insert new row
+            self.lwObjetos.setItem(rowPosition, 0, QTableWidgetItem(objeto.nombre))
+            itemplanta = ""
+            if not listItemsPlanta: return
+            for itemp in listItemsPlanta:
+                itemplanta = itemp.text()
+                for item in listItems:
+                    self.lwLugares.row(item)
+                    itemlugar = item.text()
+                    lugars = self.GetAllPlantas(itemplanta, itemlugar)
+                    lugars.objetos.append(objeto)
+                    self.lwObjetos.setItem(rowPosition, 1, QTableWidgetItem(itemlugar))
 
-
-
-        self.contadorObjeto += 1
+            self.contadorObjeto += 1
 
     def RemoveObjeto(self):
         listItems = self.lwObjetos.selectedItems()
-        if not listItems: return
-        for item in listItems:
-            self.lwObjetos.takeItem(self.lwObjetos.row(item))
-        self.contadorObjeto = self.contadorObjeto - 1
+        listItemsLugares = self.lwLugares.selectedItems()
+        if listItems.__len__() < 1 and listItemsLugares.__len__() < 1:
+            error = QtWidgets.QErrorMessage()
+            error.setWindowModality(QtCore.Qt.WindowModal)
+            error.showMessage("Asegurese de que se seleccione un lugar y su planta antes de borrar el objeto")
+            error.setWindowTitle("Error")
+            error.exec_()
+        else:
+            if not listItems: return
+            for item in listItems:
+                self.lwObjetos.takeItem(self.lwObjetos.row(item), self.lwObjetos.column(item))
+                rowposi = self.lwObjetos.rowCount() - 1
+                self.lwObjetos.removeRow(rowposi)
+                for aux in self.plantas:
+                    for itemsl in aux.lugares:
+                        if itemsl.nombre == listItemsLugares[0].text():
+                            for aux1 in itemsl.objetos:
+                                if aux1.nombre == item.text():
+                                    itemsl.objetos.remove(aux1)
+
+            self.contadorObjeto = self.contadorObjeto - 1
 
     def SetFamilias(self):
         self.lwFamiliares.addItem(self.inputFamiliar.text())
+        self.fam.append(self.inputFamiliar.text())
 
     def RemoveFamiliares(self):
         listItems = self.lwFamiliares.selectedItems()
         if not listItems: return
         for item in listItems:
             self.lwFamiliares.takeItem(self.lwFamiliares.row(item))
+            for aux in self.fam:
+                if aux == item.text():
+                    self.fam.remove(aux)
 
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     ventanaPrincipalDesigner = QtWidgets.QMainWindow()
     ui = Ui_ventanaPrincipalDesigner()

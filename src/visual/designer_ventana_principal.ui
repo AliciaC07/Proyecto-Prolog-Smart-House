@@ -87,7 +87,7 @@
    <widget class="QPushButton" name="btnAgregarPlanta">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>150</x>
       <y>260</y>
       <width>75</width>
       <height>23</height>
@@ -100,7 +100,7 @@
    <widget class="QPushButton" name="btnRemoverPlanta">
     <property name="geometry">
      <rect>
-      <x>90</x>
+      <x>230</x>
       <y>260</y>
       <width>71</width>
       <height>23</height>
@@ -153,7 +153,7 @@
      <string>Agregar</string>
     </property>
    </widget>
-   <widget class="QListWidget" name="lwLugares">
+   <widget class="QTableWidget" name="lwLugares">
     <property name="geometry">
      <rect>
       <x>370</x>
@@ -162,6 +162,40 @@
       <height>192</height>
      </rect>
     </property>
+    <property name="maximumSize">
+     <size>
+      <width>301</width>
+      <height>16777215</height>
+     </size>
+    </property>
+    <property name="sizeAdjustPolicy">
+     <enum>QAbstractScrollArea::AdjustToContents</enum>
+    </property>
+    <attribute name="horizontalHeaderCascadingSectionResizes">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="horizontalHeaderStretchLastSection">
+     <bool>true</bool>
+    </attribute>
+    <attribute name="verticalHeaderCascadingSectionResizes">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderStretchLastSection">
+     <bool>false</bool>
+    </attribute>
+    <column>
+     <property name="text">
+      <string>Lugar</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Planta</string>
+     </property>
+    </column>
    </widget>
    <widget class="QPushButton" name="btnRemoverLugar">
     <property name="geometry">
@@ -189,7 +223,7 @@
      <string>Agregar</string>
     </property>
    </widget>
-   <widget class="QListWidget" name="lwObjetos">
+   <widget class="QTableWidget" name="lwObjetos">
     <property name="geometry">
      <rect>
       <x>720</x>
@@ -198,6 +232,28 @@
       <height>191</height>
      </rect>
     </property>
+    <attribute name="horizontalHeaderStretchLastSection">
+     <bool>true</bool>
+    </attribute>
+    <attribute name="verticalHeaderCascadingSectionResizes">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderStretchLastSection">
+     <bool>false</bool>
+    </attribute>
+    <column>
+     <property name="text">
+      <string>Objeto</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Lugar</string>
+     </property>
+    </column>
    </widget>
    <widget class="QPushButton" name="btnRemoverObjeto">
     <property name="geometry">
@@ -276,7 +332,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>510</y>
+      <y>550</y>
       <width>211</width>
       <height>21</height>
      </rect>
@@ -296,7 +352,7 @@
     <property name="geometry">
      <rect>
       <x>160</x>
-      <y>550</y>
+      <y>590</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -309,7 +365,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>580</y>
+      <y>620</y>
       <width>301</width>
       <height>192</height>
      </rect>
@@ -319,7 +375,7 @@
     <property name="geometry">
      <rect>
       <x>240</x>
-      <y>550</y>
+      <y>590</y>
       <width>71</width>
       <height>23</height>
      </rect>
@@ -352,7 +408,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>550</y>
+      <y>590</y>
       <width>141</width>
       <height>20</height>
      </rect>
@@ -387,26 +443,6 @@
       <x>150</x>
       <y>130</y>
       <width>211</width>
-      <height>21</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="inputLugar">
-    <property name="geometry">
-     <rect>
-      <x>370</x>
-      <y>260</y>
-      <width>141</width>
-      <height>21</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="inputObjeto">
-    <property name="geometry">
-     <rect>
-      <x>720</x>
-      <y>260</y>
-      <width>111</width>
       <height>21</height>
      </rect>
     </property>
@@ -453,6 +489,101 @@
     <property name="placeholderText">
      <string>consumo</string>
     </property>
+   </widget>
+   <widget class="QComboBox" name="cbxLugares">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>260</y>
+      <width>141</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>&lt;Seleccione&gt;</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Sala</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Comedor</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Cocina</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Habitacion</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Bano</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QComboBox" name="cbxObjetos">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>260</y>
+      <width>111</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>&lt;Seleccione&gt;</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Nevera</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Estufa</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Abanico</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Bombillo</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QComboBox" name="cbxPlanta">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>260</y>
+      <width>131</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>&lt;Seleccione&gt;</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Planta</string>
+     </property>
+    </item>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
