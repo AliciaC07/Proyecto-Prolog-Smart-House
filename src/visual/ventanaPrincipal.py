@@ -347,11 +347,9 @@ class Ui_ventanaPrincipalDesigner(object):
         if not listItems: return
         for itemp in listItemsPlanta:
             itemplanta = itemp.text()
-            #for item in listItems:
-                #self.lwLugares.takeItem(self.lwLugares.row(item))
-                #rowposi = self.lwLugares.rowCount() - 1
+
             self.lwLugares.removeRow(self.lwLugares.currentRow())
-                #itemlugar = item.text()
+
             for aux in self.plantas:
                 if aux.nombre == itemplanta:
                     for aux1 in aux.lugares:
@@ -378,7 +376,7 @@ class Ui_ventanaPrincipalDesigner(object):
             error.setWindowTitle("Error")
             error.exec_()
         else:
-            if self.cbxObjetos.currentText() == "Contundente":
+            if self.cbxTipo.currentText() == "Contundente":
                 self.inputUnidad.setDisabled(True)
                 self.inputUnidad.setText(str(0))
 
@@ -392,9 +390,9 @@ class Ui_ventanaPrincipalDesigner(object):
             if not listItemsPlanta: return
             for itemp in listItemsPlanta:
                 itemplanta = itemp.text()
-                #for item in listItems:
+
                 self.lwLugares.row(listItems[0])
-                    #itemlugar = item.text()
+
                 lugars = self.GetAllPlantas(itemplanta, itemlugar)
                 lugars.objetos.append(objeto)
                 self.lwObjetos.setItem(rowPosition, 1, QTableWidgetItem(itemlugar))
@@ -413,10 +411,6 @@ class Ui_ventanaPrincipalDesigner(object):
             error.exec_()
         else:
             ob = listItems[0].text()
-            #if not listItems: return
-            # for item in listItems:
-                #self.lwObjetos.takeItem(self.lwObjetos.row(item), self.lwObjetos.column(item))
-                # rowposi = self.lwObjetos.rowCount() - 1
             self.lwObjetos.removeRow(self.lwObjetos.currentRow())
             for aux in self.plantas:
                 for itemsl in aux.lugares:
@@ -465,7 +459,10 @@ class Ui_ventanaPrincipalDesigner(object):
         if self.validar() and self.validar2():
             for aux in self.plantas:
                 self.prolog.InsertPlanta(aux)
+            for aux in self.fam:
+                self.prolog.InsertPersons(aux)
             self.clearAll()
+
         else:
             error = QtWidgets.QErrorMessage()
             error.setWindowModality(QtCore.Qt.WindowModal)
@@ -476,17 +473,24 @@ class Ui_ventanaPrincipalDesigner(object):
     def clearAll(self):
         self.lugares = []
         self.plantas = []
+        self.fam = []
+        self.lwLugares.clearContents()
+        self.lwObjetos.clearContents()
         for aux in range(self.lwLugares.rowCount()):
             self.lwLugares.removeRow(aux)
         for aux in range(self.lwObjetos.rowCount()):
-            self.lwObjetos.removeRow(aux)
+             self.lwObjetos.removeRow(aux)
+        self.lwPlantas.clear()
+        self.lwFamiliares.clear()
+        for aux in range(self.lwLugares.rowCount()):
+            self.lwLugares.removeRow(aux)
+        for aux in range(self.lwObjetos.rowCount()):
+             self.lwObjetos.removeRow(aux)
+
         self.inputUnidad.clear()
         self.inputFamiliar.clear()
         self.inputUbicacion.clear()
         self.inputNombreCasa.clear()
-        self.contadorplanta = 1
-        self.contadorLugar = 1
-        self.contadorObjeto = 1
 
 if __name__ == "__main__":
     import sys

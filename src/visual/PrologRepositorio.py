@@ -40,10 +40,11 @@ class PrologRepositorio:
             print(fact2)
             for aux2 in aux.objetos:
                 if aux2.tipo == "Electrodomestico":
-                    self.prologInstance.assertz(
-                        "electrodomestico(" + self.transform_prolog_name(aux2.nombre) + "," + str(aux2.unidad) + ")")
-                    self.prologInstance.assertz(
-                        "estado_electrodomestico(" + self.transform_prolog_name(aux2.nombre) + ", apagado)")
+
+                    hecho = "electrodomestico("+self.transform_prolog_name(aux2.nombre)+","+str(aux2.unidad)+")"
+                    hechoestado = "estado_electrodomestico("+self.transform_prolog_name(aux2.nombre)+", apagado)"
+                    self.prologInstance.assertz(hecho)
+                    self.prologInstance.assertz(hechoestado)
                 elif aux2.tipo == "Agua":
                     self.prologInstance.assertz(
                         "objeto_agua(" + self.transform_prolog_name(aux2.nombre) + ", " + str(aux2.unidad) + ")")
@@ -53,6 +54,25 @@ class PrologRepositorio:
                     self.prologInstance.assertz(
                         "estado_objeto(" + self.transform_prolog_name(aux2.nombre) + ", cerrado)")
 
+    def InsertPersons(self, persona):
+        fam = "persona("+self.transform_prolog_name(persona)+", despierto)"
+        famtype = "miembro_casa("+self.transform_prolog_name(persona)+")"
+        self.prologInstance.assertz(fam)
+        self.prologInstance.assertz(famtype)
+        q2 = self.prologInstance.query("listing(persona)")
+        for i in q2:
+            print(i)
+
+    def GetConsumoElectrico(self, place):
+        consumo = 0.0
+        query = self.prologInstance.query("calcular_consumo_electrico("+self.transform_prolog_name(place)+", Consumo")
+        for solution in query:
+            consumo = solution["Consumo"]
+        return consumo
+
+    def CloseAllDoors(self):
+        self.prologInstance.query("cerrar_puertas()")
+        return "All doors closed"
 
     def convert_strings_of_list(self, lugares):
         nombres = []
@@ -72,37 +92,37 @@ class PrologRepositorio:
         return fact1
 
 
-prue = PrologRepositorio()
-planta = Planta("planta1")
-lugare = Lugar("sala1")
-lugare1 = Lugar("cocina1")
-objeto = Objeto("telvision1", "Electrodomestico", 260)
-objeto1 = Objeto("bombillo1", "Electrodomestico", 0.06)
-objeto2 = Objeto("nevera", "Electrodomestico", 260)
-objeto3 = Objeto("lavamanos", "Agua", 88.8)
-objeto4 = Objeto("puerta1", "Contundente", 0)
-lugare.objetos.append(objeto)
-lugare.objetos.append(objeto1)
-lugare1.objetos.append(objeto2)
-lugare1.objetos.append(objeto3)
-lugare1.objetos.append(objeto4)
-planta.lugares.append(lugare)
-planta.lugares.append(lugare1)
-prue.InsertPlanta(planta)
-q = prue.prologInstance.query("listing(electrodomestico)")
-for i in q:
-    print(i)
-q1 = prue.prologInstance.query("listing(objeto_agua)")
-for i in q1:
-    print(i)
-
-q2 = prue.prologInstance.query("listing(estado_electrodomestico)")
-for i in q2:
-    print(i)
-
-q3 = prue.prologInstance.query("listing(objeto)")
-for i in q2:
-    print(i)
-q4 = prue.prologInstance.query("listing(estado_objeto)")
-for i in q4:
-    print(i)
+# prue = PrologRepositorio()
+# planta = Planta("planta1")
+# lugare = Lugar("sala1")
+# lugare1 = Lugar("cocina1")
+# objeto = Objeto("telvision1", "Electrodomestico", 260)
+# objeto1 = Objeto("bombillo1", "Electrodomestico", 0.06)
+# objeto2 = Objeto("nevera", "Electrodomestico", 260)
+# objeto3 = Objeto("lavamanos", "Agua", 88.8)
+# objeto4 = Objeto("puerta1", "Contundente", 0)
+# lugare.objetos.append(objeto)
+# lugare.objetos.append(objeto1)
+# lugare1.objetos.append(objeto2)
+# lugare1.objetos.append(objeto3)
+# lugare1.objetos.append(objeto4)
+# planta.lugares.append(lugare)
+# planta.lugares.append(lugare1)
+# prue.InsertPlanta(planta)
+# q = prue.prologInstance.query("listing(electrodomestico)")
+# for i in q:
+#     print(i)
+# q1 = prue.prologInstance.query("listing(objeto_agua)")
+# for i in q1:
+#     print(i)
+#
+# q2 = prue.prologInstance.query("listing(estado_electrodomestico)")
+# for i in q2:
+#     print(i)
+#
+# q3 = prue.prologInstance.query("listing(objeto)")
+# for i in q2:
+#     print(i)
+# q4 = prue.prologInstance.query("listing(estado_objeto)")
+# for i in q4:
+#     print(i)
