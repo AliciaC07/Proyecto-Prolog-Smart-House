@@ -299,10 +299,17 @@ class Ui_ventanaPrincipalDesigner(object):
 
     def SetPlantas(self):
         if self.lwPlantas.__len__() < 4:
-            planta = Planta("Planta" + str(self.contadorplanta))
-            self.lwPlantas.addItem("Planta" + str(self.contadorplanta))
-            self.plantas.append(planta)
-            self.contadorplanta += self.contadorplanta + random.randint(2,10)
+            if self.cbxPlanta.currentText() != "<Seleccione>":
+                planta = Planta(self.cbxPlanta.currentText() + str(self.contadorplanta))
+                self.lwPlantas.addItem(self.cbxPlanta.currentText() + str(self.contadorplanta))
+                self.plantas.append(planta)
+                self.contadorplanta += self.contadorplanta + random.randint(2, 10)
+            else:
+                error = QtWidgets.QErrorMessage()
+                error.setWindowModality(QtCore.Qt.WindowModal)
+                error.showMessage("Asegurese de que se seleccione una planta")
+                error.setWindowTitle("Error")
+                error.exec_()
 
     def RemovePlantas(self):
         listItems = self.lwPlantas.selectedItems()
@@ -325,19 +332,26 @@ class Ui_ventanaPrincipalDesigner(object):
             error.setWindowTitle("Error")
             error.exec_()
         else:
-            lugar = Lugar(self.cbxLugares.currentText() + str(self.contadorLugar))
-            rowPosition = self.lwLugares.rowCount()
-            self.lwLugares.insertRow(rowPosition)  # insert new row
-            self.lwLugares.setItem(rowPosition, 0, QTableWidgetItem(lugar.nombre))
-            itemplanta = ""
-            if not listItems: return
-            for item in listItems:
-                itemplanta = item.text()
-                for aux in self.plantas:
-                    if aux.nombre == item.text():
-                        aux.lugares.append(lugar)
-            self.lwLugares.setItem(rowPosition, 1, QTableWidgetItem(itemplanta))
-            self.contadorLugar += self.contadorLugar + random.randint(2,10)
+            if self.cbxLugares.currentText() != "<Seleccione>":
+                lugar = Lugar(self.cbxLugares.currentText() + str(self.contadorLugar))
+                rowPosition = self.lwLugares.rowCount()
+                self.lwLugares.insertRow(rowPosition)  # insert new row
+                self.lwLugares.setItem(rowPosition, 0, QTableWidgetItem(lugar.nombre))
+                itemplanta = ""
+                if not listItems: return
+                for item in listItems:
+                    itemplanta = item.text()
+                    for aux in self.plantas:
+                        if aux.nombre == item.text():
+                            aux.lugares.append(lugar)
+                self.lwLugares.setItem(rowPosition, 1, QTableWidgetItem(itemplanta))
+                self.contadorLugar += self.contadorLugar + random.randint(2, 10)
+            else:
+                error = QtWidgets.QErrorMessage()
+                error.setWindowModality(QtCore.Qt.WindowModal)
+                error.showMessage("Asegurese de que se seleccione un lugar para insertar")
+                error.setWindowTitle("Error")
+                error.exec_()
 
     def RemoveLugares(self):
         listItems = self.lwLugares.selectedItems()
@@ -376,28 +390,35 @@ class Ui_ventanaPrincipalDesigner(object):
             error.setWindowTitle("Error")
             error.exec_()
         else:
-            if self.cbxTipo.currentText() == "Contundente":
-                self.inputUnidad.setDisabled(True)
-                self.inputUnidad.setText(str(0))
+            if self.cbxObjetos.currentText() != "<Seleccione>" and self.cbxTipo.currentText() != "<Tipo Objeto>":
+                if self.cbxTipo.currentText() == "Contundente":
+                    self.inputUnidad.setDisabled(True)
+                    self.inputUnidad.setText(str(0))
 
-            objeto = Objeto(self.cbxObjetos.currentText() + str(self.contadorObjeto), self.cbxTipo.currentText(),
-                            self.inputUnidad.text())
-            rowPosition = self.lwObjetos.rowCount()
-            self.lwObjetos.insertRow(rowPosition)  # insert new row
-            self.lwObjetos.setItem(rowPosition, 0, QTableWidgetItem(objeto.nombre))
-            itemplanta = ""
-            itemlugar = listItems[0].text()
-            if not listItemsPlanta: return
-            for itemp in listItemsPlanta:
-                itemplanta = itemp.text()
+                objeto = Objeto(self.cbxObjetos.currentText() + str(self.contadorObjeto), self.cbxTipo.currentText(),
+                                self.inputUnidad.text())
+                rowPosition = self.lwObjetos.rowCount()
+                self.lwObjetos.insertRow(rowPosition)  # insert new row
+                self.lwObjetos.setItem(rowPosition, 0, QTableWidgetItem(objeto.nombre))
+                itemplanta = ""
+                itemlugar = listItems[0].text()
+                if not listItemsPlanta: return
+                for itemp in listItemsPlanta:
+                    itemplanta = itemp.text()
 
-                self.lwLugares.row(listItems[0])
+                    self.lwLugares.row(listItems[0])
 
-                lugars = self.GetAllPlantas(itemplanta, itemlugar)
-                lugars.objetos.append(objeto)
-                self.lwObjetos.setItem(rowPosition, 1, QTableWidgetItem(itemlugar))
+                    lugars = self.GetAllPlantas(itemplanta, itemlugar)
+                    lugars.objetos.append(objeto)
+                    self.lwObjetos.setItem(rowPosition, 1, QTableWidgetItem(itemlugar))
+            else:
+                error = QtWidgets.QErrorMessage()
+                error.setWindowModality(QtCore.Qt.WindowModal)
+                error.showMessage("Asegurese de que se seleccione un objeto y su tipo antes de agregar el objeto")
+                error.setWindowTitle("Error")
+                error.exec_()
 
-            self.contadorObjeto += self.contadorObjeto + random.randint(2,10)
+            self.contadorObjeto += self.contadorObjeto + random.randint(2, 10)
             self.inputUnidad.clear()
 
     def RemoveObjeto(self):
@@ -456,17 +477,18 @@ class Ui_ventanaPrincipalDesigner(object):
         return True
 
     def InsertarEstructura(self):
-        if self.validar() and self.validar2():
+        if self.validar() and self.validar2() and self.inputNombreCasa.text() != "" and self.inputUbicacion.text() !=  "":
             for aux in self.plantas:
                 self.prolog.InsertPlanta(aux)
             for aux in self.fam:
                 self.prolog.InsertPersons(aux)
+            self.prolog.InsertInfoHouse(self.inputNombreCasa.text(), self.inputUbicacion.text(), self.plantas)
             self.clearAll()
 
         else:
             error = QtWidgets.QErrorMessage()
             error.setWindowModality(QtCore.Qt.WindowModal)
-            error.showMessage("Asegurese de que la planta tenga lugares y objetos asignados")
+            error.showMessage("Asegurese de que llene todas las informaciones correspondientes")
             error.setWindowTitle("Error")
             error.exec_()
 
@@ -479,21 +501,22 @@ class Ui_ventanaPrincipalDesigner(object):
         for aux in range(self.lwLugares.rowCount()):
             self.lwLugares.removeRow(aux)
         for aux in range(self.lwObjetos.rowCount()):
-             self.lwObjetos.removeRow(aux)
+            self.lwObjetos.removeRow(aux)
         self.lwPlantas.clear()
         self.lwFamiliares.clear()
         for aux in range(self.lwLugares.rowCount()):
             self.lwLugares.removeRow(aux)
         for aux in range(self.lwObjetos.rowCount()):
-             self.lwObjetos.removeRow(aux)
-
+            self.lwObjetos.removeRow(aux)
         self.inputUnidad.clear()
         self.inputFamiliar.clear()
         self.inputUbicacion.clear()
         self.inputNombreCasa.clear()
 
+
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     ventanaPrincipalDesigner = QtWidgets.QMainWindow()
     ui = Ui_ventanaPrincipalDesigner()

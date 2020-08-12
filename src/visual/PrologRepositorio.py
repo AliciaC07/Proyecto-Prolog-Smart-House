@@ -15,8 +15,6 @@ class PrologRepositorio:
         preprocess_name = name.replace(' ', '_')
         return preprocess_name.lower()
 
-    # def InsertFamilia(self):
-
 
     def InsertPlanta(self, planta):
         fact = "planta("
@@ -41,8 +39,8 @@ class PrologRepositorio:
             for aux2 in aux.objetos:
                 if aux2.tipo == "Electrodomestico":
 
-                    hecho = "electrodomestico("+self.transform_prolog_name(aux2.nombre)+","+str(aux2.unidad)+")"
-                    hechoestado = "estado_electrodomestico("+self.transform_prolog_name(aux2.nombre)+", apagado)"
+                    hecho = "electrodomestico(" + self.transform_prolog_name(aux2.nombre) + "," + str(aux2.unidad) + ")"
+                    hechoestado = "estado_electrodomestico(" + self.transform_prolog_name(aux2.nombre) + ", apagado)"
                     self.prologInstance.assertz(hecho)
                     self.prologInstance.assertz(hechoestado)
                 elif aux2.tipo == "Agua":
@@ -54,9 +52,23 @@ class PrologRepositorio:
                     self.prologInstance.assertz(
                         "estado_objeto(" + self.transform_prolog_name(aux2.nombre) + ", cerrado)")
 
+    def InsertInfoHouse(self, name, location, plantas):
+        hechos = "casa_info("
+        hechos += self.transform_prolog_name(name)
+        hechos += ","
+        hechos += self.transform_prolog_name(location)
+        hechos += ","
+        planta = self.convert_strings_of_list(plantas)
+        hechos += self.ciclo_transform(planta)
+        hechos += ")"
+        self.prologInstance.assertz(hechos)
+        q2 = self.prologInstance.query("listing(casa_info)")
+        for i in q2:
+            print(i)
+
     def InsertPersons(self, persona):
-        fam = "persona("+self.transform_prolog_name(persona)+", despierto)"
-        famtype = "miembro_casa("+self.transform_prolog_name(persona)+")"
+        fam = "persona(" + self.transform_prolog_name(persona) + ", despierto)"
+        famtype = "miembro_casa(" + self.transform_prolog_name(persona) + ")"
         self.prologInstance.assertz(fam)
         self.prologInstance.assertz(famtype)
         q2 = self.prologInstance.query("listing(persona)")
@@ -65,7 +77,8 @@ class PrologRepositorio:
 
     def GetConsumoElectrico(self, place):
         consumo = 0.0
-        query = self.prologInstance.query("calcular_consumo_electrico("+self.transform_prolog_name(place)+", Consumo")
+        query = self.prologInstance.query(
+            "calcular_consumo_electrico(" + self.transform_prolog_name(place) + ", Consumo")
         for solution in query:
             consumo = solution["Consumo"]
         return consumo
@@ -90,7 +103,6 @@ class PrologRepositorio:
             else:
                 fact1 += ", "
         return fact1
-
 
 # prue = PrologRepositorio()
 # planta = Planta("planta1")

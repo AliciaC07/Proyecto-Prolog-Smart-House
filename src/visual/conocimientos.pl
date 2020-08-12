@@ -8,7 +8,9 @@
 :- dynamic persona/2.
 :- dynamic miembro_casa/1.
 :- dynamic invitado/1.
+:- dynamic casa_info/3.
 
+%casa_info(nombrecasa, ubicacion, [plantas])
 % planta(nombre_planta, lista_lugares)
 %planta(planta1, [sala1, comedor1, cocina1, bano1, cuarto_lavado1]).
 
