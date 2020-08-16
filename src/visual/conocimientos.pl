@@ -23,7 +23,6 @@ lugar(sala1, 28, [television1, television2, bombillo1, bombillo2, computadora1, 
 %lugar(cuarto_lavado1, 30, [lavadora1, lavadora2, bombillo5]).
 lugar(habitacion1, 30, [television3, computadora2, computadora3, abanico3, puerta2]).
 
-
 % La idea es describir un estado_electrodomestico cualquiera de la casa
 % con su consumo en khw.
 % estado_electrodomestico(identificador, nombre, consumo/khw, identificador_lugar)
