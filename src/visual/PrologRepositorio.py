@@ -3,9 +3,10 @@ from pyswip import Prolog
 from src.modelo.Lugar import Lugar
 from src.modelo.Objetos import Objeto
 from src.modelo.Planta import Planta
+from src.modelo.Singleton import Singleton
 
 
-class PrologRepositorio:
+class PrologRepositorio(metaclass=Singleton):
 
     def __init__(self):
         self.prologInstance = Prolog()
@@ -14,7 +15,6 @@ class PrologRepositorio:
     def transform_prolog_name(self, name):
         preprocess_name = name.replace(' ', '_')
         return preprocess_name.lower()
-
 
     def InsertPlanta(self, planta):
         fact = "planta("
