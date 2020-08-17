@@ -9,6 +9,7 @@
 import random
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QIntValidator
 from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem
 
 from src.modelo.Lugar import Lugar
@@ -22,6 +23,7 @@ class Ui_ventanaPrincipalDesigner(object):
         self.prolog = PrologRepositorio()
 
     def setupUi(self, ventanaPrincipalDesigner):
+
         ventanaPrincipalDesigner.setObjectName("ventanaPrincipalDesigner")
         ventanaPrincipalDesigner.resize(836, 853)
         self.centralwidget = QtWidgets.QWidget(ventanaPrincipalDesigner)
@@ -212,6 +214,39 @@ class Ui_ventanaPrincipalDesigner(object):
         self.cbxPlanta.setObjectName("cbxPlanta")
         self.cbxPlanta.addItem("")
         self.cbxPlanta.addItem("")
+        self.labelUbicacion_2 = QtWidgets.QLabel(self.centralwidget)
+        self.labelUbicacion_2.setGeometry(QtCore.QRect(450, 80, 131, 21))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.labelUbicacion_2.setFont(font)
+        self.labelUbicacion_2.setObjectName("labelUbicacion_2")
+        self.labelUbicacion_3 = QtWidgets.QLabel(self.centralwidget)
+        self.labelUbicacion_3.setGeometry(QtCore.QRect(450, 110, 131, 21))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.labelUbicacion_3.setFont(font)
+        self.labelUbicacion_3.setObjectName("labelUbicacion_3")
+        self.cbxUnidadacuatica = QtWidgets.QComboBox(self.centralwidget)
+        self.cbxUnidadacuatica.setGeometry(QtCore.QRect(530, 80, 181, 22))
+        self.cbxUnidadacuatica.setObjectName("cbxUnidadacuatica")
+        self.cbxUnidadacuatica.addItem("")
+        self.cbxUnidadacuatica.addItem("")
+        self.cbxUnidadacuatica.addItem("")
+        self.cbxUnidadelectrica = QtWidgets.QComboBox(self.centralwidget)
+        self.cbxUnidadelectrica.setGeometry(QtCore.QRect(530, 110, 181, 22))
+        self.cbxUnidadelectrica.setObjectName("cbxUnidadelectrica")
+        self.cbxUnidadelectrica.addItem("")
+        self.cbxUnidadelectrica.addItem("")
+        self.cbxUnidadelectrica.addItem("")
+        self.onlyInt = QIntValidator()
+        self.inputUnidad.setValidator(self.onlyInt)
+        regex = QtCore.QRegExp("[a-z-A-Z_]+")
+        validator = QtGui.QRegExpValidator(regex)
+        self.inputFamiliar.setValidator(validator)
         ventanaPrincipalDesigner.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(ventanaPrincipalDesigner)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 836, 21))
@@ -296,6 +331,14 @@ class Ui_ventanaPrincipalDesigner(object):
         self.cbxObjetos.setItemText(9, _translate("ventanaPrincipalDesigner", "Lavaplatos"))
         self.cbxPlanta.setItemText(0, _translate("ventanaPrincipalDesigner", "<Seleccione>"))
         self.cbxPlanta.setItemText(1, _translate("ventanaPrincipalDesigner", "Planta"))
+        self.labelUbicacion_2.setText(_translate("ventanaPrincipalDesigner", "Agua:"))
+        self.labelUbicacion_3.setText(_translate("ventanaPrincipalDesigner", "Electricidad:"))
+        self.cbxUnidadacuatica.setItemText(0, _translate("ventanaPrincipalDesigner", "<Seleccione la unidad de medida>"))
+        self.cbxUnidadacuatica.setItemText(1, _translate("ventanaPrincipalDesigner", "KWatt"))
+        self.cbxUnidadacuatica.setItemText(2, _translate("ventanaPrincipalDesigner", "Watt"))
+        self.cbxUnidadelectrica.setItemText(0, _translate("ventanaPrincipalDesigner", "<Seleccione la unidad de medida>"))
+        self.cbxUnidadelectrica.setItemText(1, _translate("ventanaPrincipalDesigner", "Galones"))
+        self.cbxUnidadelectrica.setItemText(2, _translate("ventanaPrincipalDesigner", "Litros"))
 
     def SetPlantas(self):
         if self.lwPlantas.__len__() < 4:
@@ -333,7 +376,7 @@ class Ui_ventanaPrincipalDesigner(object):
             error.exec_()
         else:
             if self.cbxLugares.currentText() != "<Seleccione>":
-                lugar = Lugar(self.cbxLugares.currentText() + str(self.contadorLugar))
+                lugar = Lugar(self.cbxLugares.currentText() + str(self.contadorLugar),self.cbxLugares.currentText())
                 rowPosition = self.lwLugares.rowCount()
                 self.lwLugares.insertRow(rowPosition)  # insert new row
                 self.lwLugares.setItem(rowPosition, 0, QTableWidgetItem(lugar.nombre))
@@ -477,12 +520,12 @@ class Ui_ventanaPrincipalDesigner(object):
         return True
 
     def InsertarEstructura(self):
-        if self.validar() and self.validar2() and self.inputNombreCasa.text() != "" and self.inputUbicacion.text() !=  "":
+        if self.validar() and self.validar2() and self.inputNombreCasa.text() != "" and self.inputUbicacion.text() !=  "" and self.cbxUnidadacuatica.currentText() != "<Seleccione la unidad de medida>" and self.cbxUnidadelectrica.currentText() != "<Seleccione la unidad de medida>":
             for aux in self.plantas:
                 self.prolog.InsertPlanta(aux)
             for aux in self.fam:
                 self.prolog.InsertPersons(aux)
-            self.prolog.InsertInfoHouse(self.inputNombreCasa.text(), self.inputUbicacion.text(), self.plantas)
+            self.prolog.InsertInfoHouse(self.inputNombreCasa.text(), self.inputUbicacion.text(), self.plantas, self.cbxUnidadelectrica.currentText(), self.cbxUnidadacuatica.currentText())
             self.clearAll()
 
         else:
@@ -512,6 +555,13 @@ class Ui_ventanaPrincipalDesigner(object):
         self.inputFamiliar.clear()
         self.inputUbicacion.clear()
         self.inputNombreCasa.clear()
+        self.cbxUnidadelectrica.setCurrentIndex(0)
+        self.cbxUnidadacuatica.setCurrentIndex(0)
+        self.cbxTipo.setCurrentIndex(0)
+        self.cbxPlanta.setCurrentIndex(0)
+        self.cbxObjetos.setCurrentIndex(0)
+        self.cbxLugares.setCurrentIndex(0)
+
 
 
 if __name__ == "__main__":

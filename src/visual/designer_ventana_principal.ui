@@ -38,7 +38,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>100</y>
+      <y>80</y>
       <width>131</width>
       <height>21</height>
      </rect>
@@ -58,7 +58,7 @@
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>100</y>
+      <y>80</y>
       <width>211</width>
       <height>21</height>
      </rect>
@@ -309,7 +309,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>60</y>
+      <y>40</y>
       <width>211</width>
       <height>21</height>
      </rect>
@@ -418,7 +418,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>130</y>
+      <y>110</y>
       <width>131</width>
       <height>21</height>
      </rect>
@@ -438,7 +438,7 @@
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>130</y>
+      <y>110</y>
       <width>211</width>
       <height>21</height>
      </rect>
@@ -589,6 +589,96 @@
     <item>
      <property name="text">
       <string>Planta</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLabel" name="labelUbicacion_2">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>80</y>
+      <width>131</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Agua:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelUbicacion_3">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>110</y>
+      <width>131</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Electricidad:</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="cbxUnidadacuatica">
+    <property name="geometry">
+     <rect>
+      <x>530</x>
+      <y>80</y>
+      <width>181</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>&lt;Seleccione la unidad de medida&gt;</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>KWatt</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Watt</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QComboBox" name="cbxUnidadelectrica">
+    <property name="geometry">
+     <rect>
+      <x>530</x>
+      <y>110</y>
+      <width>181</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>&lt;Seleccione la unidad de medida&gt;</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Galones</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Litros</string>
      </property>
     </item>
    </widget>

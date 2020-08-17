@@ -60,7 +60,7 @@ class PrologRepositorio(metaclass=Singleton):
                     self.prologInstance.assertz(
                         "estado_objeto(" + self.transform_prolog_name(aux2.nombre) + ", cerrado)")
 
-    def InsertInfoHouse(self, name, location, plantas):
+    def InsertInfoHouse(self, name, location, plantas, unidade, unidada):
         hechos = "casa_info("
         hechos += self.transform_prolog_name(name)
         hechos += ","
@@ -70,8 +70,17 @@ class PrologRepositorio(metaclass=Singleton):
         hechos += self.ciclo_transform(planta)
         hechos += ")"
         self.prologInstance.assertz(hechos)
+        self.prologInstance.assertz("unidad_electrica("+self.transform_prolog_name(unidade)+")")
+        self.prologInstance.assertz("unidad_agua(" + self.transform_prolog_name(unidada) + ")")
+
         q2 = self.prologInstance.query("listing(casa_info)")
         for i in q2:
+            print(i)
+        q3 = self.prologInstance.query("listing(unidad_electrica)")
+        for i in q3:
+            print(i)
+        q4 = self.prologInstance.query("listing(unidad_agua)")
+        for i in q4:
             print(i)
 
     def InsertPersons(self, persona):
