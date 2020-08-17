@@ -11,10 +11,18 @@ class PrologRepositorio(metaclass=Singleton):
     def __init__(self):
         self.prologInstance = Prolog()
         self.prologInstance.consult('conocimientos.pl')
+        self.plantas = []
+        self.minunit()
+        print(self.plantas)
 
     def transform_prolog_name(self, name):
         preprocess_name = name.replace(' ', '_')
         return preprocess_name.lower()
+
+    def minunit(self):
+        for i in range(0, 10):
+            nueva_planta = Planta("planta" + str(i))
+            self.plantas.append(nueva_planta)
 
     def InsertPlanta(self, planta):
         fact = "planta("
