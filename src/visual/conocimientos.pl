@@ -9,6 +9,8 @@
 :- dynamic miembro_casa/1.
 :- dynamic invitado/1.
 :- dynamic casa_info/3.
+:- dynamic unidad_electrica/1.
+:- dynamic unidad_agua/1.
 
 %casa_info(nombrecasa, ubicacion, [plantas])
 % planta(nombre_planta, lista_lugares)

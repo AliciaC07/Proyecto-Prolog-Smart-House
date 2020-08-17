@@ -9,6 +9,7 @@
 import random
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QIntValidator
 from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem
 
 from src.modelo.Lugar import Lugar
@@ -22,6 +23,7 @@ class Ui_ventanaPrincipalDesigner(object):
         self.prolog = PrologRepositorio()
 
     def setupUi(self, ventanaPrincipalDesigner):
+
         ventanaPrincipalDesigner.setObjectName("ventanaPrincipalDesigner")
         ventanaPrincipalDesigner.resize(836, 853)
         self.centralwidget = QtWidgets.QWidget(ventanaPrincipalDesigner)
@@ -240,6 +242,11 @@ class Ui_ventanaPrincipalDesigner(object):
         self.cbxUnidadelectrica.addItem("")
         self.cbxUnidadelectrica.addItem("")
         self.cbxUnidadelectrica.addItem("")
+        self.onlyInt = QIntValidator()
+        self.inputUnidad.setValidator(self.onlyInt)
+        regex = QtCore.QRegExp("[a-z-A-Z_]+")
+        validator = QtGui.QRegExpValidator(regex)
+        self.inputFamiliar.setValidator(validator)
         ventanaPrincipalDesigner.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(ventanaPrincipalDesigner)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 836, 21))
@@ -369,7 +376,7 @@ class Ui_ventanaPrincipalDesigner(object):
             error.exec_()
         else:
             if self.cbxLugares.currentText() != "<Seleccione>":
-                lugar = Lugar(self.cbxLugares.currentText() + str(self.contadorLugar))
+                lugar = Lugar(self.cbxLugares.currentText() + str(self.contadorLugar),self.cbxLugares.currentText())
                 rowPosition = self.lwLugares.rowCount()
                 self.lwLugares.insertRow(rowPosition)  # insert new row
                 self.lwLugares.setItem(rowPosition, 0, QTableWidgetItem(lugar.nombre))
@@ -513,12 +520,12 @@ class Ui_ventanaPrincipalDesigner(object):
         return True
 
     def InsertarEstructura(self):
-        if self.validar() and self.validar2() and self.inputNombreCasa.text() != "" and self.inputUbicacion.text() !=  "":
+        if self.validar() and self.validar2() and self.inputNombreCasa.text() != "" and self.inputUbicacion.text() !=  "" and self.cbxUnidadacuatica.currentText() != "<Seleccione la unidad de medida>" and self.cbxUnidadelectrica.currentText() != "<Seleccione la unidad de medida>":
             for aux in self.plantas:
                 self.prolog.InsertPlanta(aux)
             for aux in self.fam:
                 self.prolog.InsertPersons(aux)
-            self.prolog.InsertInfoHouse(self.inputNombreCasa.text(), self.inputUbicacion.text(), self.plantas)
+            self.prolog.InsertInfoHouse(self.inputNombreCasa.text(), self.inputUbicacion.text(), self.plantas, self.cbxUnidadelectrica.currentText(), self.cbxUnidadacuatica.currentText())
             self.clearAll()
 
         else:
@@ -548,6 +555,13 @@ class Ui_ventanaPrincipalDesigner(object):
         self.inputFamiliar.clear()
         self.inputUbicacion.clear()
         self.inputNombreCasa.clear()
+        self.cbxUnidadelectrica.setCurrentIndex(0)
+        self.cbxUnidadacuatica.setCurrentIndex(0)
+        self.cbxTipo.setCurrentIndex(0)
+        self.cbxPlanta.setCurrentIndex(0)
+        self.cbxObjetos.setCurrentIndex(0)
+        self.cbxLugares.setCurrentIndex(0)
+
 
 
 if __name__ == "__main__":
