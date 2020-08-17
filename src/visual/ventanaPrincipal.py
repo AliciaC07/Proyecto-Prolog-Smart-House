@@ -16,16 +16,19 @@ from src.modelo.Lugar import Lugar
 from src.modelo.Objetos import Objeto
 from src.modelo.Planta import Planta
 from src.visual.PrologRepositorio import PrologRepositorio
+from src.visual.app.ShHome import ShHome
 
 
 class Ui_ventanaPrincipalDesigner(object):
     def __init__(self):
         self.prolog = PrologRepositorio()
+        self.ventana_app = None
+        self.app = None
 
     def setupUi(self, ventanaPrincipalDesigner):
-
         ventanaPrincipalDesigner.setObjectName("ventanaPrincipalDesigner")
         ventanaPrincipalDesigner.resize(836, 853)
+        self.ventana_suprema = ventanaPrincipalDesigner
         self.centralwidget = QtWidgets.QWidget(ventanaPrincipalDesigner)
         self.centralwidget.setObjectName("centralwidget")
         self.labelTituloVentana = QtWidgets.QLabel(self.centralwidget)
@@ -333,10 +336,12 @@ class Ui_ventanaPrincipalDesigner(object):
         self.cbxPlanta.setItemText(1, _translate("ventanaPrincipalDesigner", "Planta"))
         self.labelUbicacion_2.setText(_translate("ventanaPrincipalDesigner", "Agua:"))
         self.labelUbicacion_3.setText(_translate("ventanaPrincipalDesigner", "Electricidad:"))
-        self.cbxUnidadacuatica.setItemText(0, _translate("ventanaPrincipalDesigner", "<Seleccione la unidad de medida>"))
+        self.cbxUnidadacuatica.setItemText(0,
+                                           _translate("ventanaPrincipalDesigner", "<Seleccione la unidad de medida>"))
         self.cbxUnidadacuatica.setItemText(1, _translate("ventanaPrincipalDesigner", "KWatt"))
         self.cbxUnidadacuatica.setItemText(2, _translate("ventanaPrincipalDesigner", "Watt"))
-        self.cbxUnidadelectrica.setItemText(0, _translate("ventanaPrincipalDesigner", "<Seleccione la unidad de medida>"))
+        self.cbxUnidadelectrica.setItemText(0,
+                                            _translate("ventanaPrincipalDesigner", "<Seleccione la unidad de medida>"))
         self.cbxUnidadelectrica.setItemText(1, _translate("ventanaPrincipalDesigner", "Galones"))
         self.cbxUnidadelectrica.setItemText(2, _translate("ventanaPrincipalDesigner", "Litros"))
 
@@ -376,7 +381,7 @@ class Ui_ventanaPrincipalDesigner(object):
             error.exec_()
         else:
             if self.cbxLugares.currentText() != "<Seleccione>":
-                lugar = Lugar(self.cbxLugares.currentText() + str(self.contadorLugar),self.cbxLugares.currentText())
+                lugar = Lugar(self.cbxLugares.currentText() + str(self.contadorLugar), self.cbxLugares.currentText())
                 rowPosition = self.lwLugares.rowCount()
                 self.lwLugares.insertRow(rowPosition)  # insert new row
                 self.lwLugares.setItem(rowPosition, 0, QTableWidgetItem(lugar.nombre))
@@ -519,15 +524,25 @@ class Ui_ventanaPrincipalDesigner(object):
                     return False
         return True
 
+    def abrir_casa(self):
+        self.ventana_app = QtWidgets.QMainWindow()
+        self.app = ShHome()
+        self.app.setupUi(self.ventana_app)
+        self.ventana_app.show()
+
     def InsertarEstructura(self):
-        if self.validar() and self.validar2() and self.inputNombreCasa.text() != "" and self.inputUbicacion.text() !=  "" and self.cbxUnidadacuatica.currentText() != "<Seleccione la unidad de medida>" and self.cbxUnidadelectrica.currentText() != "<Seleccione la unidad de medida>":
+        if self.validar() and self.validar2() and self.inputNombreCasa.text() != "" and self.inputUbicacion.text() != "" and self.cbxUnidadacuatica.currentText() != "<Seleccione la unidad de medida>" and self.cbxUnidadelectrica.currentText() != "<Seleccione la unidad de medida>":
             for aux in self.plantas:
                 self.prolog.InsertPlanta(aux)
             for aux in self.fam:
                 self.prolog.InsertPersons(aux)
-            self.prolog.InsertInfoHouse(self.inputNombreCasa.text(), self.inputUbicacion.text(), self.plantas, self.cbxUnidadelectrica.currentText(), self.cbxUnidadacuatica.currentText())
+            self.prolog.InsertInfoHouse(self.inputNombreCasa.text(), self.inputUbicacion.text(), self.plantas,
+                                        self.cbxUnidadelectrica.currentText(), self.cbxUnidadacuatica.currentText())
+            self.prolog.plantas = self.plantas
             self.clearAll()
-
+            self.centralwidget.close()
+            self.ventana_suprema.close()
+            self.abrir_casa()
         else:
             error = QtWidgets.QErrorMessage()
             error.setWindowModality(QtCore.Qt.WindowModal)
@@ -561,7 +576,6 @@ class Ui_ventanaPrincipalDesigner(object):
         self.cbxPlanta.setCurrentIndex(0)
         self.cbxObjetos.setCurrentIndex(0)
         self.cbxLugares.setCurrentIndex(0)
-
 
 
 if __name__ == "__main__":

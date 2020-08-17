@@ -5,7 +5,7 @@ import sys
 
 
 # noinspection PyMethodMayBeStatic
-class ShHome:
+class ShVistaPlanta:
     def __init__(self, planta):
         # Partes principales de la
         # ventana principal
@@ -89,8 +89,8 @@ class ShHome:
                 initial_left_pos = 10
                 initial_top_pos += self.btn_offset[0]
                 cnt_lugares = 1
-            btn_lugar = crear_boton_ico(self.scroll_area_contents, "assets/" + i.tipo + ".png",
-                                        i.nombre, partial(self.abrir_contenido_lugar, i), self.botones,
+            btn_lugar = crear_boton_ico(self.scroll_area_contents, "../assets/cocina.png",
+                                        i.nombre, lambda: print("hola"), self.fuente_botones,
                                         initial_left_pos, initial_top_pos, 150, 100)
             initial_left_pos += self.btn_offset[1]
             self._botones(btn_lugar)

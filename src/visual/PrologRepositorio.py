@@ -12,8 +12,6 @@ class PrologRepositorio(metaclass=Singleton):
         self.prologInstance = Prolog()
         self.prologInstance.consult('conocimientos.pl')
         self.plantas = []
-        self.minunit()
-        print(self.plantas)
 
     def transform_prolog_name(self, name):
         preprocess_name = name.replace(' ', '_')

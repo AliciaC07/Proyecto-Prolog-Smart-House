@@ -1,9 +1,11 @@
+from src.visual.app.ShVistaPlanta import ShVistaPlanta
 from src.visual.tools.QtHelper import *
 from functools import partial
 from src.visual.PrologRepositorio import PrologRepositorio
 import sys
 
 
+# noinspection PyMethodMayBeStatic
 class ShHome:
     def __init__(self):
         # Partes principales de la
@@ -45,7 +47,11 @@ class ShHome:
         print("Se abrio la ventana de reportes.")
 
     def abrir_contenido_planta(self, planta):
-        print("Se abrio la " + planta.nombre)
+        print(planta.nombre)
+        self.ventana_vista_planta = QtWidgets.QMainWindow()
+        self.vista_planta = ShVistaPlanta(planta)
+        self.vista_planta.setupUi(self.ventana_vista_planta)
+        self.ventana_vista_planta.show()
 
     def cabeceraVentana(self):
 
@@ -55,20 +61,20 @@ class ShHome:
 
         # Labels de la cabecera de la ventana ShHome
         lbl_estado = crear_label(self.scroll_area_contents, "Estado de su Casa", self.fuente_titulos, 50, 35)
-        lbl_img_estado = crear_img(self.scroll_area_contents, "../assets/reportes.png", 10, 30)
+        lbl_img_estado = crear_img(self.scroll_area_contents, "assets/reportes.png", 10, 30)
         lbl_plantas = crear_label(self.scroll_area_contents, "Plantas de su Casa", self.fuente_titulos, 50, 250)
-        lbl_img_planta = crear_img(self.scroll_area_contents, "../assets/casa.png", 10, 245)
+        lbl_img_planta = crear_img(self.scroll_area_contents, "assets/casa.png", 10, 245)
 
         # Botones de la cabecera de la ventana ShHome
-        btn_reportes = crear_boton_ico(self.scroll_area_contents, "../assets/grafico.png",
+        btn_reportes = crear_boton_ico(self.scroll_area_contents, "assets/grafico.png",
                                        "Reportes", partial(self.abrir_panel_reportes),
                                        self.fuente_botones, 10, 90, 150, 50)
 
-        btn_reportes_status = crear_boton_ico(self.scroll_area_contents, "../assets/status.png",
+        btn_reportes_status = crear_boton_ico(self.scroll_area_contents, "assets/status.png",
                                               "Status", partial(self.abrir_panel_status),
                                               self.fuente_botones, 200, 90, 150, 50)
 
-        btn_clima = crear_boton_ico(self.scroll_area_contents, "../assets/clima.png",
+        btn_clima = crear_boton_ico(self.scroll_area_contents, "assets/clima.png",
                                     "Clima", partial(self.abrir_panel_clima), self.fuente_botones, 390, 90, 150, 50)
         self._labels(lbl_estado)
         self._labels(lbl_plantas)
@@ -93,7 +99,7 @@ class ShHome:
                 initial_left_pos = 10
                 initial_top_pos += self.btn_offset[0]
                 cnt_plantas = 1
-            btn_planta = crear_boton_ico(self.scroll_area_contents, "../assets/planta.png",
+            btn_planta = crear_boton_ico(self.scroll_area_contents, "assets/planta.png",
                                          i.nombre, partial(self.abrir_contenido_planta, i), self.fuente_botones,
                                          initial_left_pos, initial_top_pos, 150, 100)
             initial_left_pos += self.btn_offset[1]
@@ -120,10 +126,10 @@ class ShHome:
         self.generar_plantas_disponibles()
 
 
-if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    ventanaCasa = QtWidgets.QMainWindow()
-    instanciaCasa = ShHome()
-    instanciaCasa.setupUi(ventanaCasa)
-    ventanaCasa.show()
-    sys.exit(app.exec_())
+# if __name__ == "__main__":
+#     app = QtWidgets.QApplication(sys.argv)
+#     ventanaCasa = QtWidgets.QMainWindow()
+#     instanciaCasa = ShHome()
+#     instanciaCasa.setupUi(ventanaCasa)
+#     ventanaCasa.show()
+#     sys.exit(app.exec_())
