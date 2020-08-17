@@ -334,11 +334,11 @@ class Ui_ventanaPrincipalDesigner(object):
         self.labelUbicacion_2.setText(_translate("ventanaPrincipalDesigner", "Agua:"))
         self.labelUbicacion_3.setText(_translate("ventanaPrincipalDesigner", "Electricidad:"))
         self.cbxUnidadacuatica.setItemText(0, _translate("ventanaPrincipalDesigner", "<Seleccione la unidad de medida>"))
-        self.cbxUnidadacuatica.setItemText(1, _translate("ventanaPrincipalDesigner", "KWatt"))
-        self.cbxUnidadacuatica.setItemText(2, _translate("ventanaPrincipalDesigner", "Watt"))
+        self.cbxUnidadacuatica.setItemText(1, _translate("ventanaPrincipalDesigner", "Galones"))
+        self.cbxUnidadacuatica.setItemText(2, _translate("ventanaPrincipalDesigner", "Litros"))
         self.cbxUnidadelectrica.setItemText(0, _translate("ventanaPrincipalDesigner", "<Seleccione la unidad de medida>"))
-        self.cbxUnidadelectrica.setItemText(1, _translate("ventanaPrincipalDesigner", "Galones"))
-        self.cbxUnidadelectrica.setItemText(2, _translate("ventanaPrincipalDesigner", "Litros"))
+        self.cbxUnidadelectrica.setItemText(1, _translate("ventanaPrincipalDesigner", "KWatt"))
+        self.cbxUnidadelectrica.setItemText(2, _translate("ventanaPrincipalDesigner", "Watt"))
 
     def SetPlantas(self):
         if self.lwPlantas.__len__() < 4:
