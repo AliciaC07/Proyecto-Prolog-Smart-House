@@ -345,6 +345,13 @@ class Ui_ventanaPrincipalDesigner(object):
         self.cbxUnidadelectrica.setItemText(1, _translate("ventanaPrincipalDesigner", "Galones"))
         self.cbxUnidadelectrica.setItemText(2, _translate("ventanaPrincipalDesigner", "Litros"))
 
+        self.cbxUnidadacuatica.setItemText(0, _translate("ventanaPrincipalDesigner", "<Seleccione la unidad de medida>"))
+        self.cbxUnidadacuatica.setItemText(1, _translate("ventanaPrincipalDesigner", "Galones"))
+        self.cbxUnidadacuatica.setItemText(2, _translate("ventanaPrincipalDesigner", "Litros"))
+        self.cbxUnidadelectrica.setItemText(0, _translate("ventanaPrincipalDesigner", "<Seleccione la unidad de medida>"))
+        self.cbxUnidadelectrica.setItemText(1, _translate("ventanaPrincipalDesigner", "KWatt"))
+        self.cbxUnidadelectrica.setItemText(2, _translate("ventanaPrincipalDesigner", "Watt"))
+
     def SetPlantas(self):
         if self.lwPlantas.__len__() < 4:
             if self.cbxPlanta.currentText() != "<Seleccione>":
@@ -488,7 +495,7 @@ class Ui_ventanaPrincipalDesigner(object):
                             if aux1.nombre == ob:
                                 itemsl.objetos.remove(aux1)
 
-            self.contadorObjeto = self.contadorObjeto - 1
+            self.contadorObjeto = self.contadorObjeto-1
 
     def SetFamilias(self):
         self.lwFamiliares.addItem(self.inputFamiliar.text())
