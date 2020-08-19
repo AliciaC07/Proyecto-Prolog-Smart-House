@@ -2,7 +2,7 @@
 :- dynamic planta/2.
 :- dynamic electrodomestico/2.
 :- dynamic objeto_agua/2.
-:- dynamic estado_electrodomestico/2.
+:- dynamic estado_electrodomestico/4.
 :- dynamic objeto/2.
 :- dynamic estado_objeto/2.
 :- dynamic persona/2.
@@ -11,6 +11,8 @@
 :- dynamic casa_info/3.
 :- dynamic unidad_electrica/1.
 :- dynamic unidad_agua/1.
+:- dynamic consumo_electrodomestico/4.
+:- dynamic consumo_agua/4.
 
 %casa_info(nombrecasa, ubicacion, [plantas])
 % planta(nombre_planta, lista_lugares)
@@ -27,7 +29,7 @@ lugar(habitacion1, 30, [television3, computadora2, computadora3, abanico3, puert
 
 % La idea es describir un estado_electrodomestico cualquiera de la casa
 % con su consumo en khw.
-% estado_electrodomestico(identificador, nombre, consumo/khw, identificador_lugar)
+% estado_electrodomestico(nombre, consumo/khw)
 %electrodomestico(nevera1, 662).
 %electrodomestico(estufa1, 1000).
 %electrodomestico(television1, 263).
@@ -55,7 +57,7 @@ lugar(habitacion1, 30, [television3, computadora2, computadora3, abanico3, puert
 %objeto_agua(lavadora2, 47).
 %objeto_agua(lavaplatos1, 12).
 
-% estado_electrodomestico(dispositivo, estado/encendido/apagado)
+% estado_electrodomestico(dispositivo, estado/encendido/apagado, fecha, tiempo)
 %estado_electrodomestico(nevera1, encendido).
 %estado_electrodomestico(estufa1, encendido).
 %estado_electrodomestico(television1, encendido).
@@ -140,3 +142,58 @@ cerrar_puertas():-
     objeto(Objeto, _), estado_objeto(Objeto, abierto),
     retract(estado_objeto(Objeto, abierto)),
     assertz(estado_objeto(Objeto, cerrado)).
+
+fecha_tiempo_actual(Fecha, Tiempo):-
+    get_time(Stamp),
+    stamp_date_time(Stamp, Datetime, local),
+    date_time_value(time, Datetime, Tiempo),
+    date_time_value(date, Datetime, Fecha).
+
+fecha_tiempo_actual(Fecha, Tiempo):-
+    get_time(Stamp),
+    stamp_date_time(Stamp, Datetime, local),
+    date_time_value(time, Datetime, Tiempo),
+    date_time_value(date, Datetime, Fecha).
+
+
+calc_fecha_dias(date(Y,M,D),Dias):-
+    Dias is (((Y*1461)/4)+((M*153)/5)+D).
+
+diferencia_fechas(date(Y,M,D), date(Y2, M2, D2), Diff):-
+    calc_fecha_dias(date(Y,M,D), Dias1),
+    calc_fecha_dias(date(Y2, M2, D2), Dias2),
+    Resta is abs(Dias2-Dias1),
+    Diff is round(Resta).
+
+diferencia_tiempo(time(H,Mn,S), time(H2,Mn2,S2), Horas):-
+    Ht is abs(H-H2),
+    Mnt is abs((Mn-Mn2)/60),
+    St is abs((S2-S)/3600),
+    Horas is (Ht + Mnt + St).
+
+fechas_horas(date(Y,M,D), time(H,Mn,S), date(Y2,M2,D2), time(H2,Mn2,S2), Res):-
+    diferencia_fechas(date(Y,M,D), date(Y2,M2,D2), Dias),
+    diferencia_tiempo(time(H,Mn,S), time(H2, Mn2, S2), Horas),
+    Diashoras is (Dias*24),
+    Res is (Diashoras + Horas).
+
+%consumo_electrodomestico(nombre, consumo, fecha_prendio, fecha_apago)
+
+encender_electrodomestico(Electrodomestico):-
+    retract(estado_electrodomestico(Electrodomestico,_,_,_)),
+    fecha_tiempo_actual(Fecha, Tiempo),
+    assertz(estado_electrodomestico(Electrodomestico, encendido, Fecha, Tiempo)).
+
+calcular_consumo_electrodomestico(Electrodomestico, Horas_encendido, Res):-
+    electrodomestico(Electrodomestico, Consumo),
+    Res is (Horas_encendido * Consumo).
+
+
+apagar_electrodomestico(Electrodomestico):-
+    estado_electrodomestico(Electrodomestico,_, Fecha_vieja, Tiempo_viejo),
+    fecha_tiempo_actual(Fecha_actual, Tiempo_actual),
+    fechas_horas(Fecha_actual, Tiempo_actual, Fecha_vieja, Tiempo_viejo, Horas),
+    calcular_consumo_electrodomestico(Electrodomestico, Horas, Consumo),
+    assertz(consumo_electrodomestico(Electrodomestico, Consumo, Fecha_vieja, Fecha_actual)),
+    retract(estado_electrodomestico(Electrodomestico,_,_,_)),
+    assertz(estado_electrodomestico(Electrodomestico, apagado, Fecha_actual, Tiempo_actual)).
