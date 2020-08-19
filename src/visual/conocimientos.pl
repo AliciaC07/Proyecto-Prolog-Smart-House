@@ -20,12 +20,12 @@
 
 % Los distintos lugares y salas de las casas
 % lugar(nombre, temperatura/celsius, lista_objetos).
-lugar(sala1, 28, [television1, television2, bombillo1, bombillo2, computadora1, abanico1,puerta1]).
+%lugar(sala1, 28, [television1, television2, bombillo1, bombillo2, computadora1, abanico1,puerta1]).
 %lugar(comedor1, 29, [bombillo3, abanico2]).
 %lugar(cocina1, 30, [nevera1, estufa1, bombillo4, lavaplatos1,puerta3]).
 %lugar(bano1, 30, [bombillo5]).
 %lugar(cuarto_lavado1, 30, [lavadora1, lavadora2, bombillo5]).
-lugar(habitacion1, 30, [television3, computadora2, computadora3, abanico3, puerta2]).
+%lugar(habitacion1, 30, [television3, computadora2, computadora3, abanico3, puerta2]).
 
 % La idea es describir un estado_electrodomestico cualquiera de la casa
 % con su consumo en khw.
@@ -81,9 +81,9 @@ lugar(habitacion1, 30, [television3, computadora2, computadora3, abanico3, puert
 % La idea es describir el objeto con un identificador, nombre
 % y el identificador del lugar donde esta ubicado.
 % lugar(identificador, nombre, id_lugar).
-objeto(puerta1, sala1).
-objeto(puerta2, habitacion1).
-objeto(puerta3, cocina1).
+%objeto(puerta1, sala1).
+%objeto(puerta2, habitacion1).
+%objeto(puerta3, cocina1).
 %objeto(puerta4, bano1).
 %objeto(puerta5, cuarto_lavado1).
 %objeto(venatana1, habitacion1).
@@ -92,9 +92,9 @@ objeto(puerta3, cocina1).
 
 % La idea es describir si el objeto esta abierto o cerrado.
 % estado_objeto(identificador, estado/abierto/cerrado)
-estado_objeto(puerta1, abierto).
-estado_objeto(puerta2, abierto).
-estado_objeto(puerta3, abierto).
+%estado_objeto(puerta1, abierto).
+%estado_objeto(puerta2, abierto).
+%estado_objeto(puerta3, abierto).
 %estado_objeto(puerta4, cerrado).
 %estado_objeto(puerta5, cerrado).
 %estado_objeto(ventana1, cerrado).

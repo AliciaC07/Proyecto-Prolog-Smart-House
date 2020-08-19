@@ -16,7 +16,6 @@ from src.modelo.Lugar import Lugar
 from src.modelo.Objetos import Objeto
 from src.modelo.Planta import Planta
 from src.visual.PrologRepositorio import PrologRepositorio
-from src.visual.app.ShHome import ShHome
 
 
 class Ui_ventanaPrincipalDesigner(object):
@@ -203,6 +202,7 @@ class Ui_ventanaPrincipalDesigner(object):
         self.cbxObjetos.addItem("")
         self.cbxObjetos.addItem("")
         self.cbxObjetos.addItem("")
+        self.cbxObjetos.addItem("")
         self.cbxPlanta = QtWidgets.QComboBox(self.centralwidget)
         self.cbxPlanta.setGeometry(QtCore.QRect(10, 260, 131, 22))
         self.cbxPlanta.setObjectName("cbxPlanta")
@@ -236,6 +236,13 @@ class Ui_ventanaPrincipalDesigner(object):
         self.cbxUnidadelectrica.addItem("")
         self.cbxUnidadelectrica.addItem("")
         self.cbxUnidadelectrica.addItem("")
+        self.onlyInt = QIntValidator()
+        self.inputUnidad.setValidator(self.onlyInt)
+        regex = QtCore.QRegExp("[a-z-A-Z_]+")
+        validator = QtGui.QRegExpValidator(regex)
+        self.inputFamiliar.setValidator(validator)
+        self.lwLugares.setSelectionBehavior(QTableWidget.SelectRows)
+        self.lwObjetos.setSelectionBehavior(QTableWidget.SelectRows)
         self.inputUnidadAgua = QtWidgets.QLineEdit(self.centralwidget)
         self.inputUnidadAgua.setGeometry(QtCore.QRect(220, 580, 81, 21))
         self.inputUnidadAgua.setObjectName("inputUnidadAgua")
@@ -250,6 +257,7 @@ class Ui_ventanaPrincipalDesigner(object):
         # aqui empiezan los cambios
         self.retranslateUi(ventanaPrincipalDesigner)
         QtCore.QMetaObject.connectSlotsByName(ventanaPrincipalDesigner)
+        self.inputUnidadAgua.setValidator(self.onlyInt)
         self.btnAgregarPlanta.clicked.connect(self.SetPlantas)
         self.btnRemoverPlanta.clicked.connect(self.RemovePlantas)
         self.btnAgregarLugar.clicked.connect(self.SetLugares)
@@ -259,8 +267,6 @@ class Ui_ventanaPrincipalDesigner(object):
         self.btnAgregarFamiliar.clicked.connect(self.SetFamilias)
         self.btnRemoverFamiliar.clicked.connect(self.RemoveFamiliares)
         self.btnFinalizar.clicked.connect(self.InsertarEstructura)
-        self.lwLugares.setSelectionBehavior(QTableWidget.SelectRows)
-        self.lwObjetos.setSelectionBehavior(QTableWidget.SelectRows)
 
     contadorplanta = 1
     contadorLugar = 1
@@ -268,8 +274,10 @@ class Ui_ventanaPrincipalDesigner(object):
     plantas = []
     lugares = []
     fam = []
-    tiposObjetos = {'Nevera': 'Electrodomestico', 'Estufa': 'Electrodomestico','Abanico': 'Electrodomestico','Bombillo': 'Electrodomestico'
-               ,'Lavadora': 'Electrodomestico','Nevera': 'Electrodomestico','Toilet': 'Agua','Lavaplatos': 'Agua','Puerta': 'Contundente','Ventana': 'Contundente'}
+    tiposObjetos = {'Nevera': 'Electrodomestico', 'Estufa': 'Electrodomestico', 'Abanico': 'Electrodomestico',
+                    'Bombillo': 'Electrodomestico'
+        , 'Lavadora': 'Electrodomestico', 'Nevera': 'Electrodomestico', 'Toilet': 'Agua', 'Lavaplatos': 'Agua',
+                    'Puerta': 'Contundente', 'Ventana': 'Contundente'}
 
     def retranslateUi(self, ventanaPrincipalDesigner):
         _translate = QtCore.QCoreApplication.translate
@@ -441,49 +449,45 @@ class Ui_ventanaPrincipalDesigner(object):
             error.exec_()
         else:
 
-
-            if self.cbxObjetos.currentText() != "<Seleccione>":
-                if self.tiposObjetos[self.cbxObjetos.currentText()] == "Contundente":
-                    self.inputUnidad.setDisabled(True)
-                    self.inputUnidad.setText(str(0))
-                    self.inputUnidadAgua.setDisabled(True)
-                    self.inputUnidadAgua.setText(str(0))
-                elif self.tiposObjetos[self.cbxObjetos.currentText()] == "Electrodomestico":
-                    self.inputUnidadAgua.setDisabled(True)
-                    self.inputUnidadAgua.setText(str(0))
-                tipoO = []
-                if self.cbxObjetos.currentText() == "Lavadora":
-                    tipoO = ['Agua','Electrodomestico']
-                else:
-                    tipoO.append(self.tiposObjetos[self.cbxObjetos.currentText()])
-
-                objeto = Objeto(self.cbxObjetos.currentText() + str(self.contadorObjeto), tipoO,
-                                self.inputUnidad.text(), self.inputUnidadAgua.text())
-                rowPosition = self.lwObjetos.rowCount()
-                self.lwObjetos.insertRow(rowPosition)  # insert new row
-                self.lwObjetos.setItem(rowPosition, 0, QTableWidgetItem(objeto.nombre))
-                itemplanta = ""
-                itemlugar = listItems[0].text()
-                if not listItemsPlanta: return
-                for itemp in listItemsPlanta:
-                    itemplanta = itemp.text()
-
-                    self.lwLugares.row(listItems[0])
-
-                    lugars = self.GetAllPlantas(itemplanta, itemlugar)
-                    lugars.objetos.append(objeto)
-                    self.lwObjetos.setItem(rowPosition, 1, QTableWidgetItem(itemlugar))
+            if self.tiposObjetos[self.cbxObjetos.currentText()] == "Contundente":
+                self.inputUnidad.setDisabled(True)
+                self.inputUnidad.setText(str(0))
+                self.inputUnidadAgua.setDisabled(True)
+                self.inputUnidadAgua.setText(str(0))
+            # elif self.tiposObjetos[self.cbxObjetos.currentText()] == "Electrodomestico":
+            #     self.inputUnidadAgua.setDisabled(True)
+            #     self.inputUnidadAgua.setText(str(0))
+            tipoO = []
+            if self.cbxObjetos.currentText() == "Lavadora":
+                tipoO = ['Agua', 'Electrodomestico']
             else:
-                error = QtWidgets.QErrorMessage()
-                error.setWindowModality(QtCore.Qt.WindowModal)
-                error.showMessage("Asegurese de que se seleccione un objeto y su tipo antes de agregar el objeto")
-                error.setWindowTitle("Error")
-                error.exec_()
+                tipoO.append(self.tiposObjetos[self.cbxObjetos.currentText()])
+                if tipoO[0] == "Electrodomestico":
+                    self.inputUnidadAgua.setDisabled(True)
+                    self.inputUnidadAgua.setText(str(0))
 
-            self.contadorObjeto += self.contadorObjeto + random.randint(2, 10)
-            self.inputUnidad.clear()
-            self.inputUnidadAgua.clear()
-            self.inputUnidadAgua.setDisabled(False)
+            objeto = Objeto(self.cbxObjetos.currentText() + str(self.contadorObjeto), tipoO,
+                            self.inputUnidad.text(), self.inputUnidadAgua.text())
+            rowPosition = self.lwObjetos.rowCount()
+            self.lwObjetos.insertRow(rowPosition)  # insert new row
+            self.lwObjetos.setItem(rowPosition, 0, QTableWidgetItem(objeto.nombre))
+            itemplanta = ""
+            itemlugar = listItems[0].text()
+            if not listItemsPlanta: return
+            for itemp in listItemsPlanta:
+                itemplanta = itemp.text()
+
+                self.lwLugares.row(listItems[0])
+
+                lugars = self.GetAllPlantas(itemplanta, itemlugar)
+                lugars.objetos.append(objeto)
+                self.lwObjetos.setItem(rowPosition, 1, QTableWidgetItem(itemlugar))
+
+        self.contadorObjeto += self.contadorObjeto + random.randint(2, 10)
+        self.inputUnidad.clear()
+        self.inputUnidadAgua.clear()
+        self.inputUnidadAgua.setDisabled(False)
+        self.inputUnidad.setDisabled(False)
 
     def RemoveObjeto(self):
         listItems = self.lwObjetos.selectedItems()
@@ -540,11 +544,11 @@ class Ui_ventanaPrincipalDesigner(object):
                     return False
         return True
 
-    def abrir_casa(self):
-        self.ventana_app = QtWidgets.QMainWindow()
-        self.app = ShHome()
-        self.app.setupUi(self.ventana_app)
-        self.ventana_app.show()
+    # def abrir_casa(self):
+    #    self.ventana_app = QtWidgets.QMainWindow()
+    #   self.app = ShHome()
+    #    self.app.setupUi(self.ventana_app)
+    #   self.ventana_app.show()
 
     def InsertarEstructura(self):
         if self.validar() and self.validar2() and self.inputNombreCasa.text() != "" and self.inputUbicacion.text() != "" and self.cbxUnidadacuatica.currentText() != "<Seleccione la unidad de medida>" and self.cbxUnidadelectrica.currentText() != "<Seleccione la unidad de medida>":
@@ -556,9 +560,9 @@ class Ui_ventanaPrincipalDesigner(object):
                                         self.cbxUnidadelectrica.currentText(), self.cbxUnidadacuatica.currentText())
             self.prolog.plantas = self.plantas
             self.clearAll()
-            self.centralwidget.close()
-            self.ventana_suprema.close()
-            self.abrir_casa()
+            # self.centralwidget.close()
+            # self.ventana_suprema.close()
+            # self.abrir_casa()
         else:
             error = QtWidgets.QErrorMessage()
             error.setWindowModality(QtCore.Qt.WindowModal)

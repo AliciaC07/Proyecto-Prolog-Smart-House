@@ -56,7 +56,7 @@ class PrologRepositorio(metaclass=Singleton):
                             "objeto_agua(" + self.transform_prolog_name(aux2.nombre) + ", " + str(aux2.unidadAgua) + ")")
                     elif aux3 == "Contundente":
                         self.prologInstance.assertz(
-                            "objeto(" + self.transform_prolog_name(aux2.nombre) + ", " + aux.nombre + ")")
+                            "objeto(" + self.transform_prolog_name(aux2.nombre) + ", " + self.transform_prolog_name(aux.nombre) + ")")
                         self.prologInstance.assertz(
                             "estado_objeto(" + self.transform_prolog_name(aux2.nombre) + ", cerrado)")
         q2 = self.prologInstance.query("listing(electrodomestico)")
@@ -64,6 +64,12 @@ class PrologRepositorio(metaclass=Singleton):
             print(i)
         q4 = self.prologInstance.query("listing(objeto_agua)")
         for i in q4:
+            print(i)
+        q3 = self.prologInstance.query("listing(objeto)")
+        for i in q3:
+            print(i)
+        q5 = self.prologInstance.query("listing(estado_electrodomestico)")
+        for i in q5:
             print(i)
 
     def InsertInfoHouse(self, name, location, plantas, unidade, unidada):
