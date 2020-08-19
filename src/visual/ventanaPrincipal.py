@@ -454,9 +454,7 @@ class Ui_ventanaPrincipalDesigner(object):
                 self.inputUnidad.setText(str(0))
                 self.inputUnidadAgua.setDisabled(True)
                 self.inputUnidadAgua.setText(str(0))
-            # elif self.tiposObjetos[self.cbxObjetos.currentText()] == "Electrodomestico":
-            #     self.inputUnidadAgua.setDisabled(True)
-            #     self.inputUnidadAgua.setText(str(0))
+
             tipoO = []
             if self.cbxObjetos.currentText() == "Lavadora":
                 tipoO = ['Agua', 'Electrodomestico']
@@ -467,7 +465,7 @@ class Ui_ventanaPrincipalDesigner(object):
                     self.inputUnidadAgua.setText(str(0))
 
             objeto = Objeto(self.cbxObjetos.currentText() + str(self.contadorObjeto), tipoO,
-                            self.inputUnidad.text(), self.inputUnidadAgua.text())
+                            self.inputUnidad.text(), self.inputUnidadAgua.text(), self.cbxObjetos.currentText())
             rowPosition = self.lwObjetos.rowCount()
             self.lwObjetos.insertRow(rowPosition)  # insert new row
             self.lwObjetos.setItem(rowPosition, 0, QTableWidgetItem(objeto.nombre))
