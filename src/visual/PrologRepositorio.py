@@ -57,6 +57,10 @@ class PrologRepositorio(metaclass=Singleton):
                     elif aux3 == "Contundente":
                         self.prologInstance.assertz(
                             "objeto(" + self.transform_prolog_name(aux2.nombre) + ", " + self.transform_prolog_name(aux.nombre) + ")")
+                        if aux2.naturaleza == "Lavamanos":
+                            self.prologInstance.assertz("uso_agua("+self.transform_prolog_name(aux2.nombre)+", continuo)")
+                        else:
+                            self.prologInstance.assertz("uso_agua("+self.transform_prolog_name(aux2.nombre)+", fijo)")
                         self.prologInstance.assertz(
                             "estado_objeto(" + self.transform_prolog_name(aux2.nombre) + ", cerrado)")
         q2 = self.prologInstance.query("listing(electrodomestico)")

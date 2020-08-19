@@ -331,6 +331,7 @@ class Ui_ventanaPrincipalDesigner(object):
         self.cbxObjetos.setItemText(7, _translate("ventanaPrincipalDesigner", "Lavadora"))
         self.cbxObjetos.setItemText(8, _translate("ventanaPrincipalDesigner", "Toilet"))
         self.cbxObjetos.setItemText(9, _translate("ventanaPrincipalDesigner", "Lavaplatos"))
+        self.cbxObjetos.setItemText(10, _translate("ventanaPrincipalDesigner", "Lavamanos"))
         self.cbxPlanta.setItemText(0, _translate("ventanaPrincipalDesigner", "<Seleccione>"))
         self.cbxPlanta.setItemText(1, _translate("ventanaPrincipalDesigner", "Planta"))
         self.labelUbicacion_2.setText(_translate("ventanaPrincipalDesigner", "Agua:"))

@@ -13,6 +13,7 @@
 :- dynamic unidad_agua/1.
 :- dynamic consumo_electrodomestico/4.
 :- dynamic consumo_agua/4.
+:- dynamic uso_agua/2.
 
 %casa_info(nombrecasa, ubicacion, [plantas])
 % planta(nombre_planta, lista_lugares)
