@@ -11,10 +11,16 @@ class PrologRepositorio(metaclass=Singleton):
     def __init__(self):
         self.prologInstance = Prolog()
         self.prologInstance.consult('conocimientos.pl')
+        self.plantas = []
 
     def transform_prolog_name(self, name):
         preprocess_name = name.replace(' ', '_')
         return preprocess_name.lower()
+
+    def minunit(self):
+        for i in range(0, 10):
+            nueva_planta = Planta("planta" + str(i))
+            self.plantas.append(nueva_planta)
 
     def InsertPlanta(self, planta):
         fact = "planta("
@@ -35,22 +41,30 @@ class PrologRepositorio(metaclass=Singleton):
             fact2 += self.ciclo_transform(obs)
             fact2 += ")"
             self.prologInstance.assertz(fact2)
+
             print(fact2)
             for aux2 in aux.objetos:
-                if aux2.tipo == "Electrodomestico":
+                for aux3 in aux2.tipo:
 
-                    hecho = "electrodomestico(" + self.transform_prolog_name(aux2.nombre) + "," + str(aux2.unidad) + ")"
-                    hechoestado = "estado_electrodomestico(" + self.transform_prolog_name(aux2.nombre) + ", apagado)"
-                    self.prologInstance.assertz(hecho)
-                    self.prologInstance.assertz(hechoestado)
-                elif aux2.tipo == "Agua":
-                    self.prologInstance.assertz(
-                        "objeto_agua(" + self.transform_prolog_name(aux2.nombre) + ", " + str(aux2.unidad) + ")")
-                elif aux2.tipo == "Contundente":
-                    self.prologInstance.assertz(
-                        "objeto(" + self.transform_prolog_name(aux2.nombre) + ", " + aux.nombre + ")")
-                    self.prologInstance.assertz(
-                        "estado_objeto(" + self.transform_prolog_name(aux2.nombre) + ", cerrado)")
+                    if aux3 == "Electrodomestico":
+                        hecho = "electrodomestico(" + self.transform_prolog_name(aux2.nombre) + "," + str(aux2.unidad) + ")"
+                        hechoestado = "estado_electrodomestico(" + self.transform_prolog_name(aux2.nombre) + ", apagado, fecha(0,0,0), tiempo(0,0,0))"
+                        self.prologInstance.assertz(hecho)
+                        self.prologInstance.assertz(hechoestado)
+                    elif aux3 == "Agua":
+                        self.prologInstance.assertz(
+                            "objeto_agua(" + self.transform_prolog_name(aux2.nombre) + ", " + str(aux2.unidadAgua) + ")")
+                    elif aux3 == "Contundente":
+                        self.prologInstance.assertz(
+                            "objeto(" + self.transform_prolog_name(aux2.nombre) + ", " + aux.nombre + ")")
+                        self.prologInstance.assertz(
+                            "estado_objeto(" + self.transform_prolog_name(aux2.nombre) + ", cerrado)")
+        q2 = self.prologInstance.query("listing(electrodomestico)")
+        for i in q2:
+            print(i)
+        q4 = self.prologInstance.query("listing(objeto_agua)")
+        for i in q4:
+            print(i)
 
     def InsertInfoHouse(self, name, location, plantas, unidade, unidada):
         hechos = "casa_info("

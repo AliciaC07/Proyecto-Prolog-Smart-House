@@ -16,16 +16,18 @@ from src.modelo.Lugar import Lugar
 from src.modelo.Objetos import Objeto
 from src.modelo.Planta import Planta
 from src.visual.PrologRepositorio import PrologRepositorio
+from src.visual.app.ShHome import ShHome
 
 
 class Ui_ventanaPrincipalDesigner(object):
     def __init__(self):
         self.prolog = PrologRepositorio()
+        self.ventana_app = None
+        self.app = None
 
     def setupUi(self, ventanaPrincipalDesigner):
-
         ventanaPrincipalDesigner.setObjectName("ventanaPrincipalDesigner")
-        ventanaPrincipalDesigner.resize(836, 853)
+        ventanaPrincipalDesigner.resize(983, 906)
         self.centralwidget = QtWidgets.QWidget(ventanaPrincipalDesigner)
         self.centralwidget.setObjectName("centralwidget")
         self.labelTituloVentana = QtWidgets.QLabel(self.centralwidget)
@@ -37,7 +39,7 @@ class Ui_ventanaPrincipalDesigner(object):
         self.labelTituloVentana.setFont(font)
         self.labelTituloVentana.setObjectName("labelTituloVentana")
         self.labelNombreCasa_2 = QtWidgets.QLabel(self.centralwidget)
-        self.labelNombreCasa_2.setGeometry(QtCore.QRect(10, 100, 131, 21))
+        self.labelNombreCasa_2.setGeometry(QtCore.QRect(10, 80, 131, 21))
         font = QtGui.QFont()
         font.setPointSize(10)
         font.setBold(True)
@@ -45,7 +47,7 @@ class Ui_ventanaPrincipalDesigner(object):
         self.labelNombreCasa_2.setFont(font)
         self.labelNombreCasa_2.setObjectName("labelNombreCasa_2")
         self.inputNombreCasa = QtWidgets.QLineEdit(self.centralwidget)
-        self.inputNombreCasa.setGeometry(QtCore.QRect(150, 100, 211, 21))
+        self.inputNombreCasa.setGeometry(QtCore.QRect(150, 80, 211, 21))
         self.inputNombreCasa.setObjectName("inputNombreCasa")
         self.labelPlanta = QtWidgets.QLabel(self.centralwidget)
         self.labelPlanta.setGeometry(QtCore.QRect(10, 230, 261, 16))
@@ -62,10 +64,10 @@ class Ui_ventanaPrincipalDesigner(object):
         self.btnRemoverPlanta.setGeometry(QtCore.QRect(230, 260, 71, 23))
         self.btnRemoverPlanta.setObjectName("btnRemoverPlanta")
         self.lwPlantas = QtWidgets.QListWidget(self.centralwidget)
-        self.lwPlantas.setGeometry(QtCore.QRect(10, 290, 301, 192))
+        self.lwPlantas.setGeometry(QtCore.QRect(10, 290, 451, 192))
         self.lwPlantas.setObjectName("lwPlantas")
         self.labelLugares = QtWidgets.QLabel(self.centralwidget)
-        self.labelLugares.setGeometry(QtCore.QRect(410, 235, 261, 21))
+        self.labelLugares.setGeometry(QtCore.QRect(530, 225, 261, 21))
         font = QtGui.QFont()
         font.setPointSize(12)
         font.setBold(True)
@@ -73,10 +75,10 @@ class Ui_ventanaPrincipalDesigner(object):
         self.labelLugares.setFont(font)
         self.labelLugares.setObjectName("labelLugares")
         self.btnAgregarLugar = QtWidgets.QPushButton(self.centralwidget)
-        self.btnAgregarLugar.setGeometry(QtCore.QRect(560, 270, 75, 23))
+        self.btnAgregarLugar.setGeometry(QtCore.QRect(680, 260, 75, 23))
         self.btnAgregarLugar.setObjectName("btnAgregarLugar")
         self.lwLugares = QtWidgets.QTableWidget(self.centralwidget)
-        self.lwLugares.setGeometry(QtCore.QRect(410, 300, 301, 192))
+        self.lwLugares.setGeometry(QtCore.QRect(530, 290, 301, 192))
         self.lwLugares.setMaximumSize(QtCore.QSize(301, 16777215))
         self.lwLugares.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.lwLugares.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
@@ -92,15 +94,14 @@ class Ui_ventanaPrincipalDesigner(object):
         self.lwLugares.horizontalHeader().setStretchLastSection(True)
         self.lwLugares.verticalHeader().setCascadingSectionResizes(False)
         self.lwLugares.verticalHeader().setStretchLastSection(False)
-        self.lwLugares.setSelectionBehavior(QTableWidget.SelectRows)
         self.btnRemoverLugar = QtWidgets.QPushButton(self.centralwidget)
-        self.btnRemoverLugar.setGeometry(QtCore.QRect(640, 270, 71, 23))
+        self.btnRemoverLugar.setGeometry(QtCore.QRect(760, 260, 71, 23))
         self.btnRemoverLugar.setObjectName("btnRemoverLugar")
         self.btnAgregarObjeto = QtWidgets.QPushButton(self.centralwidget)
-        self.btnAgregarObjeto.setGeometry(QtCore.QRect(320, 590, 71, 23))
+        self.btnAgregarObjeto.setGeometry(QtCore.QRect(310, 580, 71, 23))
         self.btnAgregarObjeto.setObjectName("btnAgregarObjeto")
         self.lwObjetos = QtWidgets.QTableWidget(self.centralwidget)
-        self.lwObjetos.setGeometry(QtCore.QRect(10, 620, 301, 191))
+        self.lwObjetos.setGeometry(QtCore.QRect(10, 610, 451, 191))
         self.lwObjetos.setObjectName("lwObjetos")
         self.lwObjetos.setColumnCount(2)
         self.lwObjetos.setRowCount(0)
@@ -110,12 +111,11 @@ class Ui_ventanaPrincipalDesigner(object):
         self.lwObjetos.setHorizontalHeaderItem(1, item)
         self.lwObjetos.horizontalHeader().setStretchLastSection(True)
         self.lwObjetos.verticalHeader().setCascadingSectionResizes(False)
-        self.lwObjetos.setSelectionBehavior(QTableWidget.SelectRows)
         self.btnRemoverObjeto = QtWidgets.QPushButton(self.centralwidget)
-        self.btnRemoverObjeto.setGeometry(QtCore.QRect(320, 620, 71, 23))
+        self.btnRemoverObjeto.setGeometry(QtCore.QRect(390, 580, 71, 23))
         self.btnRemoverObjeto.setObjectName("btnRemoverObjeto")
         self.labelObjetos = QtWidgets.QLabel(self.centralwidget)
-        self.labelObjetos.setGeometry(QtCore.QRect(10, 555, 261, 21))
+        self.labelObjetos.setGeometry(QtCore.QRect(10, 545, 261, 21))
         font = QtGui.QFont()
         font.setPointSize(12)
         font.setBold(True)
@@ -131,7 +131,7 @@ class Ui_ventanaPrincipalDesigner(object):
         self.labelCustomizacionHogar.setFont(font)
         self.labelCustomizacionHogar.setObjectName("labelCustomizacionHogar")
         self.labelGeneral = QtWidgets.QLabel(self.centralwidget)
-        self.labelGeneral.setGeometry(QtCore.QRect(10, 60, 211, 21))
+        self.labelGeneral.setGeometry(QtCore.QRect(10, 40, 211, 21))
         font = QtGui.QFont()
         font.setPointSize(12)
         font.setBold(True)
@@ -139,7 +139,7 @@ class Ui_ventanaPrincipalDesigner(object):
         self.labelGeneral.setFont(font)
         self.labelGeneral.setObjectName("labelGeneral")
         self.labelFamilia = QtWidgets.QLabel(self.centralwidget)
-        self.labelFamilia.setGeometry(QtCore.QRect(410, 550, 211, 21))
+        self.labelFamilia.setGeometry(QtCore.QRect(530, 540, 211, 21))
         font = QtGui.QFont()
         font.setPointSize(12)
         font.setBold(True)
@@ -147,16 +147,16 @@ class Ui_ventanaPrincipalDesigner(object):
         self.labelFamilia.setFont(font)
         self.labelFamilia.setObjectName("labelFamilia")
         self.btnAgregarFamiliar = QtWidgets.QPushButton(self.centralwidget)
-        self.btnAgregarFamiliar.setGeometry(QtCore.QRect(560, 590, 75, 23))
+        self.btnAgregarFamiliar.setGeometry(QtCore.QRect(680, 580, 75, 23))
         self.btnAgregarFamiliar.setObjectName("btnAgregarFamiliar")
         self.lwFamiliares = QtWidgets.QListWidget(self.centralwidget)
-        self.lwFamiliares.setGeometry(QtCore.QRect(410, 620, 301, 192))
+        self.lwFamiliares.setGeometry(QtCore.QRect(530, 610, 301, 192))
         self.lwFamiliares.setObjectName("lwFamiliares")
         self.btnRemoverFamiliar = QtWidgets.QPushButton(self.centralwidget)
-        self.btnRemoverFamiliar.setGeometry(QtCore.QRect(640, 590, 71, 23))
+        self.btnRemoverFamiliar.setGeometry(QtCore.QRect(760, 580, 71, 23))
         self.btnRemoverFamiliar.setObjectName("btnRemoverFamiliar")
         self.btnFinalizar = QtWidgets.QPushButton(self.centralwidget)
-        self.btnFinalizar.setGeometry(QtCore.QRect(720, 770, 101, 41))
+        self.btnFinalizar.setGeometry(QtCore.QRect(850, 770, 101, 41))
         font = QtGui.QFont()
         font.setPointSize(10)
         font.setBold(False)
@@ -164,10 +164,10 @@ class Ui_ventanaPrincipalDesigner(object):
         self.btnFinalizar.setFont(font)
         self.btnFinalizar.setObjectName("btnFinalizar")
         self.inputFamiliar = QtWidgets.QLineEdit(self.centralwidget)
-        self.inputFamiliar.setGeometry(QtCore.QRect(410, 590, 141, 20))
+        self.inputFamiliar.setGeometry(QtCore.QRect(530, 580, 141, 20))
         self.inputFamiliar.setObjectName("inputFamiliar")
         self.labelUbicacion = QtWidgets.QLabel(self.centralwidget)
-        self.labelUbicacion.setGeometry(QtCore.QRect(10, 130, 131, 21))
+        self.labelUbicacion.setGeometry(QtCore.QRect(10, 110, 131, 21))
         font = QtGui.QFont()
         font.setPointSize(10)
         font.setBold(True)
@@ -175,20 +175,13 @@ class Ui_ventanaPrincipalDesigner(object):
         self.labelUbicacion.setFont(font)
         self.labelUbicacion.setObjectName("labelUbicacion")
         self.inputUbicacion = QtWidgets.QLineEdit(self.centralwidget)
-        self.inputUbicacion.setGeometry(QtCore.QRect(150, 130, 211, 21))
+        self.inputUbicacion.setGeometry(QtCore.QRect(150, 110, 211, 21))
         self.inputUbicacion.setObjectName("inputUbicacion")
-        self.cbxTipo = QtWidgets.QComboBox(self.centralwidget)
-        self.cbxTipo.setGeometry(QtCore.QRect(130, 590, 101, 22))
-        self.cbxTipo.setObjectName("cbxTipo")
-        self.cbxTipo.addItem("")
-        self.cbxTipo.addItem("")
-        self.cbxTipo.addItem("")
-        self.cbxTipo.addItem("")
         self.inputUnidad = QtWidgets.QLineEdit(self.centralwidget)
-        self.inputUnidad.setGeometry(QtCore.QRect(240, 590, 71, 21))
+        self.inputUnidad.setGeometry(QtCore.QRect(130, 580, 81, 21))
         self.inputUnidad.setObjectName("inputUnidad")
         self.cbxLugares = QtWidgets.QComboBox(self.centralwidget)
-        self.cbxLugares.setGeometry(QtCore.QRect(410, 270, 141, 22))
+        self.cbxLugares.setGeometry(QtCore.QRect(530, 260, 141, 22))
         self.cbxLugares.setObjectName("cbxLugares")
         self.cbxLugares.addItem("")
         self.cbxLugares.addItem("")
@@ -198,8 +191,9 @@ class Ui_ventanaPrincipalDesigner(object):
         self.cbxLugares.addItem("")
         self.cbxLugares.addItem("")
         self.cbxObjetos = QtWidgets.QComboBox(self.centralwidget)
-        self.cbxObjetos.setGeometry(QtCore.QRect(10, 590, 111, 22))
+        self.cbxObjetos.setGeometry(QtCore.QRect(10, 580, 111, 22))
         self.cbxObjetos.setObjectName("cbxObjetos")
+        self.cbxObjetos.addItem("")
         self.cbxObjetos.addItem("")
         self.cbxObjetos.addItem("")
         self.cbxObjetos.addItem("")
@@ -242,20 +236,18 @@ class Ui_ventanaPrincipalDesigner(object):
         self.cbxUnidadelectrica.addItem("")
         self.cbxUnidadelectrica.addItem("")
         self.cbxUnidadelectrica.addItem("")
-        self.onlyInt = QIntValidator()
-        self.inputUnidad.setValidator(self.onlyInt)
-        regex = QtCore.QRegExp("[a-z-A-Z_]+")
-        validator = QtGui.QRegExpValidator(regex)
-        self.inputFamiliar.setValidator(validator)
+        self.inputUnidadAgua = QtWidgets.QLineEdit(self.centralwidget)
+        self.inputUnidadAgua.setGeometry(QtCore.QRect(220, 580, 81, 21))
+        self.inputUnidadAgua.setObjectName("inputUnidadAgua")
         ventanaPrincipalDesigner.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(ventanaPrincipalDesigner)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 836, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 983, 26))
         self.menubar.setObjectName("menubar")
         ventanaPrincipalDesigner.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(ventanaPrincipalDesigner)
         self.statusbar.setObjectName("statusbar")
         ventanaPrincipalDesigner.setStatusBar(self.statusbar)
-
+        # aqui empiezan los cambios
         self.retranslateUi(ventanaPrincipalDesigner)
         QtCore.QMetaObject.connectSlotsByName(ventanaPrincipalDesigner)
         self.btnAgregarPlanta.clicked.connect(self.SetPlantas)
@@ -267,6 +259,8 @@ class Ui_ventanaPrincipalDesigner(object):
         self.btnAgregarFamiliar.clicked.connect(self.SetFamilias)
         self.btnRemoverFamiliar.clicked.connect(self.RemoveFamiliares)
         self.btnFinalizar.clicked.connect(self.InsertarEstructura)
+        self.lwLugares.setSelectionBehavior(QTableWidget.SelectRows)
+        self.lwObjetos.setSelectionBehavior(QTableWidget.SelectRows)
 
     contadorplanta = 1
     contadorLugar = 1
@@ -274,6 +268,8 @@ class Ui_ventanaPrincipalDesigner(object):
     plantas = []
     lugares = []
     fam = []
+    tiposObjetos = {'Nevera': 'Electrodomestico', 'Estufa': 'Electrodomestico','Abanico': 'Electrodomestico','Bombillo': 'Electrodomestico'
+               ,'Lavadora': 'Electrodomestico','Nevera': 'Electrodomestico','Toilet': 'Agua','Lavaplatos': 'Agua','Puerta': 'Contundente','Ventana': 'Contundente'}
 
     def retranslateUi(self, ventanaPrincipalDesigner):
         _translate = QtCore.QCoreApplication.translate
@@ -305,11 +301,9 @@ class Ui_ventanaPrincipalDesigner(object):
         self.btnFinalizar.setText(_translate("ventanaPrincipalDesigner", "Finalizar"))
         self.inputFamiliar.setPlaceholderText(_translate("ventanaPrincipalDesigner", "Ingresar nombre del familiar"))
         self.labelUbicacion.setText(_translate("ventanaPrincipalDesigner", "Ubicación:"))
-        self.cbxTipo.setItemText(0, _translate("ventanaPrincipalDesigner", "<Tipo Objeto>"))
-        self.cbxTipo.setItemText(1, _translate("ventanaPrincipalDesigner", "Electrodomestico"))
-        self.cbxTipo.setItemText(2, _translate("ventanaPrincipalDesigner", "Agua"))
-        self.cbxTipo.setItemText(3, _translate("ventanaPrincipalDesigner", "Contundente"))
-        self.inputUnidad.setPlaceholderText(_translate("ventanaPrincipalDesigner", "consumo"))
+
+        self.inputUnidad.setPlaceholderText(_translate("ventanaPrincipalDesigner", "Electricidad"))
+
         self.inputNombreCasa.setPlaceholderText(_translate("ventanaPrincipalDesigner", "Nombre de la Casa"))
         self.inputUbicacion.setPlaceholderText(_translate("ventanaPrincipalDesigner", "Ubicacion"))
         self.cbxLugares.setItemText(0, _translate("ventanaPrincipalDesigner", "<Seleccione>"))
@@ -333,12 +327,24 @@ class Ui_ventanaPrincipalDesigner(object):
         self.cbxPlanta.setItemText(1, _translate("ventanaPrincipalDesigner", "Planta"))
         self.labelUbicacion_2.setText(_translate("ventanaPrincipalDesigner", "Agua:"))
         self.labelUbicacion_3.setText(_translate("ventanaPrincipalDesigner", "Electricidad:"))
-        self.cbxUnidadacuatica.setItemText(0, _translate("ventanaPrincipalDesigner", "<Seleccione la unidad de medida>"))
+        self.cbxUnidadacuatica.setItemText(0,
+                                           _translate("ventanaPrincipalDesigner", "<Seleccione la unidad de medida>"))
+        self.cbxUnidadacuatica.setItemText(1, _translate("ventanaPrincipalDesigner", "KWatt"))
+        self.cbxUnidadacuatica.setItemText(2, _translate("ventanaPrincipalDesigner", "Watt"))
+        self.cbxUnidadelectrica.setItemText(0,
+                                            _translate("ventanaPrincipalDesigner", "<Seleccione la unidad de medida>"))
+        self.cbxUnidadelectrica.setItemText(1, _translate("ventanaPrincipalDesigner", "Galones"))
+        self.cbxUnidadelectrica.setItemText(2, _translate("ventanaPrincipalDesigner", "Litros"))
+
+        self.cbxUnidadacuatica.setItemText(0,
+                                           _translate("ventanaPrincipalDesigner", "<Seleccione la unidad de medida>"))
         self.cbxUnidadacuatica.setItemText(1, _translate("ventanaPrincipalDesigner", "Galones"))
         self.cbxUnidadacuatica.setItemText(2, _translate("ventanaPrincipalDesigner", "Litros"))
-        self.cbxUnidadelectrica.setItemText(0, _translate("ventanaPrincipalDesigner", "<Seleccione la unidad de medida>"))
+        self.cbxUnidadelectrica.setItemText(0,
+                                            _translate("ventanaPrincipalDesigner", "<Seleccione la unidad de medida>"))
         self.cbxUnidadelectrica.setItemText(1, _translate("ventanaPrincipalDesigner", "KWatt"))
         self.cbxUnidadelectrica.setItemText(2, _translate("ventanaPrincipalDesigner", "Watt"))
+        self.inputUnidadAgua.setPlaceholderText(_translate("ventanaPrincipalDesigner", "Agua"))
 
     def SetPlantas(self):
         if self.lwPlantas.__len__() < 4:
@@ -376,7 +382,7 @@ class Ui_ventanaPrincipalDesigner(object):
             error.exec_()
         else:
             if self.cbxLugares.currentText() != "<Seleccione>":
-                lugar = Lugar(self.cbxLugares.currentText() + str(self.contadorLugar),self.cbxLugares.currentText())
+                lugar = Lugar(self.cbxLugares.currentText() + str(self.contadorLugar), self.cbxLugares.currentText())
                 rowPosition = self.lwLugares.rowCount()
                 self.lwLugares.insertRow(rowPosition)  # insert new row
                 self.lwLugares.setItem(rowPosition, 0, QTableWidgetItem(lugar.nombre))
@@ -426,6 +432,7 @@ class Ui_ventanaPrincipalDesigner(object):
     def SetObjetos(self):
         listItemsPlanta = self.lwPlantas.selectedItems()
         listItems = self.lwLugares.selectedItems()
+
         if listItems.__len__() < 1 and listItemsPlanta.__len__() < 1:
             error = QtWidgets.QErrorMessage()
             error.setWindowModality(QtCore.Qt.WindowModal)
@@ -433,13 +440,25 @@ class Ui_ventanaPrincipalDesigner(object):
             error.setWindowTitle("Error")
             error.exec_()
         else:
-            if self.cbxObjetos.currentText() != "<Seleccione>" and self.cbxTipo.currentText() != "<Tipo Objeto>":
-                if self.cbxTipo.currentText() == "Contundente":
+
+
+            if self.cbxObjetos.currentText() != "<Seleccione>":
+                if self.tiposObjetos[self.cbxObjetos.currentText()] == "Contundente":
                     self.inputUnidad.setDisabled(True)
                     self.inputUnidad.setText(str(0))
+                    self.inputUnidadAgua.setDisabled(True)
+                    self.inputUnidadAgua.setText(str(0))
+                elif self.tiposObjetos[self.cbxObjetos.currentText()] == "Electrodomestico":
+                    self.inputUnidadAgua.setDisabled(True)
+                    self.inputUnidadAgua.setText(str(0))
+                tipoO = []
+                if self.cbxObjetos.currentText() == "Lavadora":
+                    tipoO = ['Agua','Electrodomestico']
+                else:
+                    tipoO.append(self.tiposObjetos[self.cbxObjetos.currentText()])
 
-                objeto = Objeto(self.cbxObjetos.currentText() + str(self.contadorObjeto), self.cbxTipo.currentText(),
-                                self.inputUnidad.text())
+                objeto = Objeto(self.cbxObjetos.currentText() + str(self.contadorObjeto), tipoO,
+                                self.inputUnidad.text(), self.inputUnidadAgua.text())
                 rowPosition = self.lwObjetos.rowCount()
                 self.lwObjetos.insertRow(rowPosition)  # insert new row
                 self.lwObjetos.setItem(rowPosition, 0, QTableWidgetItem(objeto.nombre))
@@ -463,6 +482,8 @@ class Ui_ventanaPrincipalDesigner(object):
 
             self.contadorObjeto += self.contadorObjeto + random.randint(2, 10)
             self.inputUnidad.clear()
+            self.inputUnidadAgua.clear()
+            self.inputUnidadAgua.setDisabled(False)
 
     def RemoveObjeto(self):
         listItems = self.lwObjetos.selectedItems()
@@ -509,7 +530,7 @@ class Ui_ventanaPrincipalDesigner(object):
             if aux.lugares.__len__() < 1:
                 print("debe de introducir lugares")
                 return False
-            return True
+        return True
 
     def validar2(self):
         for aux in self.plantas:
@@ -519,15 +540,25 @@ class Ui_ventanaPrincipalDesigner(object):
                     return False
         return True
 
+    def abrir_casa(self):
+        self.ventana_app = QtWidgets.QMainWindow()
+        self.app = ShHome()
+        self.app.setupUi(self.ventana_app)
+        self.ventana_app.show()
+
     def InsertarEstructura(self):
-        if self.validar() and self.validar2() and self.inputNombreCasa.text() != "" and self.inputUbicacion.text() !=  "" and self.cbxUnidadacuatica.currentText() != "<Seleccione la unidad de medida>" and self.cbxUnidadelectrica.currentText() != "<Seleccione la unidad de medida>":
+        if self.validar() and self.validar2() and self.inputNombreCasa.text() != "" and self.inputUbicacion.text() != "" and self.cbxUnidadacuatica.currentText() != "<Seleccione la unidad de medida>" and self.cbxUnidadelectrica.currentText() != "<Seleccione la unidad de medida>":
             for aux in self.plantas:
                 self.prolog.InsertPlanta(aux)
             for aux in self.fam:
                 self.prolog.InsertPersons(aux)
-            self.prolog.InsertInfoHouse(self.inputNombreCasa.text(), self.inputUbicacion.text(), self.plantas, self.cbxUnidadelectrica.currentText(), self.cbxUnidadacuatica.currentText())
+            self.prolog.InsertInfoHouse(self.inputNombreCasa.text(), self.inputUbicacion.text(), self.plantas,
+                                        self.cbxUnidadelectrica.currentText(), self.cbxUnidadacuatica.currentText())
+            self.prolog.plantas = self.plantas
             self.clearAll()
-
+            self.centralwidget.close()
+            self.ventana_suprema.close()
+            self.abrir_casa()
         else:
             error = QtWidgets.QErrorMessage()
             error.setWindowModality(QtCore.Qt.WindowModal)
@@ -552,16 +583,16 @@ class Ui_ventanaPrincipalDesigner(object):
         for aux in range(self.lwObjetos.rowCount()):
             self.lwObjetos.removeRow(aux)
         self.inputUnidad.clear()
+        self.inputUnidadAgua.clear()
         self.inputFamiliar.clear()
         self.inputUbicacion.clear()
         self.inputNombreCasa.clear()
         self.cbxUnidadelectrica.setCurrentIndex(0)
         self.cbxUnidadacuatica.setCurrentIndex(0)
-        self.cbxTipo.setCurrentIndex(0)
+
         self.cbxPlanta.setCurrentIndex(0)
         self.cbxObjetos.setCurrentIndex(0)
         self.cbxLugares.setCurrentIndex(0)
-
 
 
 if __name__ == "__main__":
