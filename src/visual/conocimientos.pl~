@@ -204,10 +204,6 @@ apagar_electrodomestico(Electrodomestico):-
     assertz(estado_electrodomestico(Electrodomestico, apagado, Fecha_actual, Tiempo_actual)).
 
 
-
-
-
-
 resuelve(true).
 resuelve((A,B)) :- resuelve(A), resuelve(B).
 resuelve(A) :- clause(A,B), resuelve(B).
