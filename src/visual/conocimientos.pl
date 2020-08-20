@@ -3,7 +3,7 @@
 :- dynamic electrodomestico/2.
 :- dynamic objeto_agua/2.
 :- dynamic estado_electrodomestico/4.
-:- dynamic objeto/2.
+:- dynamic objeto/3.
 :- dynamic estado_objeto/2.
 :- dynamic persona/2.
 :- dynamic miembro_casa/1.
@@ -82,13 +82,13 @@
 % La idea es describir el objeto con un identificador, nombre
 % y el identificador del lugar donde esta ubicado.
 % lugar(identificador, nombre, id_lugar).
-%objeto(puerta1, sala1).
-%objeto(puerta2, habitacion1).
+%objeto(puerta1,puerta,sala1).
+%objeto(puerta2, puerta, habitacion1).
 %objeto(puerta3, cocina1).
 %objeto(puerta4, bano1).
 %objeto(puerta5, cuarto_lavado1).
-%objeto(venatana1, habitacion1).
-%objeto(ventana2, sala1).
+%objeto(venatana1, ventana, habitacion1).
+%objeto(ventana2, ventana, sala1).
 %objeto(ventana3, cocina1).
 
 % La idea es describir si el objeto esta abierto o cerrado.
@@ -134,15 +134,25 @@ calcular_consumo_electrico(Lugar, Consumo):-
     calcula_consumo(Objetos, Consumo).
 
 
-cerrar_puerta():-
-        ubicacion_persona(Lugar,_), objeto(Objeto, Lugar),estado_objeto(Objeto, abierto),
+cerrar_puerta(Lugar):-
+        ubicacion_persona(Lugar,_), objeto(Objeto, puerta, Lugar),estado_objeto(Objeto, abierto),
         retract(estado_objeto(Objeto, abierto)),
         assertz(estado_objeto(Objeto, cerrado)).
 
 cerrar_puertas():-
-    objeto(Objeto, _), estado_objeto(Objeto, abierto),
+    objeto(Objeto, puerta, _), estado_objeto(Objeto, abierto),
     retract(estado_objeto(Objeto, abierto)),
     assertz(estado_objeto(Objeto, cerrado)).
+
+cerrar_ventanas():-
+    objeto(Objeto, ventana, _), estado_objeto(Objeto, abierto),
+    retract(estado_objeto(Objeto, abierto)),
+    assertz(estado_objeto(Objeto, cerrado)).
+
+cerrar_ventana(Lugar):-
+        ubicacion_persona(Lugar,_), objeto(Objeto, ventana, Lugar),estado_objeto(Objeto, abierto),
+        retract(estado_objeto(Objeto, abierto)),
+        assertz(estado_objeto(Objeto, cerrado)).
 
 fecha_tiempo_actual(Fecha, Tiempo):-
     get_time(Stamp),
