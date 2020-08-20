@@ -60,7 +60,7 @@ class PrologRepositorio(metaclass=Singleton):
                             self.prologInstance.assertz(
                                 "objeto_agua(" + self.transform_prolog_name(aux2.nombre) + ", fijo," + str(
                                     aux2.unidadAgua) + ")")
-                        self.prologInstance.assertz("estado_objeto_agua("+self.transform_prolog_name(aux2.nombre)+", cerrado, fecha(0,0,0), tiempo(0,0,0)")
+                        self.prologInstance.assertz("estado_objeto_agua("+self.transform_prolog_name(aux2.nombre)+", cerrado, fecha(0,0,0), tiempo(0,0,0))")
 
                     elif aux3 == "Contundente":
                         self.prologInstance.assertz(

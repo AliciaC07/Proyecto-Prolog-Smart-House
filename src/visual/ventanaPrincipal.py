@@ -277,7 +277,7 @@ class Ui_ventanaPrincipalDesigner(object):
     tiposObjetos = {'Nevera': 'Electrodomestico', 'Estufa': 'Electrodomestico', 'Abanico': 'Electrodomestico',
                     'Bombillo': 'Electrodomestico'
         , 'Lavadora': 'Electrodomestico', 'Nevera': 'Electrodomestico', 'Toilet': 'Agua', 'Lavaplatos': 'Agua',
-                    'Puerta': 'Contundente', 'Ventana': 'Contundente'}
+                    'Puerta': 'Contundente', 'Ventana': 'Contundente', 'Lavamanos' :'Agua'}
 
     def retranslateUi(self, ventanaPrincipalDesigner):
         _translate = QtCore.QCoreApplication.translate
