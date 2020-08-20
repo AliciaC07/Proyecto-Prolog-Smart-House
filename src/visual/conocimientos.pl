@@ -1,7 +1,7 @@
 :- dynamic lugar/3.
 :- dynamic planta/2.
 :- dynamic electrodomestico/2.
-:- dynamic objeto_agua/2.
+:- dynamic objeto_agua/3.
 :- dynamic estado_electrodomestico/4.
 :- dynamic objeto/3.
 :- dynamic estado_objeto/2.
@@ -13,7 +13,7 @@
 :- dynamic unidad_agua/1.
 :- dynamic consumo_electrodomestico/4.
 :- dynamic consumo_agua/4.
-:- dynamic uso_agua/2.
+:- dynamic estado_objeto_agua/4.
 
 %casa_info(nombrecasa, ubicacion, [plantas])
 % planta(nombre_planta, lista_lugares)
@@ -52,11 +52,14 @@
 %electrodomestico(lavaplatos1, 246).
 
 %Objetos de agua
-%objeto_agua(toilet1, 6.05).
-%objeto_agua(fregadero1, 88.8).
-%objeto_agua(lavadora1, 47).
-%objeto_agua(lavadora2, 47).
-%objeto_agua(lavaplatos1, 12).
+objeto_agua(toilet1,fijo ,6.05).
+objeto_agua(fregadero1, continuo ,88.8).
+%objeto_agua(lavadora1,fijo, 47).
+%objeto_agua(lavadora2,fijo, 47).
+%objeto_agua(lavaplatos1,fijo, 12).
+
+estado_objeto_agua(toilet1, cerrado, fecha(0,0,0), tiempo(0,0,0)).
+estado_objeto_agua(fregadero1, cerrado, fecha(0,0,0), tiempo(0,0,0)).
 
 % estado_electrodomestico(dispositivo, estado/encendido/apagado, fecha, tiempo)
 %estado_electrodomestico(nevera1, encendido).
@@ -198,6 +201,32 @@ encender_electrodomestico(Electrodomestico):-
 calcular_consumo_electrodomestico(Electrodomestico, Horas_encendido, Res):-
     electrodomestico(Electrodomestico, Consumo),
     Res is (Horas_encendido * Consumo).
+
+abrir_objeto_agua(Objeto_agua):-
+    retract(estado_objeto_agua(Objeto_agua,_,_,_)),
+    fecha_tiempo_actual(Fecha, Tiempo),
+    assertz(estado_objeto_agua(Objeto_agua, abierto, Fecha, Tiempo)),!.
+
+calcular_consumo_agua(Objeto_agua, Horas_uso, Res):-
+    objeto_agua(Objeto_agua, continuo,Consumo),
+    Res is (Horas_uso * Consumo),!.
+
+usar_objeto_agua(Objeto_agua):-
+    objeto_agua(Objeto_agua, fijo, Consumo),
+    estado_objeto_agua(Objeto_agua, _, Fecha_vieja, Tiempo_viejo),
+    fecha_tiempo_actual(Fecha_actual, Tiempo_actual),
+    assertz(consumo_agua(Objeto_agua,Consumo, Fecha_vieja, Fecha_actual)),
+    retract(estado_objeto_agua(Objeto_agua,_,_,_)),
+    assertz(estado_objeto_agua(Objeto_agua, cerrado, Fecha_actual, Tiempo_actual)),!.
+
+cierre_objeto_agua(Objeto_agua):-
+    estado_objeto_agua(Objeto_agua, _, Fecha_vieja, Tiempo_viejo),
+    fecha_tiempo_actual(Fecha_actual, Tiempo_actual),
+    fechas_horas(Fecha_actual, Tiempo_actual, Fecha_vieja, Tiempo_viejo, Horas),
+    calcular_consumo_agua(Objeto_agua, Horas, Consumo),
+    assertz(consumo_agua(Objeto_agua, Consumo, Fecha_vieja, Fecha_actual)),
+    retract(estado_objeto_agua(Objeto_agua,_,_,_)),
+    assertz(estado_objeto_agua(Objeto_agua, cerrado, Fecha_actual, Tiempo_actual)),!.
 
 
 apagar_electrodomestico(Electrodomestico):-

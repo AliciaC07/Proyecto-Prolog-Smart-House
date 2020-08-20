@@ -52,12 +52,16 @@ class PrologRepositorio(metaclass=Singleton):
                         self.prologInstance.assertz(hecho)
                         self.prologInstance.assertz(hechoestado)
                     elif aux3 == "Agua":
-                        self.prologInstance.assertz(
-                            "objeto_agua(" + self.transform_prolog_name(aux2.nombre) + ", " + str(aux2.unidadAgua) + ")")
                         if aux2.naturaleza == "Lavamanos":
-                            self.prologInstance.assertz("uso_agua("+self.transform_prolog_name(aux2.nombre)+", continuo)")
+                            self.prologInstance.assertz(
+                                "objeto_agua(" + self.transform_prolog_name(aux2.nombre) + ", continuo,"+ str(
+                                    aux2.unidadAgua) + ")")
                         else:
-                            self.prologInstance.assertz("uso_agua("+self.transform_prolog_name(aux2.nombre)+", fijo)")
+                            self.prologInstance.assertz(
+                                "objeto_agua(" + self.transform_prolog_name(aux2.nombre) + ", fijo," + str(
+                                    aux2.unidadAgua) + ")")
+                        self.prologInstance.assertz("estado_objeto_agua("+self.transform_prolog_name(aux2.nombre)+", cerrado, fecha(0,0,0), tiempo(0,0,0)")
+
                     elif aux3 == "Contundente":
                         self.prologInstance.assertz(
                             "objeto(" + self.transform_prolog_name(aux2.nombre) + ", "+self.transform_prolog_name(aux2.naturaleza)+","+ self.transform_prolog_name(aux.nombre) + ")")
