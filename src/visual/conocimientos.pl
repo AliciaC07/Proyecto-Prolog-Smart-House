@@ -1,5 +1,3 @@
-:- dynamic falso/1.
-:- dynamic cierto/1.
 :- dynamic lugar/3.
 :- dynamic planta/2.
 :- dynamic electrodomestico/2.
@@ -46,7 +44,7 @@
 %electrodomestico(computadora1, 0.450).
 %electrodomestico(computadora2, 0.450).
 %electrodomestico(computadora3, 0.450).
-electrodomestico(abanico1, 0.9).
+%electrodomestico(abanico1, 0.9).
 %electrodomestico(abanico2, 0.9).
 %electrodomestico(abanico3, 0.9).
 %electrodomestico(lavadora1, 255).
@@ -74,7 +72,7 @@ electrodomestico(abanico1, 0.9).
 %estado_electrodomestico(computadora1, encendido).
 %estado_electrodomestico(computadora2, encendido).
 %estado_electrodomestico(computadora3, encendido).
-estado_electrodomestico(abanico1, encendido).
+%estado_electrodomestico(abanico1, encendido).
 %estado_electrodomestico(abanico2, encendido).
 %estado_electrodomestico(abanico3, encendido).
 %estado_electrodomestico(lavadora1, encendido).
@@ -125,17 +123,15 @@ ubicacion_persona(sala1, roberto).
 ubicacion_persona(comedor1, nicole).
 ubicacion_persona(sala1, papotico).
 
-calcula_consumo([], 0,0).
-calcula_consumo([H|T], TotalE,TotalA):-
-    electrodomestico(H, ConsumoE);
-    objeto_agua(H,ConsumoA),
-    calcula_consumo(T, TotalFuturoE,TotalFuturoA),
-    TotalE is (TotalFuturoE + ConsumoE),
-    TotalA is (TotalFuturoA + ConsumoA).
+calcula_consumo([], 0).
+calcula_consumo([H|T], Total):-
+    electrodomestico(H, Consumo),
+    calcula_consumo(T, TotalFuturo),
+    Total is (TotalFuturo + Consumo).
 
-calcular_consumo_lugar(Lugar, ConsumoE,ConsumoA):-
+calcular_consumo_electrico(Lugar, Consumo):-
     lugar(Lugar, _, Objetos),
-    calcula_consumo(Objetos, ConsumoE,ConsumoA).
+    calcula_consumo(Objetos, Consumo).
 
 
 cerrar_puerta():-
@@ -202,20 +198,3 @@ apagar_electrodomestico(Electrodomestico):-
     assertz(consumo_electrodomestico(Electrodomestico, Consumo, Fecha_vieja, Fecha_actual)),
     retract(estado_electrodomestico(Electrodomestico,_,_,_)),
     assertz(estado_electrodomestico(Electrodomestico, apagado, Fecha_actual, Tiempo_actual)).
-
-
-
-
-
-
-resuelve(true).
-resuelve((A,B)) :- resuelve(A), resuelve(B).
-resuelve(A) :- clause(A,B), resuelve(B).
-resuelve(A) :- preguntable(A), not(conocido(A)), pregunta(A, Resp), responde(Resp, A).
-pregunta(A, Resp) :- visualiza_pregunta(A), read(Resp).
-responde(si, A) :- assert(A).
-responde(no, A) :- assert(falso(A)), fail.
-conocido(A) :- A.
-conocido(A) :- falso(A).
-visualiza_pregunta(A) :- write(A), write(' ¿(si/no)? ').
-preguntable(estado_electrodomestico(E,X,F,T)).
