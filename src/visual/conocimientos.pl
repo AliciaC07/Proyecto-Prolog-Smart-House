@@ -37,6 +37,7 @@
 %electrodomestico(television2, 263).
 %electrodomestico(television3, 263).
 %electrodomestico(bombillo1, 0.06).
+%estado_electrodomestico(bombillo1, apagado, date(0,0,0), time(0,0,0))
 %electrodomestico(bombillo2, 0.06).
 %electrodomestico(bombillo3, 0.06).
 %electrodomestico(bombillo4, 0.06).
@@ -52,14 +53,14 @@
 %electrodomestico(lavaplatos1, 246).
 
 %Objetos de agua
-objeto_agua(toilet1,fijo ,6.05).
-objeto_agua(fregadero1, continuo ,88.8).
+%objeto_agua(toilet1,fijo ,6.05).
+%objeto_agua(fregadero1, continuo ,88.8).
 %objeto_agua(lavadora1,fijo, 47).
 %objeto_agua(lavadora2,fijo, 47).
 %objeto_agua(lavaplatos1,fijo, 12).
 
-estado_objeto_agua(toilet1, cerrado, fecha(0,0,0), tiempo(0,0,0)).
-estado_objeto_agua(fregadero1, cerrado, fecha(0,0,0), tiempo(0,0,0)).
+%estado_objeto_agua(toilet1, cerrado, fecha(0,0,0), tiempo(0,0,0)).
+%estado_objeto_agua(fregadero1, cerrado, fecha(0,0,0), tiempo(0,0,0)).
 
 % estado_electrodomestico(dispositivo, estado/encendido/apagado, fecha, tiempo)
 %estado_electrodomestico(nevera1, encendido).
@@ -156,12 +157,6 @@ cerrar_ventana(Lugar):-
         ubicacion_persona(Lugar,_), objeto(Objeto, ventana, Lugar),estado_objeto(Objeto, abierto),
         retract(estado_objeto(Objeto, abierto)),
         assertz(estado_objeto(Objeto, cerrado)).
-
-fecha_tiempo_actual(Fecha, Tiempo):-
-    get_time(Stamp),
-    stamp_date_time(Stamp, Datetime, local),
-    date_time_value(time, Datetime, Tiempo),
-    date_time_value(date, Datetime, Fecha).
 
 fecha_tiempo_actual(Fecha, Tiempo):-
     get_time(Stamp),

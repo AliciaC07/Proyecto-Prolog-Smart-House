@@ -57,3 +57,18 @@ def objeto_naturaleza_tipo(objeto):
         return AGUA
     elif objeto.naturaleza == "Lavaplatos":
         return ELECTRODOMESTICO_AGUA
+
+
+def determinar_icono_lugar(lugar):
+    if lugar.tipo == "Sala":
+        return SALA_ICON
+    if lugar.tipo == "Comedor":
+        return COMEDOR_ICON
+    if lugar.tipo == "Habitacion":
+        return HABITACION_ICON
+    if lugar.tipo == "Bano":
+        return DUCHA_ICON
+    if lugar.tipo == "Garaje":
+        return GARAJE_ICON
+    if lugar.tipo == "Cocina":
+        return COCINA_ICON
