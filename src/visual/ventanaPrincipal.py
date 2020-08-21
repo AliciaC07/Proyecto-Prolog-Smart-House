@@ -472,15 +472,13 @@ class Ui_ventanaPrincipalDesigner(object):
             self.lwObjetos.setItem(rowPosition, 0, QTableWidgetItem(objeto.nombre))
             itemplanta = ""
             itemlugar = listItems[0].text()
-            if not listItemsPlanta: return
-            for itemp in listItemsPlanta:
-                itemplanta = itemp.text()
+            itemplanta = listItems[1].text()
 
-                self.lwLugares.row(listItems[0])
+            self.lwLugares.row(listItems[0])
 
-                lugars = self.GetAllPlantas(itemplanta, itemlugar)
-                lugars.objetos.append(objeto)
-                self.lwObjetos.setItem(rowPosition, 1, QTableWidgetItem(itemlugar))
+            lugars = self.GetAllPlantas(itemplanta, itemlugar)
+            lugars.objetos.append(objeto)
+            self.lwObjetos.setItem(rowPosition, 1, QTableWidgetItem(itemlugar))
 
         self.contadorObjeto += self.contadorObjeto + random.randint(2, 10)
         self.inputUnidad.clear()
