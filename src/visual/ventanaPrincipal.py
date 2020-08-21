@@ -16,12 +16,14 @@ from src.modelo.Lugar import Lugar
 from src.modelo.Objetos import Objeto
 from src.modelo.Planta import Planta
 from src.visual.PrologRepositorio import PrologRepositorio
+from src.visual.ShHome import ShHome
 
 
 class Ui_ventanaPrincipalDesigner(object):
     def __init__(self):
         self.prolog = PrologRepositorio()
         self.ventana_app = None
+        self.ventana_suprema = None
         self.app = None
 
     def setupUi(self, ventanaPrincipalDesigner):
@@ -267,6 +269,7 @@ class Ui_ventanaPrincipalDesigner(object):
         self.btnAgregarFamiliar.clicked.connect(self.SetFamilias)
         self.btnRemoverFamiliar.clicked.connect(self.RemoveFamiliares)
         self.btnFinalizar.clicked.connect(self.InsertarEstructura)
+        self.ventana_suprema = ventanaPrincipalDesigner
 
     contadorplanta = 1
     contadorLugar = 1
@@ -541,11 +544,11 @@ class Ui_ventanaPrincipalDesigner(object):
                     return False
         return True
 
-    # def abrir_casa(self):
-    #    self.ventana_app = QtWidgets.QMainWindow()
-    #   self.app = ShHome()
-    #    self.app.setupUi(self.ventana_app)
-    #   self.ventana_app.show()
+    def abrir_casa(self):
+        self.ventana_app = QtWidgets.QMainWindow()
+        self.app = ShHome()
+        self.app.setupUi(self.ventana_app)
+        self.ventana_app.show()
 
     def InsertarEstructura(self):
         if self.validar() and self.validar2() and self.inputNombreCasa.text() != "" and self.inputUbicacion.text() != "" and self.cbxUnidadacuatica.currentText() != "<Seleccione la unidad de medida>" and self.cbxUnidadelectrica.currentText() != "<Seleccione la unidad de medida>":
@@ -557,9 +560,9 @@ class Ui_ventanaPrincipalDesigner(object):
                                         self.cbxUnidadelectrica.currentText(), self.cbxUnidadacuatica.currentText())
             self.prolog.plantas = self.plantas
             self.clearAll()
-            # self.centralwidget.close()
-            # self.ventana_suprema.close()
-            # self.abrir_casa()
+            self.centralwidget.close()
+            self.ventana_suprema.close()
+            self.abrir_casa()
         else:
             error = QtWidgets.QErrorMessage()
             error.setWindowModality(QtCore.Qt.WindowModal)

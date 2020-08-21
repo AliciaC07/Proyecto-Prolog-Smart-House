@@ -1,7 +1,5 @@
 from pyswip import Prolog
 
-from src.modelo.Lugar import Lugar
-from src.modelo.Objetos import Objeto
 from src.modelo.Planta import Planta
 from src.modelo.Singleton import Singleton
 
@@ -123,6 +121,45 @@ class PrologRepositorio(metaclass=Singleton):
     def CloseAllDoors(self):
         self.prologInstance.query("cerrar_puertas()")
         return "All doors closed"
+
+    def obtener_estado_electrodomestico(self, electrodomestico):
+        print(electrodomestico.nombre)
+        print(electrodomestico.tipo)
+        print(electrodomestico.naturaleza)
+        print(electrodomestico.unidad)
+        print(electrodomestico.unidadAgua)
+        ans = None
+        check = self.prologInstance.query("estado_electrodomestico(" + electrodomestico.nombre + ", Estado, _, _)")
+        for sol in check:
+            ans = str(sol["Estado"])
+        return ans
+
+    def apagar_electrodomestico(self, electrodomestico):
+        self.debug_listing("estado_electrodomestico")
+        res = self.prologInstance.query("apagar_electrodomestico(" + electrodomestico.nombre + ")")
+        for check in res:
+            print(check)
+        self.debug_listing("estado_electrodomestico")
+        self.debug_listing("consumo_electrodomestico")
+        return self.obtener_estado_electrodomestico(electrodomestico) == "apagado"
+
+    def encender_electrodomestico(self, electrodomestico):
+        self.debug_listing("estado_electrodomestico")
+        print(electrodomestico.nombre)
+        print(electrodomestico.tipo)
+        print(electrodomestico.naturaleza)
+        print(electrodomestico.unidad)
+        print(electrodomestico.unidadAgua)
+        res = self.prologInstance.query("encender_electrodomestico(" + electrodomestico.nombre + ")")
+        for check in res:
+            print(check)
+        self.debug_listing("estado_electrodomestico")
+        return self.obtener_estado_electrodomestico(electrodomestico) == "encendido"
+
+    def debug_listing(self, sentencia):
+        res = self.prologInstance.query("listing(" + sentencia+")")
+        for output in res:
+            print(output)
 
     def convert_strings_of_list(self, lugares):
         nombres = []
