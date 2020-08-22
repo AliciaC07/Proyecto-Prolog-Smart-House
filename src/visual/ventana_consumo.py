@@ -94,8 +94,8 @@ class Ui_Dialog(object):
             consumoN = 0
             consumo = ""
             elec = dict()
-            Q1 = self.prologInstance.query("calcular_consumo_electrodomestico(" + "X," + "2" + ", Consumo)")
-            Q2 = self.prologInstance.query("calcular_consumo_agua(" + "X," + "2" + ", Consumo)")
+            Q1 = self.prologInstance.query("calcular_consumo_electrodomesticos(" + "X," + "Consumo" + ", date(2020, 8, _))")
+            Q2 = self.prologInstance.query("calcular_consumo_agua(" + "X," + "Consumo" + ", date(2020, 8, _))")
             for solution in Q1:
                 nombreN += 1
                 nombre = "Electrodomestico #"+str(nombreN)
