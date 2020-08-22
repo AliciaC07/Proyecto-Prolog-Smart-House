@@ -43,22 +43,22 @@
 %electrodomestico(bombillo3, 0.06).
 %electrodomestico(bombillo4, 0.06).
 %electrodomestico(bombillo5, 0.06).
-%electrodomestico(computadora1, 0.450).
-%electrodomestico(computadora2, 0.450).
-%electrodomestico(computadora3, 0.450).
-%electrodomestico(abanico1, 0.9).
-%electrodomestico(abanico2, 0.9).
-%electrodomestico(abanico3, 0.9).
-%electrodomestico(lavadora1, 255).
-%electrodomestico(lavadora2, 255).
-%electrodomestico(lavaplatos1, 246).
+electrodomestico(computadora1, 0.450).
+electrodomestico(computadora2, 0.450).
+electrodomestico(computadora3, 0.450).
+electrodomestico(abanico1, 0.9).
+electrodomestico(abanico2, 0.9).
+electrodomestico(abanico3, 0.9).
+electrodomestico(lavadora1, 255).
+electrodomestico(lavadora2, 255).
+electrodomestico(lavaplatos1, 246).
 
 %Objetos de agua
-%objeto_agua(toilet1,fijo ,6.05).
-%objeto_agua(fregadero1, continuo ,88.8).
-%objeto_agua(lavadora1,fijo, 47).
-%objeto_agua(lavadora2,fijo, 47).
-%objeto_agua(lavaplatos1,fijo, 12).
+objeto_agua(toilet1,fijo ,6.05).
+objeto_agua(fregadero1, continuo ,88.8).
+objeto_agua(lavadora1,fijo, 47).
+objeto_agua(lavadora2,fijo, 47).
+objeto_agua(lavaplatos1,fijo, 12).
 
 %estado_objeto_agua(toilet1, cerrado, fecha(0,0,0), tiempo(0,0,0)).
 %estado_objeto_agua(fregadero1, cerrado, fecha(0,0,0), tiempo(0,0,0)).

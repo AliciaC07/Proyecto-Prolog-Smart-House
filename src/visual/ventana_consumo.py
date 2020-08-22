@@ -9,6 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from pyswip import Prolog
 
 
 class Ui_Dialog(object):
@@ -62,6 +63,7 @@ class Ui_Dialog(object):
         self.buttonBox.accepted.connect(Dialog.accept)
         self.buttonBox.rejected.connect(Dialog.reject)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
+        self.buscarConsumoDeObjeto(self.cbxfiltroobjetos.currentText())
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
@@ -80,6 +82,42 @@ class Ui_Dialog(object):
         self.cbxfiltroobjetos.setItemText(2, _translate("Dialog", "Electricidad"))
         self.btnbuscar.setText(_translate("Dialog", "Buscar"))
         self.label.setText(_translate("Dialog", "Consumo de objetos"))
+
+
+
+    def buscarConsumoDeObjeto(self, Query):
+        self.prologInstance = Prolog()
+        self.prologInstance.consult('conocimientos.pl')
+        if Query == "<Todos>":
+            nombreN = 0
+            nombre = ""
+            consumoN = 0
+            consumo = ""
+            elec = dict()
+            Q1 = self.prologInstance.query("calcular_consumo_electrodomestico(" + "X," + "2" + ", Consumo)")
+            Q2 = self.prologInstance.query("calcular_consumo_agua(" + "X," + "2" + ", Consumo)")
+            for solution in Q1:
+                nombreN += 1
+                nombre = "Electrodomestico #"+str(nombreN)
+                consumoN += 1
+                elec.update({nombre:str(solution["X"]), consumo:str(solution["Consumo"])})
+
+            for solution in Q2:
+                nombre += 1
+                consumo += 1
+                elec.update({nombre: str(solution["X"]), consumo: str(solution["Consumo"])})
+
+            return elec
+    def setTable(self):
+        self.tbobjetos.clear()
+        objetos = dict()
+        ind = 0
+        objetos.update(self.buscarConsumoDeObjeto(self.cbxfiltroobjetos.currentIndex()))
+        for aux in objetos:
+            ind += 1
+            rowPosition = self.tbobjetos.rowCount()
+            self.tbobjetos.insertRow(rowPosition)
+            self.tbobjetos.setItem(rowPosition, 0, objetos[ind])
 
 
 
