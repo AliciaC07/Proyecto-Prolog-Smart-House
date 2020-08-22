@@ -246,11 +246,8 @@ calcular_consumo_agua(Objeto_agua, Horas_uso, Res):-
 
 usar_objeto_agua(Objeto_agua):-
     objeto_agua(Objeto_agua, fijo, Consumo),
-    estado_objeto_agua(Objeto_agua, _, Fecha_vieja, Tiempo_viejo),
-    fecha_tiempo_actual(Fecha_actual, Tiempo_actual),
-    assertz(consumo_agua(Objeto_agua,Consumo, Fecha_vieja, Fecha_actual)),
-    retract(estado_objeto_agua(Objeto_agua,_,_,_)),
-    assertz(estado_objeto_agua(Objeto_agua, cerrado, Fecha_actual, Tiempo_actual)),!.
+    fecha_tiempo_actual(Fecha_actual, _),
+    assertz(consumo_agua(Objeto_agua, Consumo, Fecha_actual, Fecha_actual)).
 
 cierre_objeto_agua(Objeto_agua):-
     estado_objeto_agua(Objeto_agua, _, Fecha_vieja, Tiempo_viejo),
