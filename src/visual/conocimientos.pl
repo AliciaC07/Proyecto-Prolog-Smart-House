@@ -269,4 +269,15 @@ apagar_electrodomestico(Electrodomestico):-
     retract(estado_electrodomestico(Electrodomestico,_,_,_)),
     assertz(estado_electrodomestico(Electrodomestico, apagado, Fecha_actual, Tiempo_actual)).
 
+listado_consumo_de_aparato_por_fechas(Aparato, Filtro_fecha, Res):-
+    findall(Consumo, consumo(Aparato, Consumo, Filtro_fecha, _, Filtro_fecha, _, _), Res).
 
+calculo_consumo_electrodomesticos(Electrodomestico, ConsumoElectrico, Fecha_filtrado):-
+    electrodomestico(Electrodomestico, _),
+    listado_consumo_de_aparato_por_fechas(Electrodomestico, Fecha_filtrado, Listado),
+    sum(Listado, ConsumoElectrico).
+
+calcula_consumo_agua(Objeto_agua, ConsumoAgua, Fecha_filtrado):-
+    objeto_agua(Objeto_agua, _, _),
+        listado_consumo_de_aparato_por_fechas(Objeto_agua, Fecha_filtrado, Listado),
+    sum(Listado, ConsumoAgua).
