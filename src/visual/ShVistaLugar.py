@@ -1,7 +1,12 @@
 from functools import partial
 
 from src.visual.Helper import *
+from src.visual.PrologRepositorio import PrologRepositorio
 from src.visual.QtHelper import *
+from src.visual.ShObjetoAguaContinuo import ShObjetoAguaContinuo
+from src.visual.ShObjetoAguaFijo import ShObjetoAguaFijo
+from src.visual.ShObjetoEAContinuo import ShObjetoEAContinuo
+from src.visual.ShObjetoEAFijo import ShObjetoEAFijo
 from src.visual.ShVistaObjeto import ShVistaObjeto
 from src.visual.ShVistaObjetoElectrico import ShDetalleObjetoElectrico
 from src.visual.resource_locator import *
@@ -37,6 +42,7 @@ class ShVistaLugar:
         # Prolog instance
         self.lugar = lugar
         self.cantidad_objetos = len(self.lugar.objetos)
+        self.prolog = PrologRepositorio()
 
     def cabeceraVentana(self):
         pass
@@ -48,16 +54,33 @@ class ShVistaLugar:
             self.vista_objeto = ShDetalleObjetoElectrico(objeto)
             self.vista_objeto.setupUi(self.ventana_vista_objeto)
             self.ventana_vista_objeto.show()
-        elif tipo_objeto == CONTUNDENTE:
+        elif tipo_objeto == AGUA:
+            if self.prolog.obtener_tipo_objeto_agua(objeto) == "fijo":
+                self.ventana_vista_objeto = QtWidgets.QMainWindow()
+                self.vista_objeto = ShObjetoAguaFijo(objeto)
+                self.vista_objeto.setupUi(self.ventana_vista_objeto)
+                self.ventana_vista_objeto.show()
+            else:
+                self.ventana_vista_objeto = QtWidgets.QMainWindow()
+                self.vista_objeto = ShObjetoAguaContinuo(objeto)
+                self.vista_objeto.setupUi(self.ventana_vista_objeto)
+                self.ventana_vista_objeto.show()
+        elif tipo_objeto == ELECTRODOMESTICO_AGUA:
+            if self.prolog.obtener_tipo_objeto_agua(objeto) == "fijo":
+                self.ventana_vista_objeto = QtWidgets.QMainWindow()
+                self.vista_objeto = ShObjetoEAFijo(objeto)
+                self.vista_objeto.setupUi(self.ventana_vista_objeto)
+                self.ventana_vista_objeto.show()
+            else:
+                self.ventana_vista_objeto = QtWidgets.QMainWindow()
+                self.vista_objeto = ShObjetoEAContinuo(objeto)
+                self.vista_objeto.setupUi(self.ventana_vista_objeto)
+                self.ventana_vista_objeto.show()
+        else:
             self.ventana_vista_objeto = QtWidgets.QMainWindow()
             self.vista_objeto = ShVistaObjeto(objeto)
             self.vista_objeto.setupUi(self.ventana_vista_objeto)
             self.ventana_vista_objeto.show()
-        else:
-            print(objeto.nombre)
-            print(objeto.tipo)
-            print(objeto.naturaleza)
-            print(objeto.unidad)
 
     def generar_objetos_disponibles(self):
         if self.cantidad_objetos > self.cantidad_paneles * 2 + 1:

@@ -460,7 +460,7 @@ class Ui_ventanaPrincipalDesigner(object):
                 self.inputUnidadAgua.setText(str(0))
 
             tipoO = []
-            if self.cbxObjetos.currentText() == "Lavadora":
+            if self.cbxObjetos.currentText() == "Lavadora" or self.cbxObjetos.currentText() == "Lavaplatos":
                 tipoO = ['Agua', 'Electrodomestico']
             else:
                 tipoO.append(self.tiposObjetos[self.cbxObjetos.currentText()])

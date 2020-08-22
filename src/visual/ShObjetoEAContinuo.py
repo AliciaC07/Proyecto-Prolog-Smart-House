@@ -16,11 +16,12 @@ from src.visual.PrologRepositorio import PrologRepositorio
 from src.visual.QtHelper import set_img_to_label
 
 
-class ShDetalleObjetoElectrico(object):
+class ShObjetoEAContinuo(object):
 
     def __init__(self, objeto):
         self.objeto = objeto
         self.prologRepository = PrologRepositorio()
+        self.categoria_objeto_agua = str(self.prologRepository.obtener_tipo_objeto_agua(self.objeto))
 
     def setupUi(self, dialogo_objeto):
         dialogo_objeto.setObjectName("dialogo_objeto")
@@ -88,6 +89,7 @@ class ShDetalleObjetoElectrico(object):
         self.lbl_consumo_agua.setStyleSheet("color: green")
         self.lbl_consumo_electrico.setStyleSheet("color: green")
         self.prologRepository.encender_electrodomestico(self.objeto)
+        self.prologRepository.abrir_objeto_agua(self.objeto)
 
     def apagar(self):
         self.btn_apagar.setDisabled(True)
@@ -95,6 +97,7 @@ class ShDetalleObjetoElectrico(object):
         self.lbl_consumo_agua.setStyleSheet("color: red")
         self.lbl_consumo_electrico.setStyleSheet("color: red")
         self.prologRepository.apagar_electrodomestico(self.objeto)
+        self.prologRepository.cerrar_objeto_agua(self.objeto)
 
     def iniciar(self):
         if self.prologRepository.obtener_estado_electrodomestico(self.objeto) == "apagado":
@@ -112,7 +115,8 @@ class ShDetalleObjetoElectrico(object):
         self.lbl_nombre.setText(self.objeto.nombre)
         self.lbl_estado.setText(self.prologRepository.obtener_estado_electrodomestico(self.objeto))
         self.lbl_consumo_electrico.setText(str(self.objeto.unidad))
-        self.lbl_consumo_agua.setText("N/A")
+        self.lbl_consumo_agua.setText(str(self.objeto.unidadAgua))
+        self.lbl_tipo.setText(self.categoria_objeto_agua + "/" + self.objeto.naturaleza)
         set_img_to_label(self.img_objeto, determinar_icono_objeto(self.objeto))
 
     def retranslateUi(self, dialogo_objeto):
@@ -138,7 +142,7 @@ if __name__ == "__main__":
     objeto = Objeto("bombillo1", ["electrodomestico"], 0.06, 0, "Bombillo")
     app = QtWidgets.QApplication(sys.argv)
     dialogo_objeto = QtWidgets.QDialog()
-    ui = ShDetalleObjetoElectrico(objeto)
+    ui = ShObjetoEAContinuo(objeto)
     ui.setupUi(dialogo_objeto)
     dialogo_objeto.show()
     sys.exit(app.exec_())

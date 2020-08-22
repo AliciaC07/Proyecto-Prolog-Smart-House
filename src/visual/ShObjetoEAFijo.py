@@ -11,16 +11,17 @@ from functools import partial
 from PyQt5 import QtCore, QtWidgets
 
 from src.modelo.Objetos import Objeto
-from src.visual.Helper import determinar_icono_objeto
+from src.visual.Helper import *
 from src.visual.PrologRepositorio import PrologRepositorio
-from src.visual.QtHelper import set_img_to_label
+from src.visual.QtHelper import *
 
 
-class ShDetalleObjetoElectrico(object):
+class ShObjetoEAFijo(object):
 
     def __init__(self, objeto):
         self.objeto = objeto
         self.prologRepository = PrologRepositorio()
+        self.categoria_objeto_agua = str(self.prologRepository.obtener_tipo_objeto_agua(self.objeto))
 
     def setupUi(self, dialogo_objeto):
         dialogo_objeto.setObjectName("dialogo_objeto")
@@ -37,6 +38,9 @@ class ShDetalleObjetoElectrico(object):
         self.btn_encender = QtWidgets.QPushButton(dialogo_objeto)
         self.btn_encender.setGeometry(QtCore.QRect(130, 220, 101, 41))
         self.btn_encender.setObjectName("btn_encender")
+        self.btn_usar = QtWidgets.QPushButton(dialogo_objeto)
+        self.btn_usar.setGeometry(QtCore.QRect(260, 220, 101, 41))
+        self.btn_usar.setObjectName("btn_usar")
         self.btn_apagar = QtWidgets.QPushButton(dialogo_objeto)
         self.btn_apagar.setGeometry(QtCore.QRect(20, 220, 101, 41))
         self.btn_apagar.setObjectName("btn_apagar")
@@ -75,12 +79,7 @@ class ShDetalleObjetoElectrico(object):
         self.llenar_datos()
         self.btn_encender.clicked.connect(partial(self.encender))
         self.btn_apagar.clicked.connect(partial(self.apagar))
-
-        # Aparte hay que crear el boton de uso para electrodomesticos que son de un uso:
-        # por ejemplo:
-        # Si es continuo, pues no hay que agregar el boton.
-        # pero si es de un uso, hay que agregarlo.
-        print(self.objeto.nombre)
+        self.btn_usar.clicked.connect(partial(self.usar))
 
     def encender(self):
         self.btn_apagar.setDisabled(False)
@@ -88,6 +87,7 @@ class ShDetalleObjetoElectrico(object):
         self.lbl_consumo_agua.setStyleSheet("color: green")
         self.lbl_consumo_electrico.setStyleSheet("color: green")
         self.prologRepository.encender_electrodomestico(self.objeto)
+        self.btn_usar.setDisabled(False)
 
     def apagar(self):
         self.btn_apagar.setDisabled(True)
@@ -95,14 +95,20 @@ class ShDetalleObjetoElectrico(object):
         self.lbl_consumo_agua.setStyleSheet("color: red")
         self.lbl_consumo_electrico.setStyleSheet("color: red")
         self.prologRepository.apagar_electrodomestico(self.objeto)
+        self.btn_usar.setDisabled(True)
+
+    def usar(self):
+        self.prologRepository.usar_objeto_agua(self.objeto)
 
     def iniciar(self):
         if self.prologRepository.obtener_estado_electrodomestico(self.objeto) == "apagado":
             self.btn_apagar.setDisabled(True)
             self.btn_encender.setDisabled(False)
+            self.btn_usar.setDisabled(False)
             self.lbl_consumo_agua.setStyleSheet("color: red")
             self.lbl_consumo_electrico.setStyleSheet("color: red")
         else:
+            self.btn_usar.setDisabled(True)
             self.btn_apagar.setDisabled(False)
             self.btn_encender.setDisabled(True)
             self.lbl_consumo_agua.setStyleSheet("color: green")
@@ -111,8 +117,10 @@ class ShDetalleObjetoElectrico(object):
     def llenar_datos(self):
         self.lbl_nombre.setText(self.objeto.nombre)
         self.lbl_estado.setText(self.prologRepository.obtener_estado_electrodomestico(self.objeto))
+        self.lbl_tipo.setText(self.categoria_objeto_agua + "/" + self.objeto.naturaleza)
         self.lbl_consumo_electrico.setText(str(self.objeto.unidad))
-        self.lbl_consumo_agua.setText("N/A")
+        self.lbl_consumo_agua.setText(str(self.objeto.unidadAgua))
+        self.lbl_tipo.adjustSize()
         set_img_to_label(self.img_objeto, determinar_icono_objeto(self.objeto))
 
     def retranslateUi(self, dialogo_objeto):
@@ -123,6 +131,7 @@ class ShDetalleObjetoElectrico(object):
         self.label_3.setText(_translate("dialogo_objeto", "Consumo:"))
         self.btn_encender.setText(_translate("dialogo_objeto", "Encender"))
         self.btn_apagar.setText(_translate("dialogo_objeto", "Apagar"))
+        self.btn_usar.setText(_translate("dialogo_objeto", "Usar"))
         self.label_4.setText(_translate("dialogo_objeto", "Electrico:"))
         self.label_5.setText(_translate("dialogo_objeto", "Agua:"))
         self.label_6.setText(_translate("dialogo_objeto", "Estado:"))
@@ -131,14 +140,3 @@ class ShDetalleObjetoElectrico(object):
         self.lbl_estado.setText(_translate("dialogo_objeto", "Valor Estado"))
         self.lbl_consumo_electrico.setText(_translate("dialogo_objeto", "Valor Consumo Electrico"))
         self.lbl_consumo_agua.setText(_translate("dialogo_objeto", "Valor Consumo Agua"))
-
-
-if __name__ == "__main__":
-    import sys
-    objeto = Objeto("bombillo1", ["electrodomestico"], 0.06, 0, "Bombillo")
-    app = QtWidgets.QApplication(sys.argv)
-    dialogo_objeto = QtWidgets.QDialog()
-    ui = ShDetalleObjetoElectrico(objeto)
-    ui.setupUi(dialogo_objeto)
-    dialogo_objeto.show()
-    sys.exit(app.exec_())
