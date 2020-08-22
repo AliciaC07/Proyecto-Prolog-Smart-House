@@ -1,17 +1,20 @@
 from src.visual.resource_locator import *
+from src.visual.PrologRepositorio import PrologRepositorio
 
 ELECTRODOMESTICO_AGUA = 1
 ELECTRODOMESTICO = 2
 AGUA = 3
 CONTUNDENTE = 4
 
+prolog = PrologRepositorio()
+
 
 def determinar_tipo_objeto(objeto):
-    if "Electrodomestico" in objeto.tipo and "Agua" in objeto.tipo:
+    if prolog.es_electrodomestico(objeto) and prolog.es_objeto_agua(objeto):
         return ELECTRODOMESTICO_AGUA
-    elif "Electrodomestico" in objeto.tipo:
+    elif prolog.es_electrodomestico(objeto):
         return ELECTRODOMESTICO
-    elif "Agua" in objeto.tipo:
+    elif prolog.es_objeto_agua(objeto):
         return AGUA
     else:
         return CONTUNDENTE

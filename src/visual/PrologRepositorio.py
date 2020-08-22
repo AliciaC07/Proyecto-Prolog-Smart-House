@@ -2,6 +2,8 @@ from pyswip import Prolog
 
 from src.modelo.Planta import Planta
 from src.modelo.Singleton import Singleton
+import requests
+import urllib.parse
 
 
 class PrologRepositorio(metaclass=Singleton):
@@ -82,11 +84,26 @@ class PrologRepositorio(metaclass=Singleton):
         for i in q5:
             print(i)
 
+    def es_electrodomestico(self, objeto):
+        self.debug_listing("electrodomestico")
+        nombre = self.transform_prolog_name(objeto.nombre)
+        return bool(list(self.prologInstance.query("electrodomestico(" + nombre + ", _)")))
+
+    def es_objeto_agua(self, objeto):
+        self.debug_listing("electrodomestico")
+        nombre = self.transform_prolog_name(objeto.nombre)
+        return bool(list(self.prologInstance.query("objeto_agua(" + nombre + ",_,_)")))
+
     def InsertInfoHouse(self, name, location, plantas, unidade, unidada):
+        url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(location) + '?format=json'
+        response = requests.get(url).json()
+        print(response[0]["lat"])
+        print(response[0]["lon"])
+        ubicacion_prolog = "('" + location + "'," + str(response[0]["lat"]) + "," + str(response[0]["lon"]) + ")"
         hechos = "casa_info("
         hechos += self.transform_prolog_name(name)
         hechos += ","
-        hechos += self.transform_prolog_name(location)
+        hechos += ubicacion_prolog
         hechos += ","
         planta = self.convert_strings_of_list(plantas)
         hechos += self.ciclo_transform(planta)
@@ -141,7 +158,7 @@ class PrologRepositorio(metaclass=Singleton):
         for check in res:
             print(check)
         self.debug_listing("estado_electrodomestico")
-        self.debug_listing("consumo_electrodomestico")
+        self.debug_listing("consumo")
         return self.obtener_estado_electrodomestico(electrodomestico) == "apagado"
 
     def encender_electrodomestico(self, electrodomestico):
@@ -211,6 +228,63 @@ class PrologRepositorio(metaclass=Singleton):
         for sol in check:
             ans = str(sol["Estado"])
         return ans
+
+    def obtener_tipo_objeto_agua(self, objeto):
+        nombre = self.transform_prolog_name(objeto.nombre)
+        ans = None
+        check = self.prologInstance.query("objeto_agua(" + nombre + " , TipoObjetoAgua, _).")
+        for res in check:
+            ans = str(res["TipoObjetoAgua"])
+        return ans
+
+    def usar_objeto_agua(self, objeto):
+        """
+        Llama a un objeto de agua fijo desde la regla usar_objeto_agua, para guardar
+        el consumo de ese objeto en prolog. El metodo se probo y funciona correctamente.
+        """
+        self.debug_listing("consumo")
+        nombre = self.transform_prolog_name(objeto.nombre)
+        ans = None
+        check = self.prologInstance.query("usar_objeto_agua(" + nombre + ")")
+        for res in check:
+            print(res)
+        self.debug_listing("consumo")
+
+    def obtener_estado_objeto_agua(self, electrodomestico):
+        """
+        Busca el estado actual de un objeto de agua en prolog, y devuelve su resultado sin convertir a string.
+        El metodo se probo y funciona correctamente.
+        """
+        nombre = self.transform_prolog_name(electrodomestico.nombre)
+        ans = None
+        check = self.prologInstance.query("estado_objeto_agua(" + nombre + ", Estado, _, _)")
+        for sol in check:
+            ans = str(sol["Estado"])
+        return ans
+
+    def cerrar_objeto_agua(self, electrodomestico):
+        nombre = self.transform_prolog_name(electrodomestico.nombre)
+        self.debug_listing("estado_objeto_agua")
+        res = self.prologInstance.query("cierre_objeto_agua(" + nombre + ")")
+        for check in res:
+            print(check)
+        self.debug_listing("estado_objeto_agua")
+        self.debug_listing("consumo")
+        return self.obtener_estado_electrodomestico(electrodomestico) == "apagado"
+
+    def abrir_objeto_agua(self, electrodomestico):
+        nombre = self.transform_prolog_name(electrodomestico.nombre)
+        self.debug_listing("estado_objeto_agua")
+        print(electrodomestico.nombre)
+        print(electrodomestico.tipo)
+        print(electrodomestico.naturaleza)
+        print(electrodomestico.unidad)
+        print(electrodomestico.unidadAgua)
+        res = self.prologInstance.query("abrir_objeto_agua(" + nombre + ")")
+        for check in res:
+            print(check)
+        self.debug_listing("estado_objeto_agua")
+        return self.obtener_estado_electrodomestico(electrodomestico) == "encendido"
 
 # prue = PrologRepositorio()
 # planta = Planta("planta1")

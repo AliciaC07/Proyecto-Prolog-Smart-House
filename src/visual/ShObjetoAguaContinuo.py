@@ -16,11 +16,12 @@ from src.visual.PrologRepositorio import PrologRepositorio
 from src.visual.QtHelper import set_img_to_label
 
 
-class ShDetalleObjetoElectrico(object):
+class ShObjetoAguaContinuo(object):
 
     def __init__(self, objeto):
         self.objeto = objeto
         self.prologRepository = PrologRepositorio()
+        self.categoria_objeto_agua = str(self.prologRepository.obtener_tipo_objeto_agua(self.objeto))
 
     def setupUi(self, dialogo_objeto):
         dialogo_objeto.setObjectName("dialogo_objeto")
@@ -87,17 +88,19 @@ class ShDetalleObjetoElectrico(object):
         self.btn_encender.setDisabled(True)
         self.lbl_consumo_agua.setStyleSheet("color: green")
         self.lbl_consumo_electrico.setStyleSheet("color: green")
-        self.prologRepository.encender_electrodomestico(self.objeto)
+        self.prologRepository.abrir_objeto_agua(self.objeto)
+        self.lbl_estado.setText(self.prologRepository.obtener_estado_objeto_agua(self.objeto))
 
     def apagar(self):
         self.btn_apagar.setDisabled(True)
         self.btn_encender.setDisabled(False)
         self.lbl_consumo_agua.setStyleSheet("color: red")
         self.lbl_consumo_electrico.setStyleSheet("color: red")
-        self.prologRepository.apagar_electrodomestico(self.objeto)
+        self.prologRepository.cerrar_objeto_agua(self.objeto)
+        self.lbl_estado.setText(self.prologRepository.obtener_estado_objeto_agua(self.objeto))
 
     def iniciar(self):
-        if self.prologRepository.obtener_estado_electrodomestico(self.objeto) == "apagado":
+        if self.prologRepository.obtener_estado_objeto_agua(self.objeto) == "cerrado":
             self.btn_apagar.setDisabled(True)
             self.btn_encender.setDisabled(False)
             self.lbl_consumo_agua.setStyleSheet("color: red")
@@ -110,9 +113,10 @@ class ShDetalleObjetoElectrico(object):
 
     def llenar_datos(self):
         self.lbl_nombre.setText(self.objeto.nombre)
-        self.lbl_estado.setText(self.prologRepository.obtener_estado_electrodomestico(self.objeto))
-        self.lbl_consumo_electrico.setText(str(self.objeto.unidad))
-        self.lbl_consumo_agua.setText("N/A")
+        self.lbl_estado.setText(self.prologRepository.obtener_estado_objeto_agua(self.objeto))
+        self.lbl_consumo_electrico.setText("N/A")
+        self.lbl_consumo_agua.setText(str(self.objeto.unidadAgua))
+        self.lbl_tipo.setText(self.categoria_objeto_agua + "/" + self.objeto.naturaleza)
         set_img_to_label(self.img_objeto, determinar_icono_objeto(self.objeto))
 
     def retranslateUi(self, dialogo_objeto):
@@ -121,8 +125,8 @@ class ShDetalleObjetoElectrico(object):
         self.label.setText(_translate("dialogo_objeto", "Nombre:"))
         self.label_2.setText(_translate("dialogo_objeto", "Tipo:"))
         self.label_3.setText(_translate("dialogo_objeto", "Consumo:"))
-        self.btn_encender.setText(_translate("dialogo_objeto", "Encender"))
-        self.btn_apagar.setText(_translate("dialogo_objeto", "Apagar"))
+        self.btn_encender.setText(_translate("dialogo_objeto", "Abrir"))
+        self.btn_apagar.setText(_translate("dialogo_objeto", "Cerrar"))
         self.label_4.setText(_translate("dialogo_objeto", "Electrico:"))
         self.label_5.setText(_translate("dialogo_objeto", "Agua:"))
         self.label_6.setText(_translate("dialogo_objeto", "Estado:"))
@@ -133,12 +137,12 @@ class ShDetalleObjetoElectrico(object):
         self.lbl_consumo_agua.setText(_translate("dialogo_objeto", "Valor Consumo Agua"))
 
 
-if __name__ == "__main__":
-    import sys
-    objeto = Objeto("bombillo1", ["electrodomestico"], 0.06, 0, "Bombillo")
-    app = QtWidgets.QApplication(sys.argv)
-    dialogo_objeto = QtWidgets.QDialog()
-    ui = ShDetalleObjetoElectrico(objeto)
-    ui.setupUi(dialogo_objeto)
-    dialogo_objeto.show()
-    sys.exit(app.exec_())
+# if __name__ == "__main__":
+#     import sys
+#     objeto = Objeto("bombillo1", ["electrodomestico"], 0.06, 0, "Bombillo")
+#     app = QtWidgets.QApplication(sys.argv)
+#     dialogo_objeto = QtWidgets.QDialog()
+#     ui = ShObjetoEAContinuo(objeto)
+#     ui.setupUi(dialogo_objeto)
+#     dialogo_objeto.show()
+#     sys.exit(app.exec_())
