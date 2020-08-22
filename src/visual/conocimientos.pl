@@ -14,6 +14,7 @@
 :- dynamic consumo_electrodomestico/4.
 :- dynamic consumo_agua/4.
 :- dynamic estado_objeto_agua/4.
+:- dynamic consumo/7.
 
 %casa_info(nombrecasa, ubicacion, [plantas])
 % planta(nombre_planta, lista_lugares)
@@ -224,7 +225,7 @@ fechas_horas(date(Y,M,D), time(H,Mn,S), date(Y2,M2,D2), time(H2,Mn2,S2), Res):-
     Diashoras is (Dias*24),
     Res is (Diashoras + Horas).
 
-%consumo_electrodomestico(nombre, consumo, fecha_prendio, fecha_apago)
+% consumo(nombre, consumo, fecha_inicial, tiempo_inicial, fecha_final, tiempo_final, duracion)
 
 encender_electrodomestico(Electrodomestico):-
     retract(estado_electrodomestico(Electrodomestico,_,_,_)),
@@ -246,15 +247,15 @@ calcular_consumo_agua(Objeto_agua, Horas_uso, Res):-
 
 usar_objeto_agua(Objeto_agua):-
     objeto_agua(Objeto_agua, fijo, Consumo),
-    fecha_tiempo_actual(Fecha_actual, _),
-    assertz(consumo_agua(Objeto_agua, Consumo, Fecha_actual, Fecha_actual)).
+    fecha_tiempo_actual(Fecha_actual, Tiempo_actual),
+    assertz(consumo(Objeto_agua, Consumo, Fecha_actual, Tiempo_actual, Fecha_actual, Tiempo_actual, 0)).
 
 cierre_objeto_agua(Objeto_agua):-
     estado_objeto_agua(Objeto_agua, _, Fecha_vieja, Tiempo_viejo),
     fecha_tiempo_actual(Fecha_actual, Tiempo_actual),
     fechas_horas(Fecha_actual, Tiempo_actual, Fecha_vieja, Tiempo_viejo, Horas),
     calcular_consumo_agua(Objeto_agua, Horas, Consumo),
-    assertz(consumo_agua(Objeto_agua, Consumo, Fecha_vieja, Fecha_actual)),
+    assertz(consumo(Objeto_agua, Consumo, Fecha_vieja, Tiempo_viejo, Fecha_actual, Tiempo_actual, Horas)),
     retract(estado_objeto_agua(Objeto_agua,_,_,_)),
     assertz(estado_objeto_agua(Objeto_agua, cerrado, Fecha_actual, Tiempo_actual)),!.
 
@@ -264,6 +265,8 @@ apagar_electrodomestico(Electrodomestico):-
     fecha_tiempo_actual(Fecha_actual, Tiempo_actual),
     fechas_horas(Fecha_actual, Tiempo_actual, Fecha_vieja, Tiempo_viejo, Horas),
     calcular_consumo_electrodomestico(Electrodomestico, Horas, Consumo),
-    assertz(consumo_electrodomestico(Electrodomestico, Consumo, Fecha_vieja, Fecha_actual)),
+    assertz(consumo(Electrodomestico, Consumo, Fecha_vieja, Tiempo_viejo, Fecha_actual, Tiempo_actual, Horas)),
     retract(estado_electrodomestico(Electrodomestico,_,_,_)),
     assertz(estado_electrodomestico(Electrodomestico, apagado, Fecha_actual, Tiempo_actual)).
+
+
