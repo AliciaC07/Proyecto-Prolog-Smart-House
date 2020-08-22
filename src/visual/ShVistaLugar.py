@@ -2,6 +2,7 @@ from functools import partial
 
 from src.visual.Helper import *
 from src.visual.QtHelper import *
+from src.visual.ShVistaObjeto import ShVistaObjeto
 from src.visual.ShVistaObjetoElectrico import ShDetalleObjetoElectrico
 from src.visual.resource_locator import *
 
@@ -45,6 +46,11 @@ class ShVistaLugar:
         if tipo_objeto == ELECTRODOMESTICO:
             self.ventana_vista_objeto = QtWidgets.QMainWindow()
             self.vista_objeto = ShDetalleObjetoElectrico(objeto)
+            self.vista_objeto.setupUi(self.ventana_vista_objeto)
+            self.ventana_vista_objeto.show()
+        elif tipo_objeto == CONTUNDENTE:
+            self.ventana_vista_objeto = QtWidgets.QMainWindow()
+            self.vista_objeto = ShVistaObjeto(objeto)
             self.vista_objeto.setupUi(self.ventana_vista_objeto)
             self.ventana_vista_objeto.show()
         else:

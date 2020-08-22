@@ -54,5 +54,11 @@ def crear_boton_ico(widget_padre, img_src, texto, funcion, fuente, top, left, wi
     return btn
 
 
+def set_img_to_label(label, img):
+    pixel_map = QtGui.QPixmap(img)
+    label.setPixmap(pixel_map)
+    label.adjustSize()
+
+
 def hacer_nada(self):
     print("Hago nada!!!")

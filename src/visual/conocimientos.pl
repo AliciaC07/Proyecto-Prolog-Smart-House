@@ -138,33 +138,71 @@ calcular_consumo_electrico(Lugar, Consumo):-
     calcula_consumo(Objetos, Consumo).
 
 
-cerrar_puerta(Lugar):-
-        ubicacion_persona(Lugar,_), objeto(Objeto, puerta, Lugar),estado_objeto(Objeto, abierto),
-        retract(estado_objeto(Objeto, abierto)),
-        assertz(estado_objeto(Objeto, cerrado)).
-
-cerrar_puertas():-
-    objeto(Objeto, puerta, _), estado_objeto(Objeto, abierto),
-    retract(estado_objeto(Objeto, abierto)),
-    assertz(estado_objeto(Objeto, cerrado)).
-
-cerrar_ventanas():-
+cerrar_ventanas_casa():-
     objeto(Objeto, ventana, _), estado_objeto(Objeto, abierto),
     retract(estado_objeto(Objeto, abierto)),
     assertz(estado_objeto(Objeto, cerrado)).
 
-cerrar_ventana(Lugar):-
+cerrar_puertas_casa():-
+    objeto(Objeto, puerta, _), estado_objeto(Objeto, abierto),
+    retract(estado_objeto(Objeto, abierto)),
+    assertz(estado_objeto(Objeto, cerrado)).
+
+cerrar_ventanas_lugar(Lugar):-
         ubicacion_persona(Lugar,_), objeto(Objeto, ventana, Lugar),estado_objeto(Objeto, abierto),
         retract(estado_objeto(Objeto, abierto)),
         assertz(estado_objeto(Objeto, cerrado)).
 
+cerrar_puertas_lugar(Lugar):-
+        ubicacion_persona(Lugar,_), objeto(Objeto, puerta, Lugar),estado_objeto(Objeto, abierto),
+        retract(estado_objeto(Objeto, abierto)),
+        assertz(estado_objeto(Objeto, cerrado)).
+
+% - cerrar_puerta(NombrePuerta)
+% - Cierra una puerta especifica, dado un nombre.
+% - Si la puerta esta cerrada inicialmente,
+% - la regla fallará. De lo contrario, se abrirá.
+cerrar_puerta(Puerta):-
+    retract(estado_objeto(Puerta, _)),
+    assertz(estado_objeto(Puerta, cerrado)).
+
+% - abrir_puerta(NombrePuerta)
+% - Abre  una puerta especifica, dado un nombre.
+% - Si la puerta esta abierta inicialmente,
+% - la regla fallará. De lo contrario, se abrirá.
+abrir_puerta(Puerta):-
+    retract(estado_objeto(Puerta, _)),
+    assertz(estado_objeto(Puerta, abierto)).
+
+
+% - cerrar_ventana(NombreVentana)
+% - Cierra una ventana especifica, dado un nombre.
+% - Si la ventana esta cerrada inicialmente,
+% - la regla fallará. De lo contrario, se abrirá.
+cerrar_ventana(Ventana):-
+    retract(estado_objeto(Ventana, _)),
+    assertz(estado_objeto(Ventana, cerrado)).
+
+% - abrir_ventana(NombreVentana)
+% - Abre una ventana, dado un nombre.
+% - Si la ventana esta abierta inicialmente,
+% - la regla fallará. De lo contrario, se abrirá.
+abrir_ventana(Ventana):-
+    retract(estado_objeto(Ventana, _)),
+    assertz(estado_objeto(Ventana, abierto)).
+
+% - fecha_tiempo_actual(Fecha, Tiempo)
+% - Esta regla produce tanto como la fecha y tiempo
+% - actual del computador, como date(DD,MM,YY) y time(HH,MM,SS).
 fecha_tiempo_actual(Fecha, Tiempo):-
     get_time(Stamp),
     stamp_date_time(Stamp, Datetime, local),
     date_time_value(time, Datetime, Tiempo),
     date_time_value(date, Datetime, Fecha).
 
-
+% - calc_fecha_dias(date, Dias)
+% - dada una fecha, la convierte a dias gregorianos,
+% - para facilitar el calculo de fechas.
 calc_fecha_dias(date(Y,M,D),Dias):-
     Dias is (((Y*1461)/4)+((M*153)/5)+D).
 
