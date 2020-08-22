@@ -120,3 +120,4 @@ class ShVistaPlanta:
         self.ventana_principal.setCentralWidget(self.widget_padre)
         self.cabeceraVentana()
         self.generar_lugares_disponibles()
+

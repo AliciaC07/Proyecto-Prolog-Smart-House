@@ -82,6 +82,9 @@ class Ui_Dialog(object):
         self.label.setText(_translate("Dialog", "Consumo de objetos"))
 
 
+
+
+
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
