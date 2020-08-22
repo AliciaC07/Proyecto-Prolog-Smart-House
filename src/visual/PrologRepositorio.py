@@ -2,6 +2,8 @@ from pyswip import Prolog
 
 from src.modelo.Planta import Planta
 from src.modelo.Singleton import Singleton
+import requests
+import urllib.parse
 
 
 class PrologRepositorio(metaclass=Singleton):
@@ -93,10 +95,15 @@ class PrologRepositorio(metaclass=Singleton):
         return bool(list(self.prologInstance.query("objeto_agua(" + nombre + ",_,_)")))
 
     def InsertInfoHouse(self, name, location, plantas, unidade, unidada):
+        url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(location) + '?format=json'
+        response = requests.get(url).json()
+        print(response[0]["lat"])
+        print(response[0]["lon"])
+        ubicacion_prolog = "('" + location + "'," + str(response[0]["lat"]) + "," + str(response[0]["lon"]) + ")"
         hechos = "casa_info("
         hechos += self.transform_prolog_name(name)
         hechos += ","
-        hechos += self.transform_prolog_name(location)
+        hechos += ubicacion_prolog
         hechos += ","
         planta = self.convert_strings_of_list(plantas)
         hechos += self.ciclo_transform(planta)
