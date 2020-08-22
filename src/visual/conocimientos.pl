@@ -35,10 +35,11 @@
 %electrodomestico(nevera1, 662).
 %electrodomestico(estufa1, 1000).
 %electrodomestico(television1, 263).
+%estado_electrodomestico(television1, apagado, date(0,0,0), time(0,0,0)).
 %electrodomestico(television2, 263).
-%electrodomestico(television3, 263).
-%electrodomestico(bombillo1, 0.06).
-%estado_electrodomestico(bombillo1, apagado, date(0,0,0), time(0,0,0))
+%%electrodomestico(television3, 263).
+%electrodomestico(bombillo1, 1).
+%estado_electrodomestico(bombillo1, apagado, fecha(0,0,0), tiempo(0,0,0)).
 %electrodomestico(bombillo2, 0.06).
 %electrodomestico(bombillo3, 0.06).
 %electrodomestico(bombillo4, 0.06).
@@ -52,6 +53,8 @@
 %electrodomestico(lavadora1, 255).
 %electrodomestico(lavadora2, 255).
 %electrodomestico(lavaplatos1, 246).
+%electrodomestico(bombillo1, 1).
+%estado_electrodomestico(bombillo1, apagado, date(0,0,0), time(0,0,0)).
 
 %Objetos de agua
 %objeto_agua(toilet1,fijo ,6.05).
@@ -275,9 +278,9 @@ listado_consumo_de_aparato_por_fechas(Aparato, Filtro_fecha, Res):-
 calculo_consumo_electrodomesticos(Electrodomestico, ConsumoElectrico, Fecha_filtrado):-
     electrodomestico(Electrodomestico, _),
     listado_consumo_de_aparato_por_fechas(Electrodomestico, Fecha_filtrado, Listado),
-    sum(Listado, ConsumoElectrico).
+    sum_list(Listado, ConsumoElectrico).
 
 calcula_consumo_agua(Objeto_agua, ConsumoAgua, Fecha_filtrado):-
     objeto_agua(Objeto_agua, _, _),
         listado_consumo_de_aparato_por_fechas(Objeto_agua, Fecha_filtrado, Listado),
-    sum(Listado, ConsumoAgua).
+    sum_list(Listado, ConsumoAgua).
