@@ -45,24 +45,28 @@ class PrologRepositorio(metaclass=Singleton):
                 for aux3 in aux2.tipo:
 
                     if aux3 == "Electrodomestico":
-                        hecho = "electrodomestico(" + self.transform_prolog_name(aux2.nombre) + "," + str(aux2.unidad) + ")"
-                        hechoestado = "estado_electrodomestico(" + self.transform_prolog_name(aux2.nombre) + ", apagado, fecha(0,0,0), tiempo(0,0,0))"
+                        hecho = "electrodomestico(" + self.transform_prolog_name(aux2.nombre) + "," + str(
+                            aux2.unidad) + ")"
+                        hechoestado = "estado_electrodomestico(" + self.transform_prolog_name(
+                            aux2.nombre) + ", apagado, fecha(0,0,0), tiempo(0,0,0))"
                         self.prologInstance.assertz(hecho)
                         self.prologInstance.assertz(hechoestado)
                     elif aux3 == "Agua":
                         if aux2.naturaleza == "Lavamanos":
                             self.prologInstance.assertz(
-                                "objeto_agua(" + self.transform_prolog_name(aux2.nombre) + ", continuo,"+ str(
+                                "objeto_agua(" + self.transform_prolog_name(aux2.nombre) + ", continuo," + str(
                                     aux2.unidadAgua) + ")")
                         else:
                             self.prologInstance.assertz(
                                 "objeto_agua(" + self.transform_prolog_name(aux2.nombre) + ", fijo," + str(
                                     aux2.unidadAgua) + ")")
-                        self.prologInstance.assertz("estado_objeto_agua("+self.transform_prolog_name(aux2.nombre)+", cerrado, fecha(0,0,0), tiempo(0,0,0))")
+                        self.prologInstance.assertz("estado_objeto_agua(" + self.transform_prolog_name(
+                            aux2.nombre) + ", cerrado, fecha(0,0,0), tiempo(0,0,0))")
 
                     elif aux3 == "Contundente":
                         self.prologInstance.assertz(
-                            "objeto(" + self.transform_prolog_name(aux2.nombre) + ", "+self.transform_prolog_name(aux2.naturaleza)+","+ self.transform_prolog_name(aux.nombre) + ")")
+                            "objeto(" + self.transform_prolog_name(aux2.nombre) + ", " + self.transform_prolog_name(
+                                aux2.naturaleza) + "," + self.transform_prolog_name(aux.nombre) + ")")
                         self.prologInstance.assertz(
                             "estado_objeto(" + self.transform_prolog_name(aux2.nombre) + ", cerrado)")
         q2 = self.prologInstance.query("listing(electrodomestico)")
@@ -88,7 +92,7 @@ class PrologRepositorio(metaclass=Singleton):
         hechos += self.ciclo_transform(planta)
         hechos += ")"
         self.prologInstance.assertz(hechos)
-        self.prologInstance.assertz("unidad_electrica("+self.transform_prolog_name(unidade)+")")
+        self.prologInstance.assertz("unidad_electrica(" + self.transform_prolog_name(unidade) + ")")
         self.prologInstance.assertz("unidad_agua(" + self.transform_prolog_name(unidada) + ")")
 
         q2 = self.prologInstance.query("listing(casa_info)")
@@ -123,20 +127,17 @@ class PrologRepositorio(metaclass=Singleton):
         return "All doors closed"
 
     def obtener_estado_electrodomestico(self, electrodomestico):
-        print(electrodomestico.nombre)
-        print(electrodomestico.tipo)
-        print(electrodomestico.naturaleza)
-        print(electrodomestico.unidad)
-        print(electrodomestico.unidadAgua)
+        nombre = self.transform_prolog_name(electrodomestico.nombre)
         ans = None
-        check = self.prologInstance.query("estado_electrodomestico(" + electrodomestico.nombre + ", Estado, _, _)")
+        check = self.prologInstance.query("estado_electrodomestico(" + nombre + ", Estado, _, _)")
         for sol in check:
             ans = str(sol["Estado"])
         return ans
 
     def apagar_electrodomestico(self, electrodomestico):
+        nombre = self.transform_prolog_name(electrodomestico.nombre)
         self.debug_listing("estado_electrodomestico")
-        res = self.prologInstance.query("apagar_electrodomestico(" + electrodomestico.nombre + ")")
+        res = self.prologInstance.query("apagar_electrodomestico(" + nombre + ")")
         for check in res:
             print(check)
         self.debug_listing("estado_electrodomestico")
@@ -144,20 +145,21 @@ class PrologRepositorio(metaclass=Singleton):
         return self.obtener_estado_electrodomestico(electrodomestico) == "apagado"
 
     def encender_electrodomestico(self, electrodomestico):
+        nombre = self.transform_prolog_name(electrodomestico.nombre)
         self.debug_listing("estado_electrodomestico")
         print(electrodomestico.nombre)
         print(electrodomestico.tipo)
         print(electrodomestico.naturaleza)
         print(electrodomestico.unidad)
         print(electrodomestico.unidadAgua)
-        res = self.prologInstance.query("encender_electrodomestico(" + electrodomestico.nombre + ")")
+        res = self.prologInstance.query("encender_electrodomestico(" + nombre + ")")
         for check in res:
             print(check)
         self.debug_listing("estado_electrodomestico")
         return self.obtener_estado_electrodomestico(electrodomestico) == "encendido"
 
     def debug_listing(self, sentencia):
-        res = self.prologInstance.query("listing(" + sentencia+")")
+        res = self.prologInstance.query("listing(" + sentencia + ")")
         for output in res:
             print(output)
 
@@ -177,6 +179,38 @@ class PrologRepositorio(metaclass=Singleton):
             else:
                 fact1 += ", "
         return fact1
+
+    def cerrar_objeto(self, objeto):
+        nombre = self.transform_prolog_name(objeto.nombre)
+        self.debug_listing("estado_objeto")
+        res = None
+        if objeto.naturaleza == "Puerta":
+            res = self.prologInstance.query("cerrar_puerta(" + nombre + ")")
+        elif objeto.naturaleza == "Ventana":
+            res = self.prologInstance.query("cerrar_ventana(" + nombre + ")")
+        for check in res:
+            print(check)
+        self.debug_listing("estado_objeto")
+
+    def abrir_objeto(self, objeto):
+        nombre = self.transform_prolog_name(objeto.nombre)
+        self.debug_listing("estado_objeto")
+        res = None
+        if objeto.naturaleza == "Puerta":
+            res = self.prologInstance.query("abrir_puerta(" + nombre + ")")
+        elif objeto.naturaleza == "Ventana":
+            res = self.prologInstance.query("abrir_ventana(" + nombre + ")")
+        for check in res:
+            print(check)
+        self.debug_listing("estado_objeto")
+
+    def obtener_estado_objeto(self, objeto):
+        nombre = self.transform_prolog_name(objeto.nombre)
+        ans = None
+        check = self.prologInstance.query("estado_objeto(" + nombre + ", Estado)")
+        for sol in check:
+            ans = str(sol["Estado"])
+        return ans
 
 # prue = PrologRepositorio()
 # planta = Planta("planta1")
