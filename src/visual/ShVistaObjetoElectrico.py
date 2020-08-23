@@ -88,6 +88,7 @@ class ShDetalleObjetoElectrico(object):
         self.lbl_consumo_agua.setStyleSheet("color: green")
         self.lbl_consumo_electrico.setStyleSheet("color: green")
         self.prologRepository.encender_electrodomestico(self.objeto)
+        self.lbl_estado.setText(self.prologRepository.obtener_estado_electrodomestico(self.objeto))
 
     def apagar(self):
         self.btn_apagar.setDisabled(True)
@@ -95,6 +96,7 @@ class ShDetalleObjetoElectrico(object):
         self.lbl_consumo_agua.setStyleSheet("color: red")
         self.lbl_consumo_electrico.setStyleSheet("color: red")
         self.prologRepository.apagar_electrodomestico(self.objeto)
+        self.lbl_estado.setText(self.prologRepository.obtener_estado_electrodomestico(self.objeto))
 
     def iniciar(self):
         if self.prologRepository.obtener_estado_electrodomestico(self.objeto) == "apagado":
@@ -111,6 +113,7 @@ class ShDetalleObjetoElectrico(object):
     def llenar_datos(self):
         self.lbl_nombre.setText(self.objeto.nombre)
         self.lbl_estado.setText(self.prologRepository.obtener_estado_electrodomestico(self.objeto))
+        self.lbl_tipo.setText(self.objeto.naturaleza)
         self.lbl_consumo_electrico.setText(str(self.objeto.unidad))
         self.lbl_consumo_agua.setText("N/A")
         set_img_to_label(self.img_objeto, determinar_icono_objeto(self.objeto))

@@ -88,6 +88,7 @@ class ShObjetoEAFijo(object):
         self.lbl_consumo_electrico.setStyleSheet("color: green")
         self.prologRepository.encender_electrodomestico(self.objeto)
         self.btn_usar.setDisabled(False)
+        self.lbl_estado.setText(self.prologRepository.obtener_estado_electrodomestico(self.objeto))
 
     def apagar(self):
         self.btn_apagar.setDisabled(True)
@@ -96,6 +97,7 @@ class ShObjetoEAFijo(object):
         self.lbl_consumo_electrico.setStyleSheet("color: red")
         self.prologRepository.apagar_electrodomestico(self.objeto)
         self.btn_usar.setDisabled(True)
+        self.lbl_estado.setText(self.prologRepository.obtener_estado_electrodomestico(self.objeto))
 
     def usar(self):
         self.prologRepository.usar_objeto_agua(self.objeto)
@@ -104,11 +106,11 @@ class ShObjetoEAFijo(object):
         if self.prologRepository.obtener_estado_electrodomestico(self.objeto) == "apagado":
             self.btn_apagar.setDisabled(True)
             self.btn_encender.setDisabled(False)
-            self.btn_usar.setDisabled(False)
+            self.btn_usar.setDisabled(True)
             self.lbl_consumo_agua.setStyleSheet("color: red")
             self.lbl_consumo_electrico.setStyleSheet("color: red")
         else:
-            self.btn_usar.setDisabled(True)
+            self.btn_usar.setDisabled(False)
             self.btn_apagar.setDisabled(False)
             self.btn_encender.setDisabled(True)
             self.lbl_consumo_agua.setStyleSheet("color: green")

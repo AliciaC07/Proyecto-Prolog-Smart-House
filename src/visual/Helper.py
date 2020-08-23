@@ -39,6 +39,8 @@ def determinar_icono_objeto(objeto):
         return TOILET_ICON
     if objeto.naturaleza == "Lavaplatos":
         return LAVAPLATOS_ICON
+    if objeto.naturaleza == "Lavamanos":
+        return LAVAMANOS_ICON
 
 
 def objeto_naturaleza_tipo(objeto):

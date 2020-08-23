@@ -64,13 +64,13 @@ class ShVistaObjeto(object):
         self.btn_apagar.setDisabled(False)
         self.btn_encender.setDisabled(True)
         self.prologRepository.abrir_objeto(self.objeto)
-        # self.lbl_estado.setText(self.prologRepository.obtener_estado_objeto(self.objeto))
+        self.lbl_estado.setText(self.prologRepository.obtener_estado_objeto(self.objeto))
 
     def apagar(self):
         self.btn_apagar.setDisabled(True)
         self.btn_encender.setDisabled(False)
         self.prologRepository.cerrar_objeto(self.objeto)
-        # self.lbl_estado.setText(self.prologRepository.obtener_estado_objeto(self.objeto))
+        self.lbl_estado.setText(self.prologRepository.obtener_estado_objeto(self.objeto))
 
     def iniciar(self):
         if self.prologRepository.obtener_estado_objeto(self.objeto) == "cerrado":

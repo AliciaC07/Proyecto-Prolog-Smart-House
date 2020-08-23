@@ -16,6 +16,7 @@ SALA_ICON = "assets/sala.png"
 SALA_LAVADO_ICON = "assets/salalavado.png"
 STATUS_ICON = "assets/salalavado.png"
 GARAJE_ICON = "assets/coche.png"
+LAVAMANOS_ICON = "assets/lavamanos.png"
 
 NEVERA_ICON = "assets/refrigerador.png"
 ESTUFA_ICON = "assets/horno.png"

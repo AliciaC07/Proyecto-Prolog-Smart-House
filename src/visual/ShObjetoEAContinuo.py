@@ -90,6 +90,7 @@ class ShObjetoEAContinuo(object):
         self.lbl_consumo_electrico.setStyleSheet("color: green")
         self.prologRepository.encender_electrodomestico(self.objeto)
         self.prologRepository.abrir_objeto_agua(self.objeto)
+        self.lbl_estado.setText(self.prologRepository.obtener_estado_electrodomestico(self.objeto))
 
     def apagar(self):
         self.btn_apagar.setDisabled(True)
@@ -98,6 +99,7 @@ class ShObjetoEAContinuo(object):
         self.lbl_consumo_electrico.setStyleSheet("color: red")
         self.prologRepository.apagar_electrodomestico(self.objeto)
         self.prologRepository.cerrar_objeto_agua(self.objeto)
+        self.lbl_estado.setText(self.prologRepository.obtener_estado_electrodomestico(self.objeto))
 
     def iniciar(self):
         if self.prologRepository.obtener_estado_electrodomestico(self.objeto) == "apagado":
