@@ -15,7 +15,7 @@
 :- dynamic consumo_agua/4.
 :- dynamic estado_objeto_agua/4.
 :- dynamic consumo/7.
-:- dynamic aire_acondicionado/5.
+:- dynamic aire_acondicionado/4.
 
 %casa_info(nombrecasa, ubicacion, [plantas])
 % planta(nombre_planta, lista_lugares)
@@ -290,6 +290,6 @@ calcula_consumo_agua(Objeto_agua, ConsumoAgua, Fecha_filtrado):-
         listado_consumo_de_aparato_por_fechas(Objeto_agua, Fecha_filtrado, Listado),
     sum_list(Listado, ConsumoAgua).
 
-actualizar_info_aire(Nombre, Estado, Temperatura, Modo, Velocidad):-
-    retract(aire_acondicionado(Nombre,_,_,_,_)),
-    assertz(aire_acondicionado(Nombre,Estado,Temperatura,Modo,Velocidad)).
+actualizar_info_aire(Nombre, Temperatura, Modo, Velocidad):-
+    retract(aire_acondicionado(Nombre,_,_,_)),
+    assertz(aire_acondicionado(Nombre,Temperatura,Modo,Velocidad)).

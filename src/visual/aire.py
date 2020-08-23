@@ -86,54 +86,54 @@ class AireLugar(object):
 
     def cambiar_modo_auto(self):
         info = self.prolog.get_info_aire(self.lugar)
-        self.prolog.actualizar_info_aire(self.lugar, info[0], info[1], "auto", info[3])
+        self.prolog.actualizar_info_aire(self.lugar, "actualizar", info[1], "auto", info[3])
         self.actualizar_gui()
         self.cambiar_estado_btns_modo(False)
         self.btn_modo_auto.setDisabled(True)
 
     def cambiar_modo_frio(self):
         info = self.prolog.get_info_aire(self.lugar)
-        self.prolog.actualizar_info_aire(self.lugar, info[0], info[1], "frio", info[3])
+        self.prolog.actualizar_info_aire(self.lugar, "actualizar", info[1], "frio", info[3])
         self.cambiar_estado_btns_modo(False)
         self.actualizar_gui()
         self.btn_modo_frio.setDisabled(True)
 
     def cambiar_modo_seco(self):
         info = self.prolog.get_info_aire(self.lugar)
-        self.prolog.actualizar_info_aire(self.lugar, info[0], info[1], "seco", info[3])
+        self.prolog.actualizar_info_aire(self.lugar, "actualizar", info[1], "seco", info[3])
         self.cambiar_estado_btns_modo(False)
         self.actualizar_gui()
         self.btn_modo_seco.setDisabled(True)
 
     def cambiar_vel_alta(self):
         info = self.prolog.get_info_aire(self.lugar)
-        self.prolog.actualizar_info_aire(self.lugar, info[0], info[1], info[2], "alto")
+        self.prolog.actualizar_info_aire(self.lugar, "actualizar", info[1], info[2], "alto")
         self.cambiar_estado_btns_vel(False)
         self.actualizar_gui()
         self.btn_vel_alto.setDisabled(True)
 
     def cambiar_vel_media(self):
         info = self.prolog.get_info_aire(self.lugar)
-        self.prolog.actualizar_info_aire(self.lugar, info[0], info[1], info[2], "medio")
+        self.prolog.actualizar_info_aire(self.lugar, "actualizar", info[1], info[2], "medio")
         self.cambiar_estado_btns_vel(False)
         self.actualizar_gui()
         self.btn_vel_media.setDisabled(True)
 
     def cambiar_vel_baja(self):
         info = self.prolog.get_info_aire(self.lugar)
-        self.prolog.actualizar_info_aire(self.lugar, info[0], info[1], info[2], "bajo")
+        self.prolog.actualizar_info_aire(self.lugar, "actualizar", info[1], info[2], "bajo")
         self.cambiar_estado_btns_vel(False)
         self.actualizar_gui()
         self.btn_vel_baja.setDisabled(True)
 
     def subir_temp(self):
         info = self.prolog.get_info_aire(self.lugar)
-        self.prolog.actualizar_info_aire(self.lugar, info[0], info[1] + 1, info[2], info[3])
+        self.prolog.actualizar_info_aire(self.lugar, "actualizar", info[1] + 1, info[2], info[3])
         self.actualizar_gui()
 
     def bajar_temp(self):
         info = self.prolog.get_info_aire(self.lugar)
-        self.prolog.actualizar_info_aire(self.lugar, info[0], info[1] - 1, info[2], info[3])
+        self.prolog.actualizar_info_aire(self.lugar, "actualizar", info[1] - 1, info[2], info[3])
         self.actualizar_gui()
 
     def setupUi(self, Dialog):

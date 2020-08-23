@@ -248,6 +248,14 @@ class Ui_ventanaPrincipalDesigner(object):
         self.inputUnidadAgua = QtWidgets.QLineEdit(self.centralwidget)
         self.inputUnidadAgua.setGeometry(QtCore.QRect(220, 580, 81, 21))
         self.inputUnidadAgua.setObjectName("inputUnidadAgua")
+        self.inputPrecioAgua = QtWidgets.QLineEdit(self.centralwidget)
+        self.inputPrecioAgua.setGeometry(QtCore.QRect(220, 580, 81, 21))
+        self.inputPrecioAgua.setObjectName("inputPrecioAgua")
+        self.inputPrecioAgua.move(720, 80)
+        self.inputPrecioElectricidad = QtWidgets.QLineEdit(self.centralwidget)
+        self.inputPrecioElectricidad.setGeometry(QtCore.QRect(220, 580, 81, 21))
+        self.inputPrecioElectricidad.setObjectName("inputPrecioElectricidad")
+        self.inputPrecioElectricidad.move(720, 110)
         ventanaPrincipalDesigner.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(ventanaPrincipalDesigner)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 983, 26))
@@ -259,6 +267,32 @@ class Ui_ventanaPrincipalDesigner(object):
         # aqui empiezan los cambios
         self.retranslateUi(ventanaPrincipalDesigner)
         QtCore.QMetaObject.connectSlotsByName(ventanaPrincipalDesigner)
+        ventanaPrincipalDesigner.setWindowIcon(QtGui.QIcon('assets/logo.png'))
+        self.labelplantaicon = QtWidgets.QLabel(self.centralwidget)
+        self.labelplantaicon.setObjectName("labelplantaicon")
+        self.labelplantaicon.setPixmap(QtGui.QPixmap('assets/planta.png'))
+        self.labelplantaicon.move(90, 218)
+        self.labellugaricon = QtWidgets.QLabel(self.centralwidget)
+        self.labellugaricon.setObjectName("labellugaricon")
+        self.labellugaricon.setPixmap(QtGui.QPixmap('assets/room.png'))
+        self.labellugaricon.move(610, 218)
+        self.labelobjetoicon = QtWidgets.QLabel(self.centralwidget)
+        self.labelobjetoicon.setObjectName("labelobjetoicon")
+        self.labelobjetoicon.setPixmap(QtGui.QPixmap('assets/sala.png'))
+        self.labelobjetoicon.move(90, 538)
+        self.labelfamilyoicon = QtWidgets.QLabel(self.centralwidget)
+        self.labelfamilyoicon.setObjectName("labelfamilyoicon")
+        self.labelfamilyoicon.setPixmap(QtGui.QPixmap('assets/family.png'))
+        self.labelfamilyoicon.move(600, 535)
+        self.btnFinalizar.setIcon(QtGui.QIcon('assets/finalizar.png'))
+        self.btnAgregarPlanta.setIcon(QtGui.QIcon('assets/add.png'))
+        self.btnAgregarFamiliar.setIcon(QtGui.QIcon('assets/add.png'))
+        self.btnAgregarObjeto.setIcon(QtGui.QIcon('assets/add.png'))
+        self.btnAgregarLugar.setIcon(QtGui.QIcon('assets/add.png'))
+        self.btnRemoverFamiliar.setIcon(QtGui.QIcon('assets/remove.png'))
+        self.btnRemoverObjeto.setIcon(QtGui.QIcon('assets/remove.png'))
+        self.btnRemoverLugar.setIcon(QtGui.QIcon('assets/remove.png'))
+        self.btnRemoverPlanta.setIcon(QtGui.QIcon('assets/remove.png'))
         self.inputUnidadAgua.setValidator(self.onlyInt)
         self.btnAgregarPlanta.clicked.connect(self.SetPlantas)
         self.btnRemoverPlanta.clicked.connect(self.RemovePlantas)
@@ -282,7 +316,7 @@ class Ui_ventanaPrincipalDesigner(object):
     tiposObjetos = {'Nevera': 'Electrodomestico', 'Estufa': 'Electrodomestico', 'Abanico': 'Electrodomestico',
                     'Bombillo': 'Electrodomestico'
         , 'Lavadora': 'Electrodomestico', 'Nevera': 'Electrodomestico', 'Toilet': 'Agua', 'Lavaplatos': 'Agua',
-                    'Puerta': 'Contundente', 'Ventana': 'Contundente', 'Lavamanos' :'Agua'}
+                    'Puerta': 'Contundente', 'Ventana': 'Contundente', 'Lavamanos': 'Agua'}
 
     def retranslateUi(self, ventanaPrincipalDesigner):
         _translate = QtCore.QCoreApplication.translate
@@ -319,6 +353,8 @@ class Ui_ventanaPrincipalDesigner(object):
 
         self.inputNombreCasa.setPlaceholderText(_translate("ventanaPrincipalDesigner", "Nombre de la Casa"))
         self.inputUbicacion.setPlaceholderText(_translate("ventanaPrincipalDesigner", "Ubicacion"))
+        self.inputPrecioAgua.setPlaceholderText(_translate("ventanaPrincipalDesigner", "Precio del Agua"))
+        self.inputPrecioElectricidad.setPlaceholderText(_translate("ventanaPrincipalDesigner", "Precio de la Luz"))
         self.cbxLugares.setItemText(0, _translate("ventanaPrincipalDesigner", "<Seleccione>"))
         self.cbxLugares.setItemText(1, _translate("ventanaPrincipalDesigner", "Sala"))
         self.cbxLugares.setItemText(2, _translate("ventanaPrincipalDesigner", "Comedor"))
@@ -555,11 +591,12 @@ class Ui_ventanaPrincipalDesigner(object):
     def InsertarEstructura(self):
         if self.validar() and self.validar2() and self.inputNombreCasa.text() != "" and self.inputUbicacion.text() != "" and self.cbxUnidadacuatica.currentText() != "<Seleccione la unidad de medida>" and self.cbxUnidadelectrica.currentText() != "<Seleccione la unidad de medida>":
             for aux in self.plantas:
-                self.prolog.InsertPlanta(aux,self.cbxUnidadelectrica.currentText())
+                self.prolog.InsertPlanta(aux, self.cbxUnidadelectrica.currentText())
             for aux in self.fam:
                 self.prolog.InsertPersons(aux)
             self.prolog.InsertInfoHouse(self.inputNombreCasa.text(), self.inputUbicacion.text(), self.plantas,
-                                        self.cbxUnidadelectrica.currentText(), self.cbxUnidadacuatica.currentText())
+                                        self.cbxUnidadelectrica.currentText(), self.cbxUnidadacuatica.currentText(),
+                                        self.inputPrecioElectricidad.text(), self.inputPrecioAgua.text())
             self.prolog.plantas = self.plantas
             self.clearAll()
             self.centralwidget.close()
@@ -605,7 +642,7 @@ class Ui_ventanaPrincipalDesigner(object):
         if self.cbxObjetos.currentIndex() == 0:
             self.inputUnidad.setEnabled(True)
             self.inputUnidadAgua.setEnabled(True)
-        elif  self.tiposObjetos[self.cbxObjetos.currentText()] == "Contundente":
+        elif self.tiposObjetos[self.cbxObjetos.currentText()] == "Contundente":
             self.inputUnidad.setEnabled(False)
             self.inputUnidadAgua.setEnabled(False)
         elif self.tiposObjetos[self.cbxObjetos.currentText()] == "Electrodomestico":
@@ -617,7 +654,6 @@ class Ui_ventanaPrincipalDesigner(object):
         if self.cbxObjetos.currentText() == "Lavadora" or self.cbxObjetos.currentText() == "Lavaplatos":
             self.inputUnidad.setEnabled(True)
             self.inputUnidadAgua.setEnabled(True)
-
 
 
 if __name__ == "__main__":

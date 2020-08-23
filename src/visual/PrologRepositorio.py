@@ -2,6 +2,7 @@ from pyswip import Prolog
 
 from src.modelo.Planta import Planta
 from src.modelo.Singleton import Singleton
+from src.modelo.Objetos import *
 import requests
 import urllib.parse
 
@@ -17,32 +18,82 @@ class PrologRepositorio(metaclass=Singleton):
         preprocess_name = name.replace(' ', '_')
         return preprocess_name.lower()
 
+    def obtener_nombre_aire(self, lugar):
+        return "aire_acondicionado_" + self.transform_prolog_name(lugar.nombre)
+
     def minunit(self):
         for i in range(0, 10):
             nueva_planta = Planta("planta" + str(i))
             self.plantas.append(nueva_planta)
 
     def actualizar_info_aire(self, lugar, estado, temperatura, modo, vel):
-        nombre = self.transform_prolog_name(lugar.nombre)
+        self.debug_listing("aire_acondicionado")
+        nombre_lugar = self.transform_prolog_name(lugar.nombre)
         ans = None
-        check = self.prologInstance.query("actualizar_info_aire(" + nombre + "," + estado + "," + str(temperatura) + "," + modo + "," + vel + ")")
+        if estado == "encendido":
+            self.encender_aire_acondicionado(lugar)
+        elif estado == "apagado":
+            self.apagar_aire_acondicionado(lugar)
+        else:
+            print("Actualizar")
+        check = self.prologInstance.query(
+            "actualizar_info_aire(" + nombre_lugar + "," + str(temperatura) + "," + modo + "," + vel + ")")
         for sol in check:
             print(sol)
+        self.debug_listing("aire_acondicionado")
         return ans
 
+    def apagar_aire_acondicionado(self, lugar):
+        aire = self.obtener_nombre_aire(lugar)
+        self.debug_listing("estado_electrodomestico")
+        res = self.prologInstance.query("apagar_electrodomestico(" + aire + ")")
+        for check in res:
+            print(check)
+        self.debug_listing("estado_electrodomestico")
+        self.debug_listing("consumo")
+        return self.obtener_estado_aire(lugar) == "apagado"
+
+    def encender_aire_acondicionado(self, lugar):
+        aire = self.obtener_nombre_aire(lugar)
+        res = self.prologInstance.query("encender_electrodomestico(" + aire + ")")
+        for check in res:
+            print(check)
+        self.debug_listing("estado_electrodomestico")
+        return self.obtener_estado_aire(lugar) == "encendido"
+
     def get_info_aire(self, lugar):
-        nombre = self.transform_prolog_name(lugar.nombre)
+        """
+        Dado un lugar, otiene informacion general del aire, como
+        estao, temperatura, modo y velociadd de aire.
+        :param lugar:
+        :return: (estado, temperatura, modo, vel)
+        """
+        nombre_lugar = self.transform_prolog_name(lugar.nombre)
+        estado = self.obtener_estado_aire(lugar)
         temperatura = None
         modo = None
         vel = None
-        estado = None
-        query = self.prologInstance.query("aire_acondicionado(" + nombre + ",Estado,Temp,Modo,Vel)")
+        query = self.prologInstance.query("aire_acondicionado(" + nombre_lugar + ",Temp,Modo,Vel)")
         for sol in query:
             temperatura = sol["Temp"]
             modo = str(sol["Modo"])
             vel = str(sol["Vel"])
-            estado = str(sol["Estado"])
-        return estado, temperatura, modo, vel
+        return str(estado), temperatura, modo, vel
+
+    def obtener_estado_aire(self, lugar):
+        """
+        Permite obtener el estado de un aire_acondicionado, dado el lugar.
+        Recordar que se tiene que pasar el lugar, para luego calcular el nombre
+        del aire.
+        :param lugar:
+        :return: estado(str)
+        """
+        aire = self.obtener_nombre_aire(lugar)
+        ans = None
+        check = self.prologInstance.query("estado_electrodomestico(" + aire + ", Estado, _, _)")
+        for sol in check:
+            ans = str(sol["Estado"])
+        return ans
 
     def InsertPlanta(self, planta, unidade):
         fact = "planta("
@@ -62,12 +113,14 @@ class PrologRepositorio(metaclass=Singleton):
             obs = self.convert_strings_of_list(aux.objetos)
             fact2 += self.ciclo_transform(obs)
             fact2 += ")"
-            aire = "aire_acondicionado("+self.transform_prolog_name(aux.nombre)+", 30, auto, bajo)"
+            aire = "aire_acondicionado(" + self.transform_prolog_name(aux.nombre) + ", 30, auto, bajo)"
             if unidade == "KWatt":
-                aire_electro = "electrodomestico(aire_acondicionado_"+self.transform_prolog_name(aux.nombre)+", 2)"
+                aire_electro = "electrodomestico(aire_acondicionado_" + self.transform_prolog_name(aux.nombre) + ", 2)"
             else:
-                aire_electro = "electrodomestico(aire_acondicionado_" + self.transform_prolog_name(aux.nombre) + ", 2000)"
-            aire_estado = "estado_electrodomestico(aire_acondicionado_"+self.transform_prolog_name(aux.nombre)+", apagado, date(0,0,0), time(0,0,0)) "
+                aire_electro = "electrodomestico(aire_acondicionado_" + self.transform_prolog_name(
+                    aux.nombre) + ", 2000)"
+            aire_estado = "estado_electrodomestico(aire_acondicionado_" + self.transform_prolog_name(
+                aux.nombre) + ", apagado, date(0,0,0), time(0,0,0)) "
             self.prologInstance.assertz(fact2)
             self.prologInstance.assertz(aire)
             self.prologInstance.assertz(aire_electro)
@@ -127,11 +180,9 @@ class PrologRepositorio(metaclass=Singleton):
         nombre = self.transform_prolog_name(objeto.nombre)
         return bool(list(self.prologInstance.query("objeto_agua(" + nombre + ",_,_)")))
 
-    def InsertInfoHouse(self, name, location, plantas, unidade, unidada):
+    def InsertInfoHouse(self, name, location, plantas, unidade, unidada, precioe, precioa):
         url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(location) + '?format=json'
         response = requests.get(url).json()
-        print(response[0]["lat"])
-        print(response[0]["lon"])
         ubicacion_prolog = "('" + location + "'," + str(response[0]["lat"]) + "," + str(response[0]["lon"]) + ")"
         hechos = "casa_info("
         hechos += self.transform_prolog_name(name)
@@ -142,9 +193,9 @@ class PrologRepositorio(metaclass=Singleton):
         hechos += self.ciclo_transform(planta)
         hechos += ")"
         self.prologInstance.assertz(hechos)
-        self.prologInstance.assertz("unidad_electrica(" + self.transform_prolog_name(unidade) + ")")
-        self.prologInstance.assertz("unidad_agua(" + self.transform_prolog_name(unidada) + ")")
-
+        self.prologInstance.assertz(
+            "unidad_electrica(" + self.transform_prolog_name(unidade) + ", " + str(precioe) + ")")
+        self.prologInstance.assertz("unidad_agua(" + self.transform_prolog_name(unidada) + ", " + str(precioa) + ")")
         q2 = self.prologInstance.query("listing(casa_info)")
         for i in q2:
             print(i)
@@ -178,6 +229,7 @@ class PrologRepositorio(metaclass=Singleton):
 
     def obtener_estado_electrodomestico(self, electrodomestico):
         nombre = self.transform_prolog_name(electrodomestico.nombre)
+        print(nombre)
         ans = None
         check = self.prologInstance.query("estado_electrodomestico(" + nombre + ", Estado, _, _)")
         for sol in check:
