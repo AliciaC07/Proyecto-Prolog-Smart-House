@@ -6,6 +6,9 @@ from src.visual.resource_locator import *
 
 
 # noinspection PyMethodMayBeStatic
+from src.visual.vista_consumo import VistaConsumo
+
+
 class ShHome:
     def __init__(self):
         # Partes principales de la
@@ -26,6 +29,8 @@ class ShHome:
         # Instancias de la vista de la planta seleccionada.
         self.ventana_vista_planta = None
         self.vista_planta = None
+        self.ventana_vista_consumo = None
+        self.vista_consumo = None
 
         # Configurables
         self.resolucion = (800, 600)
@@ -44,7 +49,10 @@ class ShHome:
         print("Se abrio la ventana de clima.")
 
     def abrir_panel_reportes(self):
-        print("Se abrio la ventana de reportes.")
+        self.ventana_vista_consumo = QtWidgets.QMainWindow()
+        self.vista_consumo = VistaConsumo()
+        self.vista_consumo.setupUi(self.ventana_vista_consumo)
+        self.ventana_vista_consumo.show()
 
     def abrir_contenido_planta(self, planta):
         print(planta.nombre)
