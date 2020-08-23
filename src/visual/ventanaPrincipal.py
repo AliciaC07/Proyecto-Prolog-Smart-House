@@ -248,6 +248,14 @@ class Ui_ventanaPrincipalDesigner(object):
         self.inputUnidadAgua = QtWidgets.QLineEdit(self.centralwidget)
         self.inputUnidadAgua.setGeometry(QtCore.QRect(220, 580, 81, 21))
         self.inputUnidadAgua.setObjectName("inputUnidadAgua")
+        self.inputPrecioAgua = QtWidgets.QLineEdit(self.centralwidget)
+        self.inputPrecioAgua.setGeometry(QtCore.QRect(220, 580, 81, 21))
+        self.inputPrecioAgua.setObjectName("inputPrecioAgua")
+        self.inputPrecioAgua.move(720, 80)
+        self.inputPrecioElectricidad = QtWidgets.QLineEdit(self.centralwidget)
+        self.inputPrecioElectricidad.setGeometry(QtCore.QRect(220, 580, 81, 21))
+        self.inputPrecioElectricidad.setObjectName("inputPrecioElectricidad")
+        self.inputPrecioElectricidad.move(720, 110)
         ventanaPrincipalDesigner.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(ventanaPrincipalDesigner)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 983, 26))
@@ -343,6 +351,8 @@ class Ui_ventanaPrincipalDesigner(object):
 
         self.inputNombreCasa.setPlaceholderText(_translate("ventanaPrincipalDesigner", "Nombre de la Casa"))
         self.inputUbicacion.setPlaceholderText(_translate("ventanaPrincipalDesigner", "Ubicacion"))
+        self.inputPrecioAgua.setPlaceholderText(_translate("ventanaPrincipalDesigner", "Precio del Agua"))
+        self.inputPrecioElectricidad.setPlaceholderText(_translate("ventanaPrincipalDesigner", "Precio de la Luz"))
         self.cbxLugares.setItemText(0, _translate("ventanaPrincipalDesigner", "<Seleccione>"))
         self.cbxLugares.setItemText(1, _translate("ventanaPrincipalDesigner", "Sala"))
         self.cbxLugares.setItemText(2, _translate("ventanaPrincipalDesigner", "Comedor"))
@@ -583,7 +593,7 @@ class Ui_ventanaPrincipalDesigner(object):
             for aux in self.fam:
                 self.prolog.InsertPersons(aux)
             self.prolog.InsertInfoHouse(self.inputNombreCasa.text(), self.inputUbicacion.text(), self.plantas,
-                                        self.cbxUnidadelectrica.currentText(), self.cbxUnidadacuatica.currentText())
+                                        self.cbxUnidadelectrica.currentText(), self.cbxUnidadacuatica.currentText(), self.inputPrecioElectricidad.text(), self.inputPrecioAgua.text())
             self.prolog.plantas = self.plantas
             self.clearAll()
             self.centralwidget.close()

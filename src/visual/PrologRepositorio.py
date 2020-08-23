@@ -93,7 +93,7 @@ class PrologRepositorio(metaclass=Singleton):
         for i in q5:
             print(i)
 
-    def InsertInfoHouse(self, name, location, plantas, unidade, unidada):
+    def InsertInfoHouse(self, name, location, plantas, unidade, unidada, precioe, precioa):
         hechos = "casa_info("
         hechos += self.transform_prolog_name(name)
         hechos += ","
@@ -103,9 +103,8 @@ class PrologRepositorio(metaclass=Singleton):
         hechos += self.ciclo_transform(planta)
         hechos += ")"
         self.prologInstance.assertz(hechos)
-        self.prologInstance.assertz("unidad_electrica(" + self.transform_prolog_name(unidade) + ")")
-        self.prologInstance.assertz("unidad_agua(" + self.transform_prolog_name(unidada) + ")")
-
+        self.prologInstance.assertz("unidad_electrica(" + self.transform_prolog_name(unidade) +", "+str(precioe)+ ")")
+        self.prologInstance.assertz("unidad_agua(" + self.transform_prolog_name(unidada) +", "+str(precioa)+")")
         q2 = self.prologInstance.query("listing(casa_info)")
         for i in q2:
             print(i)
