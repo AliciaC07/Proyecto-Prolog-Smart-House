@@ -38,7 +38,9 @@ class PrologRepositorio(metaclass=Singleton):
             obs = self.convert_strings_of_list(aux.objetos)
             fact2 += self.ciclo_transform(obs)
             fact2 += ")"
+            aire = "aire_acondicionado("+self.transform_prolog_name(aux.nombre)+", 30, auto, bajo)."
             self.prologInstance.assertz(fact2)
+            self.prologInstance.assertz(aire)
 
             print(fact2)
             for aux2 in aux.objetos:
