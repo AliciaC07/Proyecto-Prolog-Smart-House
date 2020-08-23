@@ -9,14 +9,16 @@
 :- dynamic miembro_casa/1.
 :- dynamic invitado/1.
 :- dynamic casa_info/3.
-:- dynamic unidad_electrica/1.
-:- dynamic unidad_agua/1.
+:- dynamic unidad_electrica/2.
+:- dynamic unidad_agua/2.
 :- dynamic consumo_electrodomestico/4.
 :- dynamic consumo_agua/4.
 :- dynamic estado_objeto_agua/4.
 :- dynamic consumo/7.
 :- dynamic aire_acondicionado/4.
 
+%unidad_agua(unidad, precio)
+%unidad_electrica(unidad, precio)
 %casa_info(nombrecasa, ubicacion, [plantas])
 % planta(nombre_planta, lista_lugares)
 %planta(planta1, [sala1, comedor1, cocina1, bano1, cuarto_lavado1]).
