@@ -38,7 +38,7 @@ class PrologRepositorio(metaclass=Singleton):
             obs = self.convert_strings_of_list(aux.objetos)
             fact2 += self.ciclo_transform(obs)
             fact2 += ")"
-            aire = "aire_acondicionado("+self.transform_prolog_name(aux.nombre)+", 30, auto, bajo)."
+            aire = "aire_acondicionado("+self.transform_prolog_name(aux.nombre)+", 30, auto, bajo)"
             if unidade == "KWatt":
                 aire_electro = "electrodomestico(aire_acondicionado_"+self.transform_prolog_name(aux.nombre)+", 2)"
             else:
@@ -48,7 +48,9 @@ class PrologRepositorio(metaclass=Singleton):
             self.prologInstance.assertz(aire)
             self.prologInstance.assertz(aire_electro)
             self.prologInstance.assertz(aire_estado)
-
+            q2 = self.prologInstance.query("listing(electrodomestico)")
+            for i in q2:
+                print(i)
             print(fact2)
             for aux2 in aux.objetos:
                 for aux3 in aux2.tipo:
