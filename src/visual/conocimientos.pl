@@ -295,15 +295,19 @@ apagar_electrodomestico(Electrodomestico):-
 listado_consumo_de_aparato_por_fechas(Aparato, Filtro_fecha, Res):-
     findall(Consumo, consumo(Aparato, Consumo, Filtro_fecha, _, Filtro_fecha, _, _), Res).
 
-calculo_consumo_electrodomesticos(Electrodomestico, ConsumoElectrico, Fecha_filtrado):-
+calculo_consumo_electrodomesticos(Electrodomestico, ConsumoElectrico, Fecha_filtrado, PrecioConsumo):-
     electrodomestico(Electrodomestico, _),
     listado_consumo_de_aparato_por_fechas(Electrodomestico, Fecha_filtrado, Listado),
-    sum_list(Listado, ConsumoElectrico).
+    sum_list(Listado, ConsumoElectrico),
+    unidad_electrica(_, Precio),
+    PrecioConsumo is (Precio * ConsumoElectrico).
 
-calcula_consumo_agua(Objeto_agua, ConsumoAgua, Fecha_filtrado):-
+calcula_consumo_agua(Objeto_agua, ConsumoAgua, Fecha_filtrado, PrecioConsumo):-
     objeto_agua(Objeto_agua, _, _),
         listado_consumo_de_aparato_por_fechas(Objeto_agua, Fecha_filtrado, Listado),
-    sum_list(Listado, ConsumoAgua).
+    sum_list(Listado, ConsumoAgua),
+    unidad_agua(_, Precio),
+    PrecioConsumo is (Precio * ConsumoAgua).
 
 planta(planta1, [comedor1, cocina1]).
 lugar(comedor1, 29, [puerta1, ventana1,bombillo3 ,abanico2,fregadero1]).
