@@ -22,6 +22,28 @@ class PrologRepositorio(metaclass=Singleton):
             nueva_planta = Planta("planta" + str(i))
             self.plantas.append(nueva_planta)
 
+    def actualizar_info_aire(self, lugar, estado, temperatura, modo, vel):
+        nombre = self.transform_prolog_name(lugar.nombre)
+        ans = None
+        check = self.prologInstance.query("actualizar_info_aire(" + nombre + "," + estado + "," + str(temperatura) + "," + modo + "," + vel + ")")
+        for sol in check:
+            print(sol)
+        return ans
+
+    def get_info_aire(self, lugar):
+        nombre = self.transform_prolog_name(lugar.nombre)
+        temperatura = None
+        modo = None
+        vel = None
+        estado = None
+        query = self.prologInstance.query("aire_acondicionado(" + nombre + ",Estado,Temp,Modo,Vel)")
+        for sol in query:
+            temperatura = sol["Temp"]
+            modo = str(sol["Modo"])
+            vel = str(sol["Vel"])
+            estado = str(sol["Estado"])
+        return estado, temperatura, modo, vel
+
     def InsertPlanta(self, planta):
         fact = "planta("
         fact += self.transform_prolog_name(planta.nombre)
@@ -40,7 +62,9 @@ class PrologRepositorio(metaclass=Singleton):
             obs = self.convert_strings_of_list(aux.objetos)
             fact2 += self.ciclo_transform(obs)
             fact2 += ")"
+            aire = "aire_acondicionado("+self.transform_prolog_name(aux.nombre)+",encendido, 30, auto, bajo)"
             self.prologInstance.assertz(fact2)
+            self.prologInstance.assertz(aire)
 
             print(fact2)
             for aux2 in aux.objetos:

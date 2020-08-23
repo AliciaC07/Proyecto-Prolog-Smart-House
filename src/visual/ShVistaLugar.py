@@ -9,6 +9,7 @@ from src.visual.ShObjetoEAContinuo import ShObjetoEAContinuo
 from src.visual.ShObjetoEAFijo import ShObjetoEAFijo
 from src.visual.ShVistaObjeto import ShVistaObjeto
 from src.visual.ShVistaObjetoElectrico import ShDetalleObjetoElectrico
+from src.visual.aire import AireLugar
 from src.visual.resource_locator import *
 
 
@@ -32,6 +33,8 @@ class ShVistaLugar:
         # Instancias de la vista de la planta seleccionada.
         self.ventana_vista_objeto = None
         self.vista_objeto = None
+        self.ventana_vista_airelugar = None
+        self.vista_airelugar = None
 
         # Configurables
         self.resolucion = (800, 600)
@@ -44,8 +47,18 @@ class ShVistaLugar:
         self.cantidad_objetos = len(self.lugar.objetos)
         self.prolog = PrologRepositorio()
 
+    def abrir_aire(self):
+        self.ventana_vista_airelugar = QtWidgets.QMainWindow()
+        self.vista_airelugar = AireLugar(self.lugar)
+        self.vista_airelugar.setupUi(self.ventana_vista_airelugar)
+        self.ventana_vista_airelugar.show()
+
     def cabeceraVentana(self):
-        pass
+        lbl_estado = crear_label(self.scroll_area_contents, "Opciones lugar: " +
+                                 self.lugar.nombre, self.fuente_titulos, 50, 35)
+        lbl_img_estado = crear_img(self.scroll_area_contents, AJUSTES_ICON, 10, 30)
+        btn_aire = crear_boton_ico(self.scroll_area_contents, AIRE_ICON, "Aire",
+                                   partial(self.abrir_aire), self.fuente_botones, 10, 90, 150, 50)
 
     def abrir_ventana_objeto(self, objeto):
         tipo_objeto = determinar_tipo_objeto(objeto)
@@ -98,7 +111,8 @@ class ShVistaLugar:
                 initial_top_pos += self.btn_offset[0]
                 cnt_objetos = 1
             icono = determinar_icono_objeto(i)
-            btn_objeto = crear_boton_ico(self.scroll_area_contents, icono, i.nombre, partial(self.abrir_ventana_objeto, i),
+            btn_objeto = crear_boton_ico(self.scroll_area_contents, icono, i.nombre,
+                                         partial(self.abrir_ventana_objeto, i),
                                          self.fuente_botones, initial_left_pos, initial_top_pos, 150, 100)
             initial_left_pos += self.btn_offset[1]
             self._botones(btn_objeto)

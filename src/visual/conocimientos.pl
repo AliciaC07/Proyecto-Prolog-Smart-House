@@ -15,6 +15,7 @@
 :- dynamic consumo_agua/4.
 :- dynamic estado_objeto_agua/4.
 :- dynamic consumo/7.
+:- dynamic aire_acondicionado/5.
 
 %casa_info(nombrecasa, ubicacion, [plantas])
 % planta(nombre_planta, lista_lugares)
@@ -35,10 +36,11 @@
 %electrodomestico(nevera1, 662).
 %electrodomestico(estufa1, 1000).
 %electrodomestico(television1, 263).
+%estado_electrodomestico(television1, apagado, date(0,0,0), time(0,0,0)).
 %electrodomestico(television2, 263).
-%electrodomestico(television3, 263).
-%electrodomestico(bombillo1, 0.06).
-%estado_electrodomestico(bombillo1, apagado, date(0,0,0), time(0,0,0))
+%%electrodomestico(television3, 263).
+%electrodomestico(bombillo1, 1).
+%estado_electrodomestico(bombillo1, apagado, fecha(0,0,0), tiempo(0,0,0)).
 %electrodomestico(bombillo2, 0.06).
 %electrodomestico(bombillo3, 0.06).
 %electrodomestico(bombillo4, 0.06).
@@ -52,6 +54,8 @@
 %electrodomestico(lavadora1, 255).
 %electrodomestico(lavadora2, 255).
 %electrodomestico(lavaplatos1, 246).
+%electrodomestico(bombillo1, 1).
+%estado_electrodomestico(bombillo1, apagado, date(0,0,0), time(0,0,0)).
 
 %Objetos de agua
 %objeto_agua(toilet1,fijo ,6.05).
@@ -127,6 +131,10 @@ invitado(papotico).
 ubicacion_persona(sala1, roberto).
 ubicacion_persona(comedor1, nicole).
 ubicacion_persona(sala1, papotico).
+
+%Se especifica las caracteristicas(velocidad, modo, etc.) del aire acondicionado
+%instalado en lugar.
+%aire_acondicionado(lugar, temperatura, modo, velocidad_aire).
 
 calcula_consumo([], 0).
 calcula_consumo([H|T], Total):-
@@ -269,16 +277,19 @@ apagar_electrodomestico(Electrodomestico):-
     retract(estado_electrodomestico(Electrodomestico,_,_,_)),
     assertz(estado_electrodomestico(Electrodomestico, apagado, Fecha_actual, Tiempo_actual)).
 
-
 listado_consumo_de_aparato_por_fechas(Aparato, Filtro_fecha, Res):-
     findall(Consumo, consumo(Aparato, Consumo, Filtro_fecha, _, Filtro_fecha, _, _), Res).
 
 calculo_consumo_electrodomesticos(Electrodomestico, ConsumoElectrico, Fecha_filtrado):-
     electrodomestico(Electrodomestico, _),
     listado_consumo_de_aparato_por_fechas(Electrodomestico, Fecha_filtrado, Listado),
-    sum(Listado, ConsumoElectrico).
+    sum_list(Listado, ConsumoElectrico).
 
 calcula_consumo_agua(Objeto_agua, ConsumoAgua, Fecha_filtrado):-
     objeto_agua(Objeto_agua, _, _),
         listado_consumo_de_aparato_por_fechas(Objeto_agua, Fecha_filtrado, Listado),
-    sum(Listado, ConsumoAgua).
+    sum_list(Listado, ConsumoAgua).
+
+actualizar_info_aire(Nombre, Estado, Temperatura, Modo, Velocidad):-
+    retract(aire_acondicionado(Nombre,_,_,_,_)),
+    assertz(aire_acondicionado(Nombre,Estado,Temperatura,Modo,Velocidad)).

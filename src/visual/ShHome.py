@@ -55,32 +55,36 @@ class ShHome:
 
     def cabeceraVentana(self):
         pass
-        # # Labels de la cabecera de la ventana ShHome
-        # lbl_estado = crear_label(self.scroll_area_contents, "Estado de su Casa", self.fuente_titulos, 50, 35)
-        # lbl_img_estado = crear_img(self.scroll_area_contents, "assets/reportes.png", 10, 30)
-        # lbl_plantas = crear_label(self.scroll_area_contents, "Plantas de su Casa", self.fuente_titulos, 50, 250)
-        # lbl_img_planta = crear_img(self.scroll_area_contents, "assets/casa.png", 10, 245)
-        #
-        # # Botones de la cabecera de la ventana ShHome
-        # btn_reportes = crear_boton_ico(self.scroll_area_contents, GRAFICO_ICON, "Reportes",
-        #                                partial(self.abrir_panel_reportes), self.fuente_botones, 10, 90, 150, 50)
-        #
-        # btn_reportes_status = crear_boton_ico(self.scroll_area_contents, STATUS_ICON, "Status",
-        #                                       partial(self.abrir_panel_status), self.fuente_botones, 200, 90, 150, 50)
-        #
-        # btn_clima = crear_boton_ico(self.scroll_area_contents, CLIMA_ICON, "Clima",
-        #                             partial(self.abrir_panel_clima), self.fuente_botones, 390, 90, 150, 50)
-        # self._labels(lbl_estado)
-        # self._labels(lbl_plantas)
-        # self._labels(lbl_img_estado)
-        # self._labels(lbl_img_planta)
-        # self._botones(btn_reportes)
-        # self._botones(btn_reportes_status)
-        # self._botones(btn_clima)
+        # Labels de la cabecera de la ventana ShHome
+        lbl_estado = crear_label(self.scroll_area_contents, "Dashboard", self.fuente_titulos, 50, 35)
+        lbl_img_estado = crear_img(self.scroll_area_contents, "assets/reportes.png", 10, 30)
+        lbl_plantas = crear_label(self.scroll_area_contents, "Plantas de su Casa", self.fuente_titulos, 50, 250)
+        lbl_img_planta = crear_img(self.scroll_area_contents, "assets/casa.png", 10, 245)
+
+        # Botones de la cabecera de la ventana ShHome
+        btn_reportes = crear_boton_ico(self.scroll_area_contents, GRAFICO_ICON, "Consumo",
+                                       partial(self.abrir_panel_reportes), self.fuente_botones, 10, 90, 150, 50)
+
+        btn_reportes_status = crear_boton_ico(self.scroll_area_contents, AJUSTES_ICON, "Ajustes",
+                                              partial(self.abrir_panel_status), self.fuente_botones, 200, 90, 150, 50)
+
+        btn_clima = crear_boton_ico(self.scroll_area_contents, CLIMA_ICON, "Lugar/clima",
+                                    partial(self.abrir_panel_clima), self.fuente_botones, 390, 90, 150, 50)
+
+        btn_simulacion = crear_boton_ico(self.scroll_area_contents, SIMULA_ICON, "Simulaciones",
+                                         partial(self.abrir_panel_clima), self.fuente_botones, 560, 90, 150, 50)
+        self._labels(lbl_estado)
+        self._labels(lbl_plantas)
+        self._labels(lbl_img_estado)
+        self._labels(lbl_img_planta)
+        self._botones(btn_reportes)
+        self._botones(btn_reportes_status)
+        self._botones(btn_clima)
+        self._botones(btn_simulacion)
 
     def generar_plantas_disponibles(self):
-        if self.cantidad_plantas > self.cantidad_paneles*2+1:
-            self.scroll_area_contents.setFixedSize(800, 600 + self.cantidad_plantas*20)
+        if self.cantidad_plantas > self.cantidad_paneles * 2 + 1:
+            self.scroll_area_contents.setFixedSize(800, 600 + self.cantidad_plantas * 20)
             self.scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
 
         # Creación de las plantas dinámicas
@@ -93,7 +97,9 @@ class ShHome:
                 initial_left_pos = 10
                 initial_top_pos += self.btn_offset[0]
                 cnt_plantas = 1
-            btn_planta = crear_boton_ico(self.scroll_area_contents, PLANTA_ICON, i.nombre, partial(self.abrir_contenido_planta, i), self.fuente_botones, initial_left_pos, initial_top_pos, 150, 100)
+            btn_planta = crear_boton_ico(self.scroll_area_contents, PLANTA_ICON, i.nombre,
+                                         partial(self.abrir_contenido_planta, i), self.fuente_botones, initial_left_pos,
+                                         initial_top_pos, 150, 100)
             initial_left_pos += self.btn_offset[1]
             self._botones(btn_planta)
 
