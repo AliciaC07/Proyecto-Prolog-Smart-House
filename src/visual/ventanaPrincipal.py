@@ -270,6 +270,8 @@ class Ui_ventanaPrincipalDesigner(object):
         self.btnRemoverFamiliar.clicked.connect(self.RemoveFamiliares)
         self.btnFinalizar.clicked.connect(self.InsertarEstructura)
         self.ventana_suprema = ventanaPrincipalDesigner
+        self.lwLugares.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+        self.cbxObjetos.currentIndexChanged.connect(self.filtrarObjetos)
 
     contadorplanta = 1
     contadorLugar = 1
@@ -597,6 +599,25 @@ class Ui_ventanaPrincipalDesigner(object):
         self.cbxPlanta.setCurrentIndex(0)
         self.cbxObjetos.setCurrentIndex(0)
         self.cbxLugares.setCurrentIndex(0)
+
+    def filtrarObjetos(self):
+
+        if self.cbxObjetos.currentIndex() == 0:
+            self.inputUnidad.setEnabled(True)
+            self.inputUnidadAgua.setEnabled(True)
+        elif  self.tiposObjetos[self.cbxObjetos.currentText()] == "Contundente":
+            self.inputUnidad.setEnabled(False)
+            self.inputUnidadAgua.setEnabled(False)
+        elif self.tiposObjetos[self.cbxObjetos.currentText()] == "Electrodomestico":
+            self.inputUnidad.setEnabled(True)
+            self.inputUnidadAgua.setEnabled(False)
+        elif self.tiposObjetos[self.cbxObjetos.currentText()] == "Agua":
+            self.inputUnidad.setEnabled(False)
+            self.inputUnidadAgua.setEnabled(True)
+        if self.cbxObjetos.currentText() == "Lavadora" or self.cbxObjetos.currentText() == "Lavaplatos":
+            self.inputUnidad.setEnabled(True)
+            self.inputUnidadAgua.setEnabled(True)
+
 
 
 if __name__ == "__main__":

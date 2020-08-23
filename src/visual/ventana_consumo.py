@@ -9,6 +9,9 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QTableWidgetItem
+from PyQt5.QtCore import *
+from PyQt5.QtGui  import *
 from pyswip import Prolog
 
 
@@ -19,38 +22,38 @@ class Ui_Dialog(object):
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox.setGeometry(QtCore.QRect(440, 400, 221, 32))
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel | QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")
         self.tbobjetos = QtWidgets.QTableWidget(Dialog)
         self.tbobjetos.setGeometry(QtCore.QRect(40, 170, 621, 211))
-        self.tbobjetos.setColumnCount(4)
+        self.tbobjetos.setColumnCount(2)
         self.tbobjetos.setObjectName("tbobjetos")
         self.tbobjetos.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
         self.tbobjetos.setHorizontalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
         self.tbobjetos.setHorizontalHeaderItem(1, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tbobjetos.setHorizontalHeaderItem(2, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tbobjetos.setHorizontalHeaderItem(3, item)
+
         self.tbobjetos.horizontalHeader().setCascadingSectionResizes(False)
-        self.tbobjetos.horizontalHeader().setDefaultSectionSize(154)
+        self.tbobjetos.horizontalHeader().setDefaultSectionSize(285)
         self.tbobjetos.horizontalHeader().setMinimumSectionSize(49)
         self.tbobjetos.horizontalHeader().setSortIndicatorShown(False)
         self.tbobjetos.horizontalHeader().setStretchLastSection(False)
+
         self.cbxfiltroobjetos = QtWidgets.QComboBox(Dialog)
         self.cbxfiltroobjetos.setGeometry(QtCore.QRect(350, 130, 201, 31))
         self.cbxfiltroobjetos.setObjectName("cbxfiltroobjetos")
         self.cbxfiltroobjetos.addItem("")
         self.cbxfiltroobjetos.addItem("")
         self.cbxfiltroobjetos.addItem("")
-        self.textbuscar = QtWidgets.QTextEdit(Dialog)
+        self.textbuscar = QtWidgets.QLineEdit(Dialog)
         self.textbuscar.setGeometry(QtCore.QRect(40, 130, 281, 31))
         self.textbuscar.setObjectName("textbuscar")
+        self.textbuscar.keyReleaseEvent = self.keyPressEvent
         self.btnbuscar = QtWidgets.QPushButton(Dialog)
         self.btnbuscar.setGeometry(QtCore.QRect(570, 130, 93, 31))
         self.btnbuscar.setObjectName("btnbuscar")
+        self.btnbuscar.clicked.connect(self.setTable)
         self.label = QtWidgets.QLabel(Dialog)
         self.label.setGeometry(QtCore.QRect(180, 30, 331, 31))
         font = QtGui.QFont()
@@ -63,7 +66,12 @@ class Ui_Dialog(object):
         self.buttonBox.accepted.connect(Dialog.accept)
         self.buttonBox.rejected.connect(Dialog.reject)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
-        self.buscarConsumoDeObjeto(self.cbxfiltroobjetos.currentText())
+
+        self.cbxfiltroobjetos.currentIndexChanged.connect(self.setTable)
+
+        self.setTable()
+
+
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
@@ -72,59 +80,131 @@ class Ui_Dialog(object):
         item.setText(_translate("Dialog", "Nombre"))
         item = self.tbobjetos.horizontalHeaderItem(1)
         item.setText(_translate("Dialog", "Consumo"))
-        item = self.tbobjetos.horizontalHeaderItem(2)
-        item.setText(_translate("Dialog", "Fecha de uso"))
-        item = self.tbobjetos.horizontalHeaderItem(3)
-        item.setText(_translate("Dialog", "Tiempo de uso"))
         self.cbxfiltroobjetos.setCurrentText(_translate("Dialog", "<Todos>"))
         self.cbxfiltroobjetos.setItemText(0, _translate("Dialog", "<Todos>"))
         self.cbxfiltroobjetos.setItemText(1, _translate("Dialog", "Agua"))
         self.cbxfiltroobjetos.setItemText(2, _translate("Dialog", "Electricidad"))
         self.btnbuscar.setText(_translate("Dialog", "Buscar"))
         self.label.setText(_translate("Dialog", "Consumo de objetos"))
+        self.tbobjetos.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
 
 
+
+    def keyPressEvent(self, e):
+        self.setTable()
 
     def buscarConsumoDeObjeto(self, Query):
         self.prologInstance = Prolog()
         self.prologInstance.consult('conocimientos.pl')
+        nombreN = 0
+        nombre = ""
+        consumoN = 0
+        consumo = ""
+        elec = dict()
         if Query == "<Todos>":
-            nombreN = 0
-            nombre = ""
-            consumoN = 0
-            consumo = ""
-            elec = dict()
-            Q1 = self.prologInstance.query("calcular_consumo_electrodomesticos(" + "X," + "Consumo" + ", date(2020, 8, _))")
-            Q2 = self.prologInstance.query("calcular_consumo_agua(" + "X," + "Consumo" + ", date(2020, 8, _))")
+
+            Q1 = self.prologInstance.query(
+                "calculo_consumo_electrodomesticos(" + "X," + "Consumo" + ", date(2020, 8, _))")
+            Q2 = self.prologInstance.query("calcula_consumo_agua(" + "X," + "Consumo" + ", date(2020, 8, _))")
+
             for solution in Q1:
                 nombreN += 1
-                nombre = "Electrodomestico #"+str(nombreN)
+                nombre = "Electrodomestico #" + str(nombreN)
                 consumoN += 1
-                elec.update({nombre:str(solution["X"]), consumo:str(solution["Consumo"])})
-
-            for solution in Q2:
-                nombre += 1
-                consumo += 1
+                consumo = "Consumo #" + str(consumoN)
                 elec.update({nombre: str(solution["X"]), consumo: str(solution["Consumo"])})
 
-            return elec
+            for solution in Q2:
+                nombreN += 1
+                nombre = "Electrodomestico #" + str(nombreN)
+                consumoN += 1
+                consumo = "Consumo #" + str(consumoN)
+                elec.update({nombre: str(solution["X"]), consumo: str(solution["Consumo"])})
+        elif Query == "Agua":
+            Q2 = self.prologInstance.query("calcula_consumo_agua(" + "X," + "Consumo" + ", date(2020, 8, _))")
+            for solution in Q2:
+                nombreN += 1
+                nombre = "Electrodomestico #" + str(nombreN)
+                consumoN += 1
+                consumo = "Consumo #" + str(consumoN)
+                elec.update({nombre: str(solution["X"]), consumo: str(solution["Consumo"])})
+        elif Query == "Electricidad":
+
+            Q1 = self.prologInstance.query(
+                "calculo_consumo_electrodomesticos(" + "X," + "Consumo" + ", date(2020, 8, _))")
+
+            for solution in Q1:
+                nombreN += 1
+                nombre = "Electrodomestico #" + str(nombreN)
+                consumoN += 1
+                consumo = "Consumo #" + str(consumoN)
+                elec.update({nombre: str(solution["X"]), consumo: str(solution["Consumo"])})
+        if len(self.textbuscar.text()) >= 1:
+            auxDict = dict()
+            busqueda = self.textbuscar.text().lower()
+            count = 0
+            nom = 1
+            ind = 0
+            if len(busqueda) > 3:
+                for aux2 in range(0, nombreN):
+                    ind += 1
+                    electrodomestico = elec["Electrodomestico #" + str(ind)]
+                    indelec = 0
+                    indtxt = len(busqueda)
+                    for aux3 in range(0, len(electrodomestico)):
+                        mensaje = electrodomestico[indelec:indtxt]
+                        indelec += len(busqueda)
+                        indtxt += len(busqueda)
+                        if mensaje.lower() == busqueda:
+                            auxDict.update({"Electrodomestico #" + str(nom): elec["Electrodomestico #" + str(ind)],
+                                            "Consumo #" + str(nom): elec["Consumo #" + str(ind)]})
+                            count += 1
+                            nom += 1
+                           # print(auxDict)
+                            break
+                        if indelec > len(electrodomestico):
+                            break
+            else:
+                for aux2 in range(0, nombreN):
+                    ind += 1
+                    electrodomestico = elec["Electrodomestico #" + str(ind)]
+                    indelec = 0
+                    indtxt = len(busqueda)
+                    for aux3 in range(0, len(electrodomestico)):
+                        mensaje = electrodomestico[indelec:indtxt]
+                        indelec += 1
+                        indtxt += 1
+                        if busqueda.find(mensaje.lower()) > -1:
+                            auxDict.update({"Electrodomestico #" + str(nom): elec["Electrodomestico #" + str(ind)],
+                                            "Consumo #" + str(nom): elec["Consumo #" + str(ind)]})
+                            count += 1
+                            nom += 1
+                            #print(auxDict)
+                            break
+                        if indelec > len(electrodomestico):
+                            break
+            return auxDict, count
+
+        return elec, nombreN
+
     def setTable(self):
-        self.tbobjetos.clear()
-        objetos = dict()
+        self.tbobjetos.clearContents()
+        self.tbobjetos.setRowCount(0)
         ind = 0
-        objetos.update(self.buscarConsumoDeObjeto(self.cbxfiltroobjetos.currentIndex()))
-        for aux in objetos:
+        objetos, valor = self.buscarConsumoDeObjeto(self.cbxfiltroobjetos.currentText())
+
+        for aux in range(0, valor):
             ind += 1
             rowPosition = self.tbobjetos.rowCount()
             self.tbobjetos.insertRow(rowPosition)
-            self.tbobjetos.setItem(rowPosition, 0, objetos[ind])
 
-
-
+            self.tbobjetos.setItem(rowPosition, 0, QTableWidgetItem(objetos["Electrodomestico #" + str(ind)]))
+            self.tbobjetos.setItem(rowPosition, 1, QTableWidgetItem(objetos["Consumo #" + str(ind)]))
 
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     Dialog = QtWidgets.QDialog()
     ui = Ui_Dialog()

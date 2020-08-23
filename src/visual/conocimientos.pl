@@ -35,23 +35,26 @@
 %electrodomestico(nevera1, 662).
 %electrodomestico(estufa1, 1000).
 %electrodomestico(television1, 263).
+%estado_electrodomestico(television1, apagado, date(0,0,0), time(0,0,0)).
 %electrodomestico(television2, 263).
-%electrodomestico(television3, 263).
-%electrodomestico(bombillo1, 0.06).
-%estado_electrodomestico(bombillo1, apagado, date(0,0,0), time(0,0,0))
+%%electrodomestico(television3, 263).
+%electrodomestico(bombillo1, 1).
+%estado_electrodomestico(bombillo1, apagado, fecha(0,0,0), tiempo(0,0,0)).
 electrodomestico(bombillo2, 0.06).
 electrodomestico(bombillo3, 0.06).
 electrodomestico(bombillo4, 0.06).
 electrodomestico(bombillo5, 0.06).
 electrodomestico(computadora1, 0.450).
 electrodomestico(computadora2, 0.450).
-electrodomestico(computadora3, 0.450).
-electrodomestico(abanico1, 0.9).
-electrodomestico(abanico2, 0.9).
-electrodomestico(abanico3, 0.9).
-electrodomestico(lavadora1, 255).
+%electrodomestico(computadora3, 0.450).
+%electrodomestico(abanico1, 0.9).
+%electrodomestico(abanico2, 0.9).
+%electrodomestico(abanico3, 0.9).
+%electrodomestico(lavadora1, 255).
 electrodomestico(lavadora2, 255).
 electrodomestico(lavaplatos1, 246).
+electrodomestico(bombillo1, 1).
+%estado_electrodomestico(bombillo1, apagado, date(0,0,0), time(0,0,0)).
 
 %Objetos de agua
 objeto_agua(toilet1,fijo ,6.05).
@@ -269,4 +272,15 @@ apagar_electrodomestico(Electrodomestico):-
     retract(estado_electrodomestico(Electrodomestico,_,_,_)),
     assertz(estado_electrodomestico(Electrodomestico, apagado, Fecha_actual, Tiempo_actual)).
 
+listado_consumo_de_aparato_por_fechas(Aparato, Filtro_fecha, Res):-
+    findall(Consumo, consumo(Aparato, Consumo, Filtro_fecha, _, Filtro_fecha, _, _), Res).
 
+calculo_consumo_electrodomesticos(Electrodomestico, ConsumoElectrico, Fecha_filtrado):-
+    electrodomestico(Electrodomestico, _),
+    listado_consumo_de_aparato_por_fechas(Electrodomestico, Fecha_filtrado, Listado),
+    sum_list(Listado, ConsumoElectrico).
+
+calcula_consumo_agua(Objeto_agua, ConsumoAgua, Fecha_filtrado):-
+    objeto_agua(Objeto_agua, _, _),
+        listado_consumo_de_aparato_por_fechas(Objeto_agua, Fecha_filtrado, Listado),
+    sum_list(Listado, ConsumoAgua).
