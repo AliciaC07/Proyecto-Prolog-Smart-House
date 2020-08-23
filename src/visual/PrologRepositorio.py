@@ -10,6 +10,7 @@ class PrologRepositorio(metaclass=Singleton):
         self.prologInstance = Prolog()
         self.prologInstance.consult('conocimientos.pl')
         self.plantas = []
+
     def transform_prolog_name(self, name):
         preprocess_name = name.replace(' ', '_')
         return preprocess_name.lower()
@@ -19,7 +20,7 @@ class PrologRepositorio(metaclass=Singleton):
             nueva_planta = Planta("planta" + str(i))
             self.plantas.append(nueva_planta)
 
-    def InsertPlanta(self, planta):
+    def InsertPlanta(self, planta, unidade):
         fact = "planta("
         fact += self.transform_prolog_name(planta.nombre)
         fact += ", "
@@ -37,8 +38,19 @@ class PrologRepositorio(metaclass=Singleton):
             obs = self.convert_strings_of_list(aux.objetos)
             fact2 += self.ciclo_transform(obs)
             fact2 += ")"
+            aire = "aire_acondicionado("+self.transform_prolog_name(aux.nombre)+", 30, auto, bajo)"
+            if unidade == "KWatt":
+                aire_electro = "electrodomestico(aire_acondicionado_"+self.transform_prolog_name(aux.nombre)+", 2)"
+            else:
+                aire_electro = "electrodomestico(aire_acondicionado_" + self.transform_prolog_name(aux.nombre) + ", 2000)"
+            aire_estado = "estado_electrodomestico(aire_acondicionado_"+self.transform_prolog_name(aux.nombre)+", apagado, date(0,0,0), time(0,0,0)) "
             self.prologInstance.assertz(fact2)
-
+            self.prologInstance.assertz(aire)
+            self.prologInstance.assertz(aire_electro)
+            self.prologInstance.assertz(aire_estado)
+            q2 = self.prologInstance.query("listing(electrodomestico)")
+            for i in q2:
+                print(i)
             print(fact2)
             for aux2 in aux.objetos:
                 for aux3 in aux2.tipo:
@@ -47,7 +59,7 @@ class PrologRepositorio(metaclass=Singleton):
                         hecho = "electrodomestico(" + self.transform_prolog_name(aux2.nombre) + "," + str(
                             aux2.unidad) + ")"
                         hechoestado = "estado_electrodomestico(" + self.transform_prolog_name(
-                            aux2.nombre) + ", apagado, fecha(0,0,0), tiempo(0,0,0))"
+                            aux2.nombre) + ", apagado, date(0,0,0), time(0,0,0))"
                         self.prologInstance.assertz(hecho)
                         self.prologInstance.assertz(hechoestado)
                     elif aux3 == "Agua":

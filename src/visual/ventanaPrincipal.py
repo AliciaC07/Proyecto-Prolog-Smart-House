@@ -555,7 +555,7 @@ class Ui_ventanaPrincipalDesigner(object):
     def InsertarEstructura(self):
         if self.validar() and self.validar2() and self.inputNombreCasa.text() != "" and self.inputUbicacion.text() != "" and self.cbxUnidadacuatica.currentText() != "<Seleccione la unidad de medida>" and self.cbxUnidadelectrica.currentText() != "<Seleccione la unidad de medida>":
             for aux in self.plantas:
-                self.prolog.InsertPlanta(aux)
+                self.prolog.InsertPlanta(aux,self.cbxUnidadelectrica.currentText())
             for aux in self.fam:
                 self.prolog.InsertPersons(aux)
             self.prolog.InsertInfoHouse(self.inputNombreCasa.text(), self.inputUbicacion.text(), self.plantas,
