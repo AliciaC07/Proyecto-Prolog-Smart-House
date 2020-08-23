@@ -15,6 +15,7 @@
 :- dynamic consumo_agua/4.
 :- dynamic estado_objeto_agua/4.
 :- dynamic consumo/7.
+:- dynamic aire_acondicionado/4.
 
 %casa_info(nombrecasa, ubicacion, [plantas])
 % planta(nombre_planta, lista_lugares)
@@ -130,6 +131,10 @@ invitado(papotico).
 ubicacion_persona(sala1, roberto).
 ubicacion_persona(comedor1, nicole).
 ubicacion_persona(sala1, papotico).
+
+%Se especifica las caracteristicas(velocidad, modo, etc.) del aire acondicionado
+%instalado en lugar.
+%aire_acondicionado(lugar, temperatura, modo, velocidad_aire).
 
 calcula_consumo([], 0).
 calcula_consumo([H|T], Total):-
