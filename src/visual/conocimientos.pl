@@ -309,6 +309,17 @@ apagar_electrodomesticos_lugar(Lugar):-
     apagar_electrodomesticos_lugar_aux(Objetos).
 
 
+
+% - apagar_agua_lugar(Lugar)
+% - Cierra los objetos agua continuos de un lugar, dado su listado de objetos.
+apagar_agua_lugar_aux([]).
+apagar_agua_lugar_aux([H|T]):-objeto_agua(H,continuo,_),cierre_objeto_agua(H),apagar_agua_lugar_aux(T).
+apagar_agua_lugar_aux([_|T]):-apagar_agua_lugar_aux(T), !.
+apagar_agua_lugar(Lugar):-
+    lugar(Lugar,_,Objetos),
+    apagar_agua_lugar_aux(Objetos).
+
+
 % - apagar_electrodomestico_planta(Planta)
 % - Apaga los electrodomesticos de un planta, dado su listado de lugares.
 apagar_electrodomesticos_planta_aux([]).

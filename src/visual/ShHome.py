@@ -1,13 +1,14 @@
 from datetime import datetime
-
-from src.visual.QtHelper import *
 from functools import partial
+from multiprocessing import Lock
+
+import matplotlib.pyplot as plt
+
 from src.visual.PrologRepositorio import PrologRepositorio
+from src.visual.QtHelper import *
 from src.visual.ShVistaPlanta import ShVistaPlanta
 from src.visual.info_casa import CasaInfo
 from src.visual.resource_locator import *
-import matplotlib.pyplot as plt
-
 # noinspection PyMethodMayBeStatic
 from src.visual.vista_consumo import VistaConsumo
 
@@ -40,7 +41,7 @@ class ShHome:
         # Configurables
         self.resolucion = (800, 600)
         self.btn_offset = (150, 200)
-        self.panel_dinamico_offset = (310, 10)
+        self.panel_dinamico_offset = (330, 10)
         self.cantidad_paneles = 4
 
         # Prolog instance
@@ -81,7 +82,7 @@ class ShHome:
         plt.show()
 
     def generar_reporte_consumo_agua(self):
-        meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep","Oct", "Nov", "Dic"]
+        meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
         x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
         y = []
         y_appender = y.append
@@ -94,17 +95,23 @@ class ShHome:
         plt.xticks(x, meses)
         plt.show()
 
+    def modo_eco(self):
+        self.prolog.ahorro_recursos()
+
     def cabeceraVentana(self):
         pass
         # Labels de la cabecera de la ventana ShHome
         lbl_estado = crear_label(self.scroll_area_contents, "Dashboard", self.fuente_titulos, 50, 35)
         lbl_img_estado = crear_img(self.scroll_area_contents, "assets/reportes.png", 10, 30)
-        lbl_plantas = crear_label(self.scroll_area_contents, "Plantas de su Casa", self.fuente_titulos, 50, 250)
-        lbl_img_planta = crear_img(self.scroll_area_contents, "assets/casa.png", 10, 245)
+        lbl_plantas = crear_label(self.scroll_area_contents, "Plantas de su Casa", self.fuente_titulos, 50, 270)
+        lbl_img_planta = crear_img(self.scroll_area_contents, "assets/casa.png", 10, 265)
 
         # Botones de la cabecera de la ventana ShHome
         btn_reportes = crear_boton_ico(self.scroll_area_contents, REPORTES_ICON, "Consumo",
                                        partial(self.abrir_panel_reportes), self.fuente_botones, 10, 90, 150, 50)
+
+        btn_eco = crear_boton_ico(self.scroll_area_contents, ECO_ICON, "Modo Eco",
+                                  partial(self.modo_eco), self.fuente_botones, 10, 170, 150, 50)
 
         btn_reportes_status = crear_boton_ico(self.scroll_area_contents, AJUSTES_ICON, "Info/Ajustes",
                                               partial(self.abrir_panel_status), self.fuente_botones, 200, 90, 150, 50)

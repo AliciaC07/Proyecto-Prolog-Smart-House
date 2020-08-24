@@ -11,6 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from src.visual.PrologRepositorio import PrologRepositorio
+import src.visual.configuracion as config
 
 
 class CasaInfo(object):
@@ -158,6 +159,18 @@ class CasaInfo(object):
         self.lbl_costo_agua.setText(str(info[5]))
         self.lbl_unidad_electricidad.setText(str(info[6]))
         self.lbl_costo_luz.setText(str(info[7]))
+        self.init_view()
+        self.chk_box_eco.stateChanged.connect(self.cambiar_estado)
+
+    def init_view(self):
+        self.chk_box_eco.setChecked(config.MODO_ECO)
+
+    def cambiar_estado(self, state):
+        if state == QtCore.Qt.Checked:
+            config.MODO_ECO = True
+        else:
+            config.MODO_ECO = False
+        print(config.MODO_ECO)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate

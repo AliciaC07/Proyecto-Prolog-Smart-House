@@ -1,10 +1,10 @@
+import urllib.parse
+
+import requests
 from pyswip import *
 
 from src.modelo.Planta import Planta
 from src.modelo.Singleton import Singleton
-from src.modelo.Objetos import *
-import requests
-import urllib.parse
 
 
 class PrologRepositorio(metaclass=Singleton):
@@ -13,6 +13,20 @@ class PrologRepositorio(metaclass=Singleton):
         self.prologInstance = Prolog()
         self.prologInstance.consult('conocimientos.pl')
         self.plantas = []
+
+    def apagar_electrodomesticos_lugar(self, lugar):
+        self.debug_listing("estado_electrodomestico")
+        q1 = self.prologInstance.query("apagar_electrodomesticos_lugar(" + self.transform_prolog_name(lugar.nombre) + ")")
+        for sol in q1:
+            print(sol)
+        self.debug_listing("estado_electrodomestico")
+
+    def apagar_agua_lugar(self, lugar):
+        self.debug_listing("estado_objeto_agua")
+        q1 = self.prologInstance.query("apagar_agua_lugar(" + self.transform_prolog_name(lugar.nombre) + ")")
+        for sol in q1:
+            print(sol)
+        self.debug_listing("estado_objeto_agua")
 
     def get_consumo_electrico_por_fecha(self, Mes, Anyo):
         q1 = self.prologInstance.query("calculo_electricidad_por_fecha("+str(Mes)+","+str(Anyo)+",Consumo)")
@@ -41,6 +55,15 @@ class PrologRepositorio(metaclass=Singleton):
         for sol in q1:
             res = sol["Unidad"]
         return str(res)
+
+    def ahorro_recursos(self):
+        self.debug_listing("estado_electrodomestico")
+        self.debug_listing("estado_objeto_agua")
+        q1 = self.prologInstance.query("ahorro_recursos()")
+        for sol in q1:
+            print(sol)
+        self.debug_listing("estado_electrodomestico")
+        self.debug_listing("estado_objeto_agua")
 
     def get_info_casa(self):
         q1 = self.prologInstance.query("casa_info(Nombre, Ubicacion, _)")

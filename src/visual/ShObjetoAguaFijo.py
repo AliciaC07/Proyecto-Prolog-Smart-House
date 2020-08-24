@@ -84,7 +84,7 @@ class ShObjetoAguaFijo(object):
         self.lbl_estado.setText("Fijo/Agua")
         self.lbl_tipo.setText(self.categoria_objeto_agua + "/" + self.objeto.naturaleza)
         self.lbl_consumo_electrico.setText("N/A")
-        self.lbl_consumo_agua.setText(str(self.objeto.unidadAgua))
+        self.lbl_consumo_agua.setText(str(self.objeto.unidadAgua + ' ' + self.prologRepository.get_unidad_agua()))
         self.lbl_tipo.adjustSize()
         set_img_to_label(self.img_objeto, determinar_icono_objeto(self.objeto))
 

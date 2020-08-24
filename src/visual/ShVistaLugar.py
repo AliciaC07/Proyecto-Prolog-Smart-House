@@ -53,12 +53,26 @@ class ShVistaLugar:
         self.vista_airelugar.setupUi(self.ventana_vista_airelugar)
         self.ventana_vista_airelugar.show()
 
+    def apagar_electrodomesticos(self):
+        self.prolog.apagar_electrodomesticos_lugar(self.lugar)
+
+    def apagar_objetos_agua(self):
+        self.prolog.apagar_agua_lugar(self.lugar)
+
     def cabeceraVentana(self):
         lbl_estado = crear_label(self.scroll_area_contents, "Opciones lugar: " +
                                  self.lugar.nombre, self.fuente_titulos, 50, 35)
         lbl_img_estado = crear_img(self.scroll_area_contents, AJUSTES_ICON, 10, 30)
         btn_aire = crear_boton_ico(self.scroll_area_contents, AIRE_ICON, "Aire",
                                    partial(self.abrir_aire), self.fuente_botones, 10, 90, 150, 50)
+        btn_reportes_status = crear_boton_ico(self.scroll_area_contents, BOMBILLO_ENCENDIDO_ICON, "Off Elec.",
+                                              partial(self.apagar_electrodomesticos), self.fuente_botones, 200, 90, 150, 50)
+
+        btn_elec = crear_boton_ico(self.scroll_area_contents, LAVAMANOS_ICON, "Off Agua",
+                                   partial(self.apagar_objetos_agua),
+                                   self.fuente_botones, 400, 90, 150, 50)
+        lbl_objetos = crear_label(self.scroll_area_contents, "Objetos", self.fuente_titulos, 50, 250)
+        lbl_img_planta = crear_img(self.scroll_area_contents, SALA_ICON, 10, 245)
 
     def abrir_ventana_objeto(self, objeto):
         tipo_objeto = determinar_tipo_objeto(objeto)

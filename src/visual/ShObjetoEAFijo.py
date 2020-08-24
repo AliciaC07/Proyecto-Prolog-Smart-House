@@ -120,8 +120,8 @@ class ShObjetoEAFijo(object):
         self.lbl_nombre.setText(self.objeto.nombre)
         self.lbl_estado.setText(self.prologRepository.obtener_estado_electrodomestico(self.objeto))
         self.lbl_tipo.setText(self.categoria_objeto_agua + "/" + self.objeto.naturaleza)
-        self.lbl_consumo_electrico.setText(str(self.objeto.unidad))
-        self.lbl_consumo_agua.setText(str(self.objeto.unidadAgua))
+        self.lbl_consumo_electrico.setText(str(self.objeto.unidad + ' ' + self.prologRepository.get_unidad_electrica()))
+        self.lbl_consumo_agua.setText(str(self.objeto.unidadAgua + ' ' + self.prologRepository.get_unidad_agua()))
         self.lbl_tipo.adjustSize()
         set_img_to_label(self.img_objeto, determinar_icono_objeto(self.objeto))
 
