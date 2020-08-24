@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from src.visual.PrologRepositorio import PrologRepositorio
 from src.visual.QtHelper import *
 from src.visual.ShVistaPlanta import ShVistaPlanta
+from src.visual.familia import FamiliaMonitor
 from src.visual.info_casa import CasaInfo
 from src.visual.resource_locator import *
 # noinspection PyMethodMayBeStatic
@@ -37,6 +38,8 @@ class ShHome:
         self.vista_consumo = None
         self.ventana_ajustes = None
         self.vista_ajustes = None
+        self.ventana_vista_familia = None
+        self.vista_familia = None
 
         # Configurables
         self.resolucion = (800, 600)
@@ -66,6 +69,12 @@ class ShHome:
         self.vista_planta = ShVistaPlanta(planta)
         self.vista_planta.setupUi(self.ventana_vista_planta)
         self.ventana_vista_planta.show()
+
+    def abrir_miembros_casa(self):
+        self.ventana_vista_familia = QtWidgets.QMainWindow()
+        self.vista_familia = FamiliaMonitor()
+        self.vista_familia.setupUi(self.ventana_vista_familia)
+        self.ventana_vista_familia.show()
 
     def generar_reporte_consumo_electrico(self):
         meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
@@ -112,6 +121,9 @@ class ShHome:
 
         btn_eco = crear_boton_ico(self.scroll_area_contents, ECO_ICON, "Modo Eco",
                                   partial(self.modo_eco), self.fuente_botones, 10, 170, 150, 50)
+
+        btn_familia = crear_boton_ico(self.scroll_area_contents, FAMILY_ICON, "Miembros Casa",
+                                      partial(self.abrir_miembros_casa), self.fuente_botones, 200, 170, 150, 50)
 
         btn_reportes_status = crear_boton_ico(self.scroll_area_contents, AJUSTES_ICON, "Info/Ajustes",
                                               partial(self.abrir_panel_status), self.fuente_botones, 200, 90, 150, 50)

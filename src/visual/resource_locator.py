@@ -21,6 +21,7 @@ AJUSTES_ICON = "assets/ajustes.png"
 SIMULA_ICON = "assets/simulacion.png"
 AIRE_ICON = "assets/aire.png"
 ECO_ICON = "assets/arbol.png"
+FAMILY_ICON = "assets/family.png"
 
 NEVERA_ICON = "assets/refrigerador.png"
 ESTUFA_ICON = "assets/horno.png"

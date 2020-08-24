@@ -16,7 +16,8 @@
 :- dynamic estado_objeto_agua/4.
 :- dynamic consumo/7.
 :- dynamic aire_acondicionado/4.
-
+:- dynamic ubicacion_persona/2.
+:- dynamic intruso/1.
 %casa_info(nombrecasa, ubicacion, [plantas])
 % planta(nombre_planta, lista_lugares)
 %planta(planta1, [sala1, comedor1, cocina1, bano1, cuarto_lavado1]).
@@ -113,24 +114,24 @@
 
 %Especificacion de las personas que entran a la casa.
 %persona(nombre_persona, estado(despierto,fuera,durmiendo))
-persona(roberto, despierto).
-persona(nicole, despierto).
-persona(papotico, despierto).
+%persona(roberto, despierto).
+%persona(nicole, despierto).
+%persona(papotico, despierto).
 
 %especifica si es un miembro de la casa o no
 %miembro_casa(persona)
-miembro_casa(roberto).
-miembro_casa(nicole).
+%miembro_casa(roberto).
+%miembro_casa(nicole).
 
 %Especifica si es un invitado y no un miembro de la casa
 %invitado(persona)
-invitado(papotico).
+%invitado(papotico).
 
 %Ubicacion de la persona en la casa
 %ubicacion_persona(lugar, persona)
-ubicacion_persona(sala1, roberto).
-ubicacion_persona(comedor1, nicole).
-ubicacion_persona(sala1, papotico).
+%ubicacion_persona(sala1, roberto).
+%ubicacion_persona(comedor1, nicole).
+%ubicacion_persona(sala1, papotico).
 
 %Se especifica las caracteristicas(velocidad, modo, etc.) del aire acondicionado
 %instalado en lugar.
@@ -367,3 +368,17 @@ calculo_electricidad_por_fecha(Mes, Anyo, Consumo):-
 calculo_agua_por_fecha(Mes, Anyo, Consumo):-
     findall(Consumo, (objeto_agua(Aparato,_,_),consumo(Aparato, Consumo, date(Anyo,Mes,_), _, date(Anyo,Mes,_), _, _)), Res),
     sum_list(Res, Consumo).
+
+% - Actualiza el estado de un miembro de la casa en su totatlidad
+actualizar_miembro_casa(Nombre, Estado, Lugar):-
+    miembro_casa(Nombre),
+    retract(persona(Nombre, _)),
+    assertz(persona(Nombre, Estado)),
+    retract(ubicacion_persona(_, Nombre)),
+    assertz(ubicacion_persona(Lugar, Nombre)).
+
+% - Se simula la entrada de un intruso. En este caso, se cierran las ventanas y puertas de todos los lugares.
+simular_intruso():-
+    assertz(intruso(intruso1)),
+    cerrar_puertas_casa(),
+    cerrar_ventanas_casa().

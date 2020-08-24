@@ -14,6 +14,55 @@ class PrologRepositorio(metaclass=Singleton):
         self.prologInstance.consult('conocimientos.pl')
         self.plantas = []
 
+    def actualizar_persona_totalidad(self, nombre, lugar, estado):
+        self.debug_listing("persona")
+        self.debug_listing("ubicacion_persona")
+        q1 = self.prologInstance.query("actualizar_miembro_casa(" + nombre + "," + estado + "," + lugar + ")")
+        print(nombre)
+        print(lugar)
+        print(estado)
+        for sol in q1:
+            print(sol)
+        self.debug_listing("persona")
+        self.debug_listing("ubicacion_persona")
+
+    def simular_intruso(self):
+        self.debug_listing("estado_objeto")
+        self.debug_listing("intruso")
+        q1 = self.prologInstance.query("simular_intruso()")
+        for sol in q1:
+            print(sol)
+        self.debug_listing("intruso")
+        self.debug_listing("estado_objeto")
+
+    def obtener_lugares(self):
+        q1 = self.prologInstance.query("lugar(Nombre,_,_)")
+        lugares = []
+        for sol in q1:
+            lugares.append(str(sol["Nombre"]))
+        return lugares
+
+    def obtener_miembros_casa(self):
+        q1 = self.prologInstance.query("miembro_casa(Miembro)")
+        miembros = []
+        for sol in q1:
+            miembros.append(str(sol["Miembro"]))
+        return miembros
+
+    def obtener_estado_persona(self, nombre):
+        q1 = self.prologInstance.query("persona(" + nombre + ", Estado)")
+        estado = None
+        for sol in q1:
+            estado = sol["Estado"]
+        return estado
+
+    def obtener_lugar_persona(self, nombre):
+        q1 = self.prologInstance.query("ubicacion_persona(Lugar," + nombre + ")")
+        lugar = None
+        for sol in q1:
+            lugar = sol["Lugar"]
+        return lugar
+
     def apagar_electrodomesticos_lugar(self, lugar):
         self.debug_listing("estado_electrodomestico")
         q1 = self.prologInstance.query("apagar_electrodomesticos_lugar(" + self.transform_prolog_name(lugar.nombre) + ")")
@@ -283,8 +332,11 @@ class PrologRepositorio(metaclass=Singleton):
     def InsertPersons(self, persona):
         fam = "persona(" + self.transform_prolog_name(persona) + ", despierto)"
         famtype = "miembro_casa(" + self.transform_prolog_name(persona) + ")"
+        lugar = self.obtener_lugares()[0]
+        ubicacion = "ubicacion_persona(" + self.transform_prolog_name(lugar) + "," + persona + ")"
         self.prologInstance.assertz(fam)
         self.prologInstance.assertz(famtype)
+        self.prologInstance.assertz(ubicacion)
         q2 = self.prologInstance.query("listing(persona)")
         for i in q2:
             print(i)
