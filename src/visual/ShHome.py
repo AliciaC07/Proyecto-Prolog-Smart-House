@@ -1,9 +1,12 @@
+from datetime import datetime
+
 from src.visual.QtHelper import *
 from functools import partial
 from src.visual.PrologRepositorio import PrologRepositorio
 from src.visual.ShVistaPlanta import ShVistaPlanta
+from src.visual.info_casa import CasaInfo
 from src.visual.resource_locator import *
-
+import matplotlib.pyplot as plt
 
 # noinspection PyMethodMayBeStatic
 from src.visual.vista_consumo import VistaConsumo
@@ -31,6 +34,8 @@ class ShHome:
         self.vista_planta = None
         self.ventana_vista_consumo = None
         self.vista_consumo = None
+        self.ventana_ajustes = None
+        self.vista_ajustes = None
 
         # Configurables
         self.resolucion = (800, 600)
@@ -43,10 +48,10 @@ class ShHome:
         self.cantidad_plantas = len(self.prolog.plantas)
 
     def abrir_panel_status(self):
-        print("Se abrio la ventana de status.")
-
-    def abrir_panel_clima(self):
-        print("Se abrio la ventana de clima.")
+        self.ventana_ajustes = QtWidgets.QMainWindow()
+        self.vista_ajustes = CasaInfo()
+        self.vista_ajustes.setupUi(self.ventana_ajustes)
+        self.ventana_ajustes.show()
 
     def abrir_panel_reportes(self):
         self.ventana_vista_consumo = QtWidgets.QMainWindow()
@@ -61,6 +66,34 @@ class ShHome:
         self.vista_planta.setupUi(self.ventana_vista_planta)
         self.ventana_vista_planta.show()
 
+    def generar_reporte_consumo_electrico(self):
+        meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
+        x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        y = []
+        y_appender = y.append
+        for element in x:
+            consumo = self.prolog.get_consumo_electrico_por_fecha(element, datetime.today().year)
+            y_appender(consumo)
+        plt.plot(x, y)
+        plt.xlabel('Meses')
+        plt.ylabel('Consumo( ' + self.prolog.get_unidad_electrica() + ')')
+        plt.xticks(x, meses)
+        plt.show()
+
+    def generar_reporte_consumo_agua(self):
+        meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep","Oct", "Nov", "Dic"]
+        x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        y = []
+        y_appender = y.append
+        for element in x:
+            consumo = self.prolog.get_consumo_agua_por_fecha(element, datetime.today().year)
+            y_appender(consumo)
+        plt.plot(x, y)
+        plt.xlabel('Meses')
+        plt.ylabel('Consumo( ' + self.prolog.get_unidad_agua() + ')')
+        plt.xticks(x, meses)
+        plt.show()
+
     def cabeceraVentana(self):
         pass
         # Labels de la cabecera de la ventana ShHome
@@ -70,25 +103,25 @@ class ShHome:
         lbl_img_planta = crear_img(self.scroll_area_contents, "assets/casa.png", 10, 245)
 
         # Botones de la cabecera de la ventana ShHome
-        btn_reportes = crear_boton_ico(self.scroll_area_contents, GRAFICO_ICON, "Consumo",
+        btn_reportes = crear_boton_ico(self.scroll_area_contents, REPORTES_ICON, "Consumo",
                                        partial(self.abrir_panel_reportes), self.fuente_botones, 10, 90, 150, 50)
 
-        btn_reportes_status = crear_boton_ico(self.scroll_area_contents, AJUSTES_ICON, "Ajustes",
+        btn_reportes_status = crear_boton_ico(self.scroll_area_contents, AJUSTES_ICON, "Info/Ajustes",
                                               partial(self.abrir_panel_status), self.fuente_botones, 200, 90, 150, 50)
 
-        btn_clima = crear_boton_ico(self.scroll_area_contents, CLIMA_ICON, "Lugar/clima",
-                                    partial(self.abrir_panel_clima), self.fuente_botones, 390, 90, 150, 50)
+        btn_elec = crear_boton_ico(self.scroll_area_contents, BOMBILLO_ENCENDIDO_ICON, "Reporte Luz",
+                                   partial(self.generar_reporte_consumo_electrico),
+                                   self.fuente_botones, 400, 90, 150, 50)
 
-        btn_simulacion = crear_boton_ico(self.scroll_area_contents, SIMULA_ICON, "Simulaciones",
-                                         partial(self.abrir_panel_clima), self.fuente_botones, 560, 90, 150, 50)
+        btn_agua = crear_boton_ico(self.scroll_area_contents, GRAFICO_ICON, "Reporte Agua",
+                                   partial(self.generar_reporte_consumo_agua), self.fuente_botones, 600, 90, 150, 50)
+
         self._labels(lbl_estado)
         self._labels(lbl_plantas)
         self._labels(lbl_img_estado)
         self._labels(lbl_img_planta)
         self._botones(btn_reportes)
         self._botones(btn_reportes_status)
-        self._botones(btn_clima)
-        self._botones(btn_simulacion)
 
     def generar_plantas_disponibles(self):
         if self.cantidad_plantas > self.cantidad_paneles * 2 + 1:

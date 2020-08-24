@@ -3,7 +3,6 @@ from functools import partial
 from src.visual.Helper import *
 from src.visual.QtHelper import *
 
-
 # noinspection PyMethodMayBeStatic
 from src.visual.ShVistaLugar import ShVistaLugar
 
@@ -32,7 +31,7 @@ class ShVistaPlanta:
         # Configurables
         self.resolucion = (800, 600)
         self.btn_offset = (150, 200)
-        self.panel_dinamico_offset = (310, 10)
+        self.panel_dinamico_offset = (100, 10)
         self.cantidad_paneles = 4
 
         # Prolog instance
@@ -76,6 +75,9 @@ class ShVistaPlanta:
         # self._labels(lbl_img_lugares)
         # self._labels(lbl_img_estado)
         # self._botones(btn_reportes)
+        lbl_img_estado = crear_img(self.scroll_area_contents, PLANTA_ICON, 10, 30)
+        lbl_estado = crear_label(self.scroll_area_contents, "Lugares disponibles: " +
+                                 self.planta.nombre, self.fuente_titulos, 50, 35)
 
     def generar_lugares_disponibles(self):
         if self.cantidad_lugares > self.cantidad_paneles * 2 + 1:

@@ -658,7 +658,6 @@ class Ui_ventanaPrincipalDesigner(object):
 
 if __name__ == "__main__":
     import sys
-
     app = QtWidgets.QApplication(sys.argv)
     ventanaPrincipalDesigner = QtWidgets.QMainWindow()
     ui = Ui_ventanaPrincipalDesigner()

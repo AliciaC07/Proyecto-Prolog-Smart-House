@@ -1,4 +1,4 @@
-from pyswip import Prolog
+from pyswip import *
 
 from src.modelo.Planta import Planta
 from src.modelo.Singleton import Singleton
@@ -13,6 +13,57 @@ class PrologRepositorio(metaclass=Singleton):
         self.prologInstance = Prolog()
         self.prologInstance.consult('conocimientos.pl')
         self.plantas = []
+
+    def get_consumo_electrico_por_fecha(self, Mes, Anyo):
+        q1 = self.prologInstance.query("calculo_electricidad_por_fecha("+str(Mes)+","+str(Anyo)+",Consumo)")
+        consumo = 0
+        for sol in q1:
+            consumo = sol["Consumo"]
+        return consumo
+
+    def get_consumo_agua_por_fecha(self, Mes, Anyo):
+        q1 = self.prologInstance.query("calculo_agua_por_fecha("+str(Mes)+","+str(Anyo)+",Consumo)")
+        consumo = 0
+        for sol in q1:
+            consumo = sol["Consumo"]
+        return consumo
+
+    def get_unidad_electrica(self):
+        q1 = self.prologInstance.query("unidad_electrica(Unidad, _)")
+        res = None
+        for sol in q1:
+            res = sol["Unidad"]
+        return str(res)
+
+    def get_unidad_agua(self):
+        q1 = self.prologInstance.query("unidad_agua(Unidad, _)")
+        res = None
+        for sol in q1:
+            res = sol["Unidad"]
+        return str(res)
+
+    def get_info_casa(self):
+        q1 = self.prologInstance.query("casa_info(Nombre, Ubicacion, _)")
+        q2 = self.prologInstance.query("unidad_agua(Unidad, Precio)")
+        q3 = self.prologInstance.query("unidad_electrica(Unidad, Precio)")
+        nombre_casa = None
+        direccion = None
+        latitud = None
+        longitud = None
+        unidad_agua = None
+        precio_agua = None
+        unidad_electrica = None
+        precio_elec = None
+        for sol in q1:
+            nombre_casa = sol["Nombre"]
+            direccion = sol["Ubicacion"]
+        for sol in q2:
+            unidad_agua = sol["Unidad"]
+            precio_agua = sol["Precio"]
+        for sol in q3:
+            unidad_electrica = sol["Unidad"]
+            precio_elec = sol["Precio"]
+        return nombre_casa, direccion, latitud, longitud, unidad_agua, precio_agua, unidad_electrica, precio_elec
 
     def transform_prolog_name(self, name):
         preprocess_name = name.replace(' ', '_')

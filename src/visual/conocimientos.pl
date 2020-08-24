@@ -9,8 +9,8 @@
 :- dynamic miembro_casa/1.
 :- dynamic invitado/1.
 :- dynamic casa_info/3.
-:- dynamic unidad_electrica/1.
-:- dynamic unidad_agua/1.
+:- dynamic unidad_electrica/2.
+:- dynamic unidad_agua/2.
 :- dynamic consumo_electrodomestico/4.
 :- dynamic consumo_agua/4.
 :- dynamic estado_objeto_agua/4.
@@ -280,16 +280,79 @@ apagar_electrodomestico(Electrodomestico):-
 listado_consumo_de_aparato_por_fechas(Aparato, Filtro_fecha, Res):-
     findall(Consumo, consumo(Aparato, Consumo, Filtro_fecha, _, Filtro_fecha, _, _), Res).
 
-calculo_consumo_electrodomesticos(Electrodomestico, ConsumoElectrico, Fecha_filtrado):-
+calculo_consumo_electrodomesticos(Electrodomestico, ConsumoElectrico, Fecha_filtrado, PrecioConsumo):-
     electrodomestico(Electrodomestico, _),
     listado_consumo_de_aparato_por_fechas(Electrodomestico, Fecha_filtrado, Listado),
-    sum_list(Listado, ConsumoElectrico).
+    sum_list(Listado, ConsumoElectrico),
+    unidad_electrica(_, Precio),
+    PrecioConsumo is (Precio * ConsumoElectrico).
 
-calcula_consumo_agua(Objeto_agua, ConsumoAgua, Fecha_filtrado):-
+calcula_consumo_agua(Objeto_agua, ConsumoAgua, Fecha_filtrado, PrecioConsumo):-
     objeto_agua(Objeto_agua, _, _),
         listado_consumo_de_aparato_por_fechas(Objeto_agua, Fecha_filtrado, Listado),
-    sum_list(Listado, ConsumoAgua).
+    sum_list(Listado, ConsumoAgua),
+    unidad_agua(_, Precio),
+    PrecioConsumo is (Precio * ConsumoAgua).
 
 actualizar_info_aire(Nombre, Temperatura, Modo, Velocidad):-
     retract(aire_acondicionado(Nombre,_,_,_)),
     assertz(aire_acondicionado(Nombre,Temperatura,Modo,Velocidad)).
+
+
+% - apagar_electrodomestico_lugar(Lugar)
+% - Cierra los electrodomesticos de un lugar, dado su listado de objetos.
+apagar_electrodomesticos_lugar_aux([]).
+apagar_electrodomesticos_lugar_aux([H|T]):-electrodomestico(H, _),apagar_electrodomestico(H),apagar_electrodomesticos_lugar_aux(T).
+apagar_electrodomesticos_lugar_aux([_|T]):-apagar_electrodomesticos_lugar_aux(T), !.
+apagar_electrodomesticos_lugar(Lugar):-
+    lugar(Lugar,_,Objetos),
+    apagar_electrodomesticos_lugar_aux(Objetos).
+
+
+% - apagar_electrodomestico_planta(Planta)
+% - Apaga los electrodomesticos de un planta, dado su listado de lugares.
+apagar_electrodomesticos_planta_aux([]).
+apagar_electrodomesticos_planta_aux([H|T]):-apagar_electrodomesticos_lugar(H), apagar_electrodomesticos_planta_aux(T), !.
+apagar_electrodomesticos_planta(Planta):-
+    planta(Planta, Listado),
+    apagar_electrodomesticos_planta_aux(Listado).
+
+
+% - cerrar_todo_de_lugar(objetos_lugar)
+% - Dado los objetos de un lugar, busca sus tipos
+% - y los cierra todos, en base a su clasificacion.
+cerrar_todo_de_lugar([]).
+cerrar_todo_de_lugar([H|T]):-electrodomestico(H, _),apagar_electrodomestico(H),cerrar_todo_de_lugar(T).
+cerrar_todo_de_lugar([H|T]):-objeto_agua(H,_,_),cierre_objeto_agua(H),cerrar_todo_de_lugar(T).
+cerrar_todo_de_lugar([H|T]):-objeto(H,ventana,_), cerrar_ventana(H),cerrar_todo_de_lugar(T).
+cerrar_todo_de_lugar([H|T]):-objeto(H,puerta,_), cerrar_puerta(H),cerrar_todo_de_lugar(T).
+cerrar_todo_de_lugar([_|T]):-cerrar_todo_de_lugar(T), !.
+
+
+% - ahorra_recursos()
+% - Examina la ubicacion de las personas
+% - para luego, apagar/cerrar tanto electrodomesticos,
+% - agua, ventanas y puertas si hay una localizacion
+% - que no tiene personas. Si tiene una persona el lugar,
+% - la regla fallara.
+ahorro_recursos_aux(L, _):-ubicacion_persona(L,_), !, fail.
+ahorro_recursos_aux(_, Objetos):-cerrar_todo_de_lugar(Objetos).
+
+ahorro_recursos():-
+    lugar(L,_,Objetos),
+    ahorro_recursos_aux(L, Objetos).
+
+
+% - calculo_electricidad_por_fecha(date(_, mes, año), Consumo)
+% - te devuelve el consumo de todos los electrodomesticos en un mes y año
+% - especificos.
+calculo_electricidad_por_fecha(Mes, Anyo, Consumo):-
+    findall(Consumo, (electrodomestico(Aparato,_),consumo(Aparato, Consumo, date(Anyo,Mes,_), _, date(Anyo,Mes,_), _, _)), Res),
+    sum_list(Res, Consumo).
+
+% - calculo_agua_por_fecha(date(_, mes, año), Consumo)
+% - te devuelve el consumo de todos los aparatos de agua en un mes y año
+% - especificos.
+calculo_agua_por_fecha(Mes, Anyo, Consumo):-
+    findall(Consumo, (objeto_agua(Aparato,_,_),consumo(Aparato, Consumo, date(Anyo,Mes,_), _, date(Anyo,Mes,_), _, _)), Res),
+    sum_list(Res, Consumo).
