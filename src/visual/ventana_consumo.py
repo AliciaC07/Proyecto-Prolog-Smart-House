@@ -26,16 +26,18 @@ class Ui_Dialog(object):
         self.buttonBox.setObjectName("buttonBox")
         self.tbobjetos = QtWidgets.QTableWidget(Dialog)
         self.tbobjetos.setGeometry(QtCore.QRect(40, 170, 621, 211))
-        self.tbobjetos.setColumnCount(2)
+        self.tbobjetos.setColumnCount(3)
         self.tbobjetos.setObjectName("tbobjetos")
         self.tbobjetos.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
         self.tbobjetos.setHorizontalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
         self.tbobjetos.setHorizontalHeaderItem(1, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tbobjetos.setHorizontalHeaderItem(2, item)
 
         self.tbobjetos.horizontalHeader().setCascadingSectionResizes(False)
-        self.tbobjetos.horizontalHeader().setDefaultSectionSize(285)
+        self.tbobjetos.horizontalHeader().setDefaultSectionSize(205)
         self.tbobjetos.horizontalHeader().setMinimumSectionSize(49)
         self.tbobjetos.horizontalHeader().setSortIndicatorShown(False)
         self.tbobjetos.horizontalHeader().setStretchLastSection(False)
@@ -80,6 +82,8 @@ class Ui_Dialog(object):
         item.setText(_translate("Dialog", "Nombre"))
         item = self.tbobjetos.horizontalHeaderItem(1)
         item.setText(_translate("Dialog", "Consumo"))
+        item = self.tbobjetos.horizontalHeaderItem(2)
+        item.setText(_translate("Dialog", "Costo"))
         self.cbxfiltroobjetos.setCurrentText(_translate("Dialog", "<Todos>"))
         self.cbxfiltroobjetos.setItemText(0, _translate("Dialog", "<Todos>"))
         self.cbxfiltroobjetos.setItemText(1, _translate("Dialog", "Agua"))
@@ -98,47 +102,49 @@ class Ui_Dialog(object):
         self.prologInstance.consult('conocimientos.pl')
         nombreN = 0
         nombre = ""
-        consumoN = 0
+
         consumo = ""
+
+        precio = ""
         elec = dict()
         if Query == "<Todos>":
 
             Q1 = self.prologInstance.query(
-                "calculo_consumo_electrodomesticos(" + "X," + "Consumo" + ", date(2020, 8, _))")
-            Q2 = self.prologInstance.query("calcula_consumo_agua(" + "X," + "Consumo" + ", date(2020, 8, _))")
+                "calculo_consumo_electrodomesticos(" + "X," + "Consumo" + ", date(2020, 8, _),Precio)")
+            Q2 = self.prologInstance.query("calcula_consumo_agua(" + "X," + "Consumo" + ", date(2020, 8, _),Precio)")
 
             for solution in Q1:
                 nombreN += 1
                 nombre = "Electrodomestico #" + str(nombreN)
-                consumoN += 1
-                consumo = "Consumo #" + str(consumoN)
-                elec.update({nombre: str(solution["X"]), consumo: str(solution["Consumo"])})
+                consumo = "Consumo #" + str(nombreN)
+                precio = "Precio #"+str(nombreN)
+                elec.update({nombre: str(solution["X"]), consumo: str(solution["Consumo"]),  precio: str(solution["Precio"])})
 
             for solution in Q2:
                 nombreN += 1
                 nombre = "Electrodomestico #" + str(nombreN)
-                consumoN += 1
-                consumo = "Consumo #" + str(consumoN)
-                elec.update({nombre: str(solution["X"]), consumo: str(solution["Consumo"])})
+                precio = "Precio #" + str(nombreN)
+                consumo = "Consumo #" + str(nombreN)
+                elec.update({nombre: str(solution["X"]), consumo: str(solution["Consumo"]),  precio: str(solution["Precio"])})
         elif Query == "Agua":
-            Q2 = self.prologInstance.query("calcula_consumo_agua(" + "X," + "Consumo" + ", date(2020, 8, _))")
+            Q2 = self.prologInstance.query("calcula_consumo_agua(" + "X," + "Consumo" + ", date(2020, 8, _),Precio)")
             for solution in Q2:
                 nombreN += 1
                 nombre = "Electrodomestico #" + str(nombreN)
-                consumoN += 1
-                consumo = "Consumo #" + str(consumoN)
-                elec.update({nombre: str(solution["X"]), consumo: str(solution["Consumo"])})
+                precio = "Precio #" + str(nombreN)
+                consumo = "Consumo #" + str(nombreN)
+                elec.update({nombre: str(solution["X"]), consumo: str(solution["Consumo"]),  precio:str(solution["Precio"])  })
         elif Query == "Electricidad":
 
             Q1 = self.prologInstance.query(
-                "calculo_consumo_electrodomesticos(" + "X," + "Consumo" + ", date(2020, 8, _))")
+                "calculo_consumo_electrodomesticos(" + "X," + "Consumo" + ", date(2020, 8, _),Precio)")
 
             for solution in Q1:
                 nombreN += 1
                 nombre = "Electrodomestico #" + str(nombreN)
-                consumoN += 1
-                consumo = "Consumo #" + str(consumoN)
-                elec.update({nombre: str(solution["X"]), consumo: str(solution["Consumo"])})
+                precio = "Precio #" + str(nombreN)
+                consumo = "Consumo #" + str(nombreN)
+                elec.update({nombre: str(solution["X"]), consumo: str(solution["Consumo"]),  precio:str(solution["Precio"])})
         if len(self.textbuscar.text()) >= 1:
             auxDict = dict()
             busqueda = self.textbuscar.text().lower()
@@ -157,7 +163,7 @@ class Ui_Dialog(object):
                         indtxt += len(busqueda)
                         if mensaje.lower() == busqueda:
                             auxDict.update({"Electrodomestico #" + str(nom): elec["Electrodomestico #" + str(ind)],
-                                            "Consumo #" + str(nom): elec["Consumo #" + str(ind)]})
+                                            "Consumo #" + str(nom): elec["Consumo #" + str(ind)], "Precio #"+str(nom):elec["Precio #"+str(ind)]})
                             count += 1
                             nom += 1
                            # print(auxDict)
@@ -176,7 +182,7 @@ class Ui_Dialog(object):
                         indtxt += 1
                         if busqueda.find(mensaje.lower()) > -1:
                             auxDict.update({"Electrodomestico #" + str(nom): elec["Electrodomestico #" + str(ind)],
-                                            "Consumo #" + str(nom): elec["Consumo #" + str(ind)]})
+                                            "Consumo #" + str(nom): elec["Consumo #" + str(ind)], "Precio #"+str(nom):elec["Precio #"+str(ind)]})
                             count += 1
                             nom += 1
                             #print(auxDict)
@@ -200,6 +206,7 @@ class Ui_Dialog(object):
 
             self.tbobjetos.setItem(rowPosition, 0, QTableWidgetItem(objetos["Electrodomestico #" + str(ind)]))
             self.tbobjetos.setItem(rowPosition, 1, QTableWidgetItem(objetos["Consumo #" + str(ind)]))
+            self.tbobjetos.setItem(rowPosition, 2, QTableWidgetItem(objetos["Precio #" + str(ind)]))
 
 
 if __name__ == "__main__":

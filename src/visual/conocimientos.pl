@@ -42,11 +42,11 @@ electrodomestico(television1, 263).
 %electrodomestico(television2, 263).
 %%electrodomestico(television3, 263).
 %electrodomestico(bombillo1, 1).
-%lugar(cocina1, 30, [nevera1, estufa1, bombillo4, television1]).
-estado_electrodomestico(abanico2, apagado, date(0,0,0), time(0,0,0)).
+%%lugar(cocina1, 30, [nevera1, estufa1, bombillo4, television1]).
+%estado_electrodomestico(abanico2, apagado, date(0,0,0), time(0,0,0)).
 %electrodomestico(bombillo2, 0.06).
-electrodomestico(bombillo3, 0.06).
-electrodomestico(bombillo4, 0.06).
+%electrodomestico(bombillo3, 0.06).
+%electrodomestico(bombillo4, 0.06).
 %electrodomestico(bombillo5, 0.06).
 %electrodomestico(computadora1, 0.450).
 %electrodomestico(computadora2, 0.450).
@@ -60,9 +60,9 @@ electrodomestico(bombillo4, 0.06).
 %electrodomestico(bombillo1, 1).
 %estado_electrodomestico(nevera1, apagado, date(0,0,0), time(0,0,0)).
 %estado_electrodomestico(estufa1, apagado, date(0,0,0), time(0,0,0)).
-estado_electrodomestico(television1, apagado, date(0,0,0), time(0,0,0)).
-estado_electrodomestico(bombillo3, apagado, date(0,0,0), time(0,0,0)).
-estado_electrodomestico(bombillo4, apagado, date(0,0,0), time(0,0,0)).
+%estado_electrodomestico(television1, apagado, date(0,0,0), time(0,0,0)).
+%estado_electrodomestico(bombillo3, apagado, date(0,0,0), time(0,0,0)).
+%estado_electrodomestico(bombillo4, apagado, date(0,0,0), time(0,0,0)).
 %Objetos de agua
 %objeto_agua(toilet1,fijo ,6.05).
 objeto_agua(fregadero1, continuo ,88.8).
@@ -70,9 +70,9 @@ objeto_agua(fregadero2, continuo ,88.8).
 %objeto_agua(lavadora1,fijo, 47).
 %objeto_agua(lavadora2,fijo, 47).
 %objeto_agua(lavaplatos1,fijo, 12).
-
-estado_objeto_agua(fregadero2, cerrado, date(0,0,0), time(0,0,0)).
-estado_objeto_agua(fregadero1, cerrado, date(0,0,0), time(0,0,0)).
+%
+%estado_objeto_agua(fregadero2, cerrado, date(0,0,0), time(0,0,0)).
+%estado_objeto_agua(fregadero1, cerrado, date(0,0,0), time(0,0,0)).
 
 % estado_electrodomestico(dispositivo, estado/encendido/apagado, fecha, tiempo)
 %estado_electrodomestico(nevera1, encendido).
@@ -97,25 +97,25 @@ estado_objeto_agua(fregadero1, cerrado, date(0,0,0), time(0,0,0)).
 
 % La idea es describir el objeto con un identificador, nombre
 % y el identificador del lugar donde esta ubicado.
-% lugar(identificador, nombre, id_lugar).
-objeto(puerta1,puerta,comedor1).
-objeto(puerta2, puerta, cocina1).
+%% lugar(identificador, nombre, id_lugar).
+%objeto(puerta1,puerta,comedor1).
+%objeto(puerta2, puerta, cocina1).
 %objeto(puerta3, cocina1).
 %objeto(puerta4, bano1).
-%objeto(puerta5, cuarto_lavado1).
-objeto(ventana1, ventana, comedor1).
-objeto(ventana2, ventana, cocina1).
+%%objeto(puerta5, cuarto_lavado1).
+%objeto(ventana1, ventana, comedor1).
+%objeto(ventana2, ventana, cocina1).
 %objeto(ventana3, cocina1).
 
 % La idea es describir si el objeto esta abierto o cerrado.
-% estado_objeto(identificador, estado/abierto/cerrado)
-estado_objeto(puerta1, abierto).
-estado_objeto(puerta2, abierto).
+%% estado_objeto(identificador, estado/abierto/cerrado)
+%estado_objeto(puerta1, abierto).
+%estado_objeto(puerta2, abierto).
 %estado_objeto(puerta3, abierto).
 %estado_objeto(puerta4, cerrado).
 %estado_objeto(puerta5, cerrado).
-estado_objeto(ventana1, abierto).
-estado_objeto(ventana2, abierto).
+%estado_objeto(ventana1, abierto).
+%estado_objeto(ventana2, abierto).
 %estado_objeto(ventana3, cerrado).
 
 %Especificacion de las personas que entran a la casa.
@@ -308,10 +308,10 @@ calcula_consumo_agua(Objeto_agua, ConsumoAgua, Fecha_filtrado, PrecioConsumo):-
     sum_list(Listado, ConsumoAgua),
     unidad_agua(_, Precio),
     PrecioConsumo is (Precio * ConsumoAgua).
-
-planta(planta1, [comedor1, cocina1]).
-lugar(comedor1, 29, [puerta1, ventana1,bombillo3 ,abanico2,fregadero1]).
-lugar(cocina1, 30, [puerta2, ventana2, bombillo4, television1, fregadero2]).
+%
+%planta(planta1, [comedor1, cocina1]).
+%lugar(comedor1, 29, [puerta1, ventana1,bombillo3 ,abanico2,fregadero1]).
+%lugar(cocina1, 30, [puerta2, ventana2, bombillo4, television1, fregadero2]).
 
 apagar_electrodomesticos_lugar(Lugar):-
     lugar(Lugar, _, Listado),
