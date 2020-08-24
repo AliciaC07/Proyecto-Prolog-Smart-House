@@ -17,8 +17,6 @@
 :- dynamic consumo/7.
 :- dynamic aire_acondicionado/4.
 
-%unidad_agua(unidad, precio)
-%unidad_electrica(unidad, precio)
 %casa_info(nombrecasa, ubicacion, [plantas])
 % planta(nombre_planta, lista_lugares)
 %planta(planta1, [sala1, comedor1, cocina1, bano1, cuarto_lavado1]).
@@ -35,22 +33,21 @@
 % La idea es describir un estado_electrodomestico cualquiera de la casa
 % con su consumo en khw.
 % estado_electrodomestico(nombre, consumo/khw)
-%electrodomestico(nevera1, 662).
-%electrodomestico(estufa1, 1000).
+electrodomestico(nevera1, 662).
+electrodomestico(estufa1, 1000).
 electrodomestico(television1, 263).
 %estado_electrodomestico(television1, apagado, date(0,0,0), time(0,0,0)).
 %electrodomestico(television2, 263).
 %%electrodomestico(television3, 263).
 %electrodomestico(bombillo1, 1).
-%%lugar(cocina1, 30, [nevera1, estufa1, bombillo4, television1]).
-%estado_electrodomestico(abanico2, apagado, date(0,0,0), time(0,0,0)).
-%electrodomestico(bombillo2, 0.06).
-%electrodomestico(bombillo3, 0.06).
-%electrodomestico(bombillo4, 0.06).
-%electrodomestico(bombillo5, 0.06).
-%electrodomestico(computadora1, 0.450).
-%electrodomestico(computadora2, 0.450).
-%electrodomestico(computadora3, 0.450).
+%estado_electrodomestico(bombillo1, apagado, fecha(0,0,0), tiempo(0,0,0)).
+electrodomestico(bombillo2, 0.06).
+electrodomestico(bombillo3, 0.06).
+electrodomestico(bombillo4, 0.06).
+electrodomestico(bombillo5, 0.06).
+electrodomestico(computadora1, 0.450).
+electrodomestico(computadora2, 0.450).
+electrodomestico(computadora3, 0.450).
 %electrodomestico(abanico1, 0.9).
 %electrodomestico(abanico2, 0.9).
 %electrodomestico(abanico3, 0.9).
@@ -58,21 +55,17 @@ electrodomestico(television1, 263).
 %electrodomestico(lavadora2, 255).
 %electrodomestico(lavaplatos1, 246).
 %electrodomestico(bombillo1, 1).
-%estado_electrodomestico(nevera1, apagado, date(0,0,0), time(0,0,0)).
-%estado_electrodomestico(estufa1, apagado, date(0,0,0), time(0,0,0)).
-%estado_electrodomestico(television1, apagado, date(0,0,0), time(0,0,0)).
-%estado_electrodomestico(bombillo3, apagado, date(0,0,0), time(0,0,0)).
-%estado_electrodomestico(bombillo4, apagado, date(0,0,0), time(0,0,0)).
+%estado_electrodomestico(bombillo1, apagado, date(0,0,0), time(0,0,0)).
+
 %Objetos de agua
-%objeto_agua(toilet1,fijo ,6.05).
+objeto_agua(toilet1,fijo ,6.05).
 objeto_agua(fregadero1, continuo ,88.8).
-objeto_agua(fregadero2, continuo ,88.8).
-%objeto_agua(lavadora1,fijo, 47).
-%objeto_agua(lavadora2,fijo, 47).
-%objeto_agua(lavaplatos1,fijo, 12).
-%
-%estado_objeto_agua(fregadero2, cerrado, date(0,0,0), time(0,0,0)).
-%estado_objeto_agua(fregadero1, cerrado, date(0,0,0), time(0,0,0)).
+objeto_agua(lavadora1,fijo, 47).
+objeto_agua(lavadora2,fijo, 47).
+objeto_agua(lavaplatos1,fijo, 12).
+
+%estado_objeto_agua(toilet1, cerrado, fecha(0,0,0), tiempo(0,0,0)).
+%estado_objeto_agua(fregadero1, cerrado, fecha(0,0,0), tiempo(0,0,0)).
 
 % estado_electrodomestico(dispositivo, estado/encendido/apagado, fecha, tiempo)
 %estado_electrodomestico(nevera1, encendido).
@@ -97,24 +90,24 @@ objeto_agua(fregadero2, continuo ,88.8).
 
 % La idea es describir el objeto con un identificador, nombre
 % y el identificador del lugar donde esta ubicado.
-%% lugar(identificador, nombre, id_lugar).
-%objeto(puerta1,puerta,comedor1).
-%objeto(puerta2, puerta, cocina1).
+% lugar(identificador, nombre, id_lugar).
+%objeto(puerta1,puerta,sala1).
+%objeto(puerta2, puerta, habitacion1).
 %objeto(puerta3, cocina1).
 %objeto(puerta4, bano1).
-%%objeto(puerta5, cuarto_lavado1).
-%objeto(ventana1, ventana, comedor1).
-%objeto(ventana2, ventana, cocina1).
+%objeto(puerta5, cuarto_lavado1).
+%objeto(venatana1, ventana, habitacion1).
+%objeto(ventana2, ventana, sala1).
 %objeto(ventana3, cocina1).
 
 % La idea es describir si el objeto esta abierto o cerrado.
-%% estado_objeto(identificador, estado/abierto/cerrado)
+% estado_objeto(identificador, estado/abierto/cerrado)
 %estado_objeto(puerta1, abierto).
 %estado_objeto(puerta2, abierto).
 %estado_objeto(puerta3, abierto).
 %estado_objeto(puerta4, cerrado).
 %estado_objeto(puerta5, cerrado).
-%estado_objeto(ventana1, abierto).
+%estado_objeto(ventana1, cerrado).
 %estado_objeto(ventana2, abierto).
 %estado_objeto(ventana3, cerrado).
 
@@ -143,6 +136,9 @@ ubicacion_persona(sala1, papotico).
 %instalado en lugar.
 %aire_acondicionado(lugar, temperatura, modo, velocidad_aire).
 
+unidad_electrica(kwtt, 10).
+unidad_agua(galon, 2).
+
 calcula_consumo([], 0).
 calcula_consumo([H|T], Total):-
     electrodomestico(H, Consumo),
@@ -165,22 +161,14 @@ cerrar_puertas_casa():-
     assertz(estado_objeto(Objeto, cerrado)).
 
 cerrar_ventanas_lugar(Lugar):-
-        objeto(Objeto, ventana, Lugar),estado_objeto(Objeto, abierto),
+        ubicacion_persona(Lugar,_), objeto(Objeto, ventana, Lugar),estado_objeto(Objeto, abierto),
         retract(estado_objeto(Objeto, abierto)),
         assertz(estado_objeto(Objeto, cerrado)).
 
 cerrar_puertas_lugar(Lugar):-
-        objeto(Objeto, puerta, Lugar),estado_objeto(Objeto, abierto),
+        ubicacion_persona(Lugar,_), objeto(Objeto, puerta, Lugar),estado_objeto(Objeto, abierto),
         retract(estado_objeto(Objeto, abierto)),
         assertz(estado_objeto(Objeto, cerrado)).
-
-cerrar_puertas_ventana_planta(Planta):-
-    planta(Planta, Lista),
-    member(Lugar, Lista),
-    lugar(Lugar,_,_),
-    cerrar_puertas_lugar(Lugar),
-    cerrar_ventanas_lugar(Lugar).
-
 
 % - cerrar_puerta(NombrePuerta)
 % - Cierra una puerta especifica, dado un nombre.
@@ -308,31 +296,7 @@ calcula_consumo_agua(Objeto_agua, ConsumoAgua, Fecha_filtrado, PrecioConsumo):-
     sum_list(Listado, ConsumoAgua),
     unidad_agua(_, Precio),
     PrecioConsumo is (Precio * ConsumoAgua).
-%
-%planta(planta1, [comedor1, cocina1]).
-%lugar(comedor1, 29, [puerta1, ventana1,bombillo3 ,abanico2,fregadero1]).
-%lugar(cocina1, 30, [puerta2, ventana2, bombillo4, television1, fregadero2]).
 
-apagar_electrodomesticos_lugar(Lugar):-
-    lugar(Lugar, _, Listado),
-    member(Electrodomestico, Listado),
-    electrodomestico(Electrodomestico, _),
-    apagar_electrodomestico(Electrodomestico).
-
-apagar_electrodomesticos_planta(Planta):-
-    planta(Planta, Lista),
-    member(Lugar, Lista),
-    lugar(Lugar,_,_),
-    apagar_electrodomesticos_lugar(Lugar).
-
-cerrar_objetos_agua_lugar(Lugar):-
-    lugar(Lugar, _, Listado),
-    member(Objeto_agua, Listado),
-    objeto_agua(Objeto_agua, _, _),
-    cierre_objeto_agua(Objeto_agua).
-
-cerrar_objetos_agua_planta(Planta):-
-    planta(Planta, Lista),
-    member(Lugar, Lista),
-    lugar(Lugar,_,_),
-    cerrar_objetos_agua_continuo(Lugar).
+actualizar_info_aire(Nombre, Temperatura, Modo, Velocidad):-
+    retract(aire_acondicionado(Nombre,_,_,_)),
+    assertz(aire_acondicionado(Nombre,Temperatura,Modo,Velocidad)).

@@ -13,6 +13,7 @@ from PyQt5.QtWidgets import QTableWidgetItem
 from PyQt5.QtCore import *
 from PyQt5.QtGui  import *
 from pyswip import Prolog
+from datetime import date, datetime
 
 
 class Ui_Dialog(object):
@@ -107,11 +108,20 @@ class Ui_Dialog(object):
 
         precio = ""
         elec = dict()
+        now = datetime.now()
+        mes = now.strftime('%m')
+
+        if(mes[0] == '0'):
+            mes = mes[1]
+            formato = "date("+now.strftime('%Y,')+mes+",_)"
+        else:
+            formato = "date(" + now.strftime('%Y,') + mes + ",_)"
+
         if Query == "<Todos>":
 
-            Q1 = self.prologInstance.query(
-                "calculo_consumo_electrodomesticos(" + "X," + "Consumo" + ", date(2020, 8, _),Precio)")
-            Q2 = self.prologInstance.query("calcula_consumo_agua(" + "X," + "Consumo" + ", date(2020, 8, _),Precio)")
+
+            Q1 = self.prologInstance.query("calculo_consumo_electrodomesticos( X,Consumo,"+formato+",Precio)")
+            Q2 = self.prologInstance.query("calcula_consumo_agua(" + "X," + "Consumo" + ","+formato+",Precio)")
 
             for solution in Q1:
                 nombreN += 1
@@ -127,7 +137,7 @@ class Ui_Dialog(object):
                 consumo = "Consumo #" + str(nombreN)
                 elec.update({nombre: str(solution["X"]), consumo: str(solution["Consumo"]),  precio: str(solution["Precio"])})
         elif Query == "Agua":
-            Q2 = self.prologInstance.query("calcula_consumo_agua(" + "X," + "Consumo" + ", date(2020, 8, _),Precio)")
+            Q2 = self.prologInstance.query("calcula_consumo_agua(" + "X," + "Consumo" + ","+formato+",Precio)")
             for solution in Q2:
                 nombreN += 1
                 nombre = "Electrodomestico #" + str(nombreN)
@@ -136,8 +146,7 @@ class Ui_Dialog(object):
                 elec.update({nombre: str(solution["X"]), consumo: str(solution["Consumo"]),  precio:str(solution["Precio"])  })
         elif Query == "Electricidad":
 
-            Q1 = self.prologInstance.query(
-                "calculo_consumo_electrodomesticos(" + "X," + "Consumo" + ", date(2020, 8, _),Precio)")
+            Q1 = self.prologInstance.query("calculo_consumo_electrodomesticos( X,Consumo," + formato + ",Precio)")
 
             for solution in Q1:
                 nombreN += 1
@@ -166,7 +175,6 @@ class Ui_Dialog(object):
                                             "Consumo #" + str(nom): elec["Consumo #" + str(ind)], "Precio #"+str(nom):elec["Precio #"+str(ind)]})
                             count += 1
                             nom += 1
-                           # print(auxDict)
                             break
                         if indelec > len(electrodomestico):
                             break
